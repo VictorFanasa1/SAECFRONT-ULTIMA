@@ -1,0 +1,81 @@
+<h1 style="margin-top: 10px;"><b><i>Empleados</i></b></h1>
+
+<div class="row">
+    <mat-form-field>
+        <input matInput #inputProveedor  (keyup)="searchProveedor(inputProveedor.value)" placeholder="Filter">
+      </mat-form-field>
+      <button type="button" class="movil" (click)="newEmployed()" mat-raised-button color="accent" style="margin-left: 10px;">
+        NUEVO EMPLEADO
+      </button>
+  </div>
+ 
+  <div class="mat-elevation-z8">
+      <div class="example-container">
+        <div class="loading-shade"
+             *ngIf="isLoadingResults">
+          <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+        </div>
+      
+        <div class="containertable">
+          <mat-table [dataSource]="dataSource">
+    
+            <ng-container matColumnDef="Numero">
+              <mat-header-cell *matHeaderCellDef>Número</mat-header-cell>
+              <mat-cell *matCellDef="let row">{{row.uiNumeroEmpleado}}</mat-cell>
+            </ng-container>
+    
+            <ng-container matColumnDef="Nombre">
+              <mat-header-cell *matHeaderCellDef>Nombre</mat-header-cell>
+              <mat-cell *matCellDef="let row">{{row.sNombreUsuario}}</mat-cell>
+            </ng-container>
+    
+            <ng-container matColumnDef="Correo">
+              <mat-header-cell *matHeaderCellDef>Correo</mat-header-cell>
+              <mat-cell *matCellDef="let row">{{row.sCorreoUsuario}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="Puesto">
+                <mat-header-cell *matHeaderCellDef>Puesto</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.sPuesto}}</mat-cell>
+            </ng-container>
+    
+            <ng-container matColumnDef="Ubicacion">
+              <mat-header-cell *matHeaderCellDef>Ubicación</mat-header-cell>
+              <mat-cell *matCellDef="let row">{{row.sNombreUbicacion}}</mat-cell>
+            </ng-container>
+    
+            <ng-container matColumnDef="UEN">
+              <mat-header-cell *matHeaderCellDef>UEN</mat-header-cell>
+              <mat-cell *matCellDef="let row">{{row.sUEN}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="esInterno">
+              <mat-header-cell *matHeaderCellDef>¿Es Interno?</mat-header-cell>
+              <mat-cell *matCellDef="let row">{{row.bInterno}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+              <mat-header-cell *matHeaderCellDef></mat-header-cell>
+              <mat-cell *matCellDef="let row">
+                  <!-- <button mat-mini-fab color="accent" aria-label="Actualizar registro" title="Actualizar" (click)="modifyRow(row.uiNumeroEmpleado, row.sNombreUsuario, row.sCorreoUsuario, row.sPuesto, row.uiUbicacion, row.sUEN, row.bInterno)"> -->
+                  <button mat-mini-fab color="accent" aria-label="Actualizar registro" title="Actualizar" (click)="modifyRow(row.uiNumeroEmpleado, row.sNombreUsuario)">
+                      <mat-icon>refresh</mat-icon>
+                  </button>
+                  <button mat-mini-fab color="warn" aria-label="Eliminar registro" style="margin-left: 10px;" title="Eliminar" (click)="deleteRow(row.uiNumeroEmpleado, row.sNombreUsuario)">
+                      <mat-icon>close_small</mat-icon>
+                  </button>
+              </mat-cell>
+          </ng-container>
+            
+            <mat-header-row *matHeaderRowDef="displayedColumns; sticky: !isLoadingResults;"></mat-header-row>
+            <mat-row *matRowDef="let row; index as x; columns: displayedColumns;">
+            </mat-row>
+          </mat-table>
+        </div>
+      
+      </div>
+      <mat-paginator [length]="dataSource.data.length" [pageSizeOptions]="[5, 10, 20, 40]" showFirstLastButtons></mat-paginator>
+    </div>
+  
+  
+  

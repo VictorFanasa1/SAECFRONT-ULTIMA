@@ -1,0 +1,72 @@
+<h1>Reportes de Errores</h1>
+
+<div class="row">
+  <mat-form-field>
+      <input matInput #inputProveedor  (keyup)="searchProveedor(inputProveedor.value)" placeholder="Filter">
+    </mat-form-field>
+</div>
+<div class="example-container mat-elevation-z8">
+    <div class="loading-shade"
+         *ngIf="isLoadingResults">
+      <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    </div>
+  
+    <div class="example-table-container">
+      <mat-table [dataSource]="dataSource">
+
+        <ng-container matColumnDef="Empleado">
+          <mat-header-cell *matHeaderCellDef>Empleado</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.uiEmpleado}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Serie">
+          <mat-header-cell *matHeaderCellDef>Serie</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.sSerie}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Ubicacion">
+          <mat-header-cell *matHeaderCellDef>Ubicacion</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.sUbicacion}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Titulo">
+          <mat-header-cell *matHeaderCellDef>Titulo</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.sTitulo}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Mensaje">
+          <mat-header-cell *matHeaderCellDef>Mensaje</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.sMensaje}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Fecha">
+          <mat-header-cell *matHeaderCellDef>
+            Fecha
+          </mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.dtRecibido | date: 'dd/MM/yy hh:mm'}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="CHECK">
+          <mat-header-cell *matHeaderCellDef>CHECK</mat-header-cell>
+          <mat-cell *matCellDef="let row">
+            <button mat-mini-fab color="warn" (click)="checkreport(row)" aria-label="Example icon button with a filter list icon">
+              <mat-icon>check</mat-icon>
+            </button>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="footer">
+          <mat-footer-cell *matFooterCellDef colspan="2">
+            <button mat-raised-button (click)="DownLoad()" color="primary">Descargar</button>
+          </mat-footer-cell>
+        </ng-container>
+  
+        <mat-header-row *matHeaderRowDef="displayedColumns; sticky: !isLoadingResults;"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        <mat-footer-row *matFooterRowDef="['footer']; sticky: !isLoadingResults;"></mat-footer-row>
+      </mat-table>
+    </div>
+  
+    <mat-paginator [length]="dataSource.data.length" [pageSizeOptions]="[5, 10, 20, 40]" showFirstLastButtons></mat-paginator>
+  </div>
+<br>

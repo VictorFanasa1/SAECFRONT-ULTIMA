@@ -1,0 +1,140 @@
+<h1>Pre-Liberados</h1>
+
+<form [formGroup]="formFilters" class="row">
+  <div *ngIf="data[3] !== '2'" class="col-xs">
+    <mat-form-field appearance="outline">
+      <mat-label>Responsable</mat-label>
+      <mat-select formControlName="uiResponsable">
+        <mat-option [value]="''">TODOS</mat-option>
+        <mat-option *ngFor="let responsable of responsables" [value]="responsable.uiNumeroEmpleado">
+          {{responsable.sNombre}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="col-xs">
+    <mat-form-field appearance="outline">
+      <mat-label>Serie</mat-label>
+      <input formControlName="sSerie" matInput>
+    </mat-form-field>
+  </div>
+  <div class="col-xs">
+    <mat-form-field appearance="outline">
+      <mat-label>Tipo de Equipo</mat-label>
+      <mat-select formControlName="sTipo">
+        <mat-option [value]="''">TODOS</mat-option>
+        <mat-option *ngFor="let tipo of tipos" [value]="tipo.sNombre">
+          {{tipo.sNombre}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</form>
+<br>
+<div class="mat-elevation-z8">
+  <div class="example-container">
+    <div class="loading-shade"
+          *ngIf="isLoadingResults">
+          <div class="flipping">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+    </div>
+  
+    <div class="containertable">
+      <mat-table [dataSource]="dataSource" matSort #empTbSort="matSort" matSortDisableClear>
+
+        <ng-container matColumnDef="iEmpleado">
+          <mat-header-cell mat-sort-header *matHeaderCellDef># Empleado</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.iEmpleado}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="sEmpleado">
+          <mat-header-cell mat-sort-header *matHeaderCellDef>Empleado</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.sEmpleado}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="sResponsable">
+          <mat-header-cell mat-sort-header *matHeaderCellDef>Responsable</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.sResponsable}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Ubicacion">
+          <mat-header-cell *matHeaderCellDef>Ubicacion</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.sUbicacion}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Serie">
+          <mat-header-cell *matHeaderCellDef>Serie</mat-header-cell>
+          <mat-cell [matMenuTriggerFor]="menu" style="cursor: pointer;" *matCellDef="let row">{{row.sSerie}}
+            <mat-menu #menu="matMenu">
+              <button [routerLink]="'/consulta/expediente'" [queryParams]="{ sSerie: row.sSerie }" mat-menu-item>
+                <mat-icon>list</mat-icon>
+                <span>Expediente</span>
+              </button>
+            </mat-menu>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Tipo">
+          <mat-header-cell *matHeaderCellDef>Tipo</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.sTipo}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Marca">
+          <mat-header-cell *matHeaderCellDef>Marca</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.sMarca}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Modelo">
+          <mat-header-cell *matHeaderCellDef>Modelo</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.sModelo}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="dtPreLiberacion">
+          <mat-header-cell mat-sort-header *matHeaderCellDef>Fecha</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.dtPreLiberacion | date: 'dd/MM/yy'}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="iDias">
+          <mat-header-cell mat-sort-header *matHeaderCellDef>Dias</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.iDias}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef></mat-header-cell>
+          <mat-cell *matCellDef="let row">
+            <button [routerLink]="'/administracion/liberacion'" [queryParams]="{ uiAsiggment: row.uiAsignacion }" mat-mini-fab color="warn">
+              <mat-icon>cloud_upload</mat-icon>
+            </button>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="footer">
+          <mat-footer-cell *matFooterCellDef colspan="2">
+            <button [cdkCopyToClipboard]="copytable()" matTooltip="Copiar tabla" mat-mini-fab color="primary" aria-label="Example icon button with a menu icon">
+              <mat-icon>file_copy</mat-icon>
+            </button>
+            <button style="margin-left: 15px;" (click)="Dowload()" mat-raised-button color="accent">
+              Descargar
+            </button>
+          </mat-footer-cell>
+        </ng-container>
+  
+        <mat-header-row *matHeaderRowDef="displayedColumns; sticky: !isLoadingResults;"></mat-header-row>
+        <mat-footer-row *matFooterRowDef="['footer']; sticky: !isLoadingResults;"></mat-footer-row>
+        <mat-row [ngClass]="{ 'normal': row.iDias > -1 && row.iDias < 8, 'advertencia': row.iDias > 7, 'error': row.iDias > 14 }" *matRowDef="let row; index as x; columns: displayedColumns;"></mat-row>
+      </mat-table>
+    </div>
+  
+  </div>
+  <mat-paginator [length]="dataSource.data.length" [pageSizeOptions]="[10, 20, 40]" showFirstLastButtons></mat-paginator>
+</div>
+<br>

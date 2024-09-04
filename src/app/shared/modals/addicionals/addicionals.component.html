@@ -1,0 +1,25 @@
+<h1 mat-dialog-title>Adicionales</h1>
+<mat-dialog-content>
+    <table>
+        <thead>
+            <tr>
+                <th>Serie</th>
+                <th>Tipo</th>
+                <th>Marca</th>
+                <th>Modelo</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let a of addcionales">
+                <td>{{a.sSerie}}</td>
+                <td>{{a.sType}}</td>
+                <td>{{a.sBranch}}</td>
+                <td>{{a.sModel}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+</mat-dialog-content>
+<mat-dialog-actions class="end-xs">
+    <button mat-button (click)="dialogRef.close()">Cerrar</button>
+</mat-dialog-actions>

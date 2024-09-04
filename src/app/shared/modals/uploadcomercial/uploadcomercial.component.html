@@ -1,0 +1,38 @@
+<h1 mat-dialog-title>Carga de {{data.sType}} para: {{data.sDocument}}</h1>
+<div mat-dialog-content style="height: 220px;">
+  <div *ngIf="data.bPre" class="row">
+    <div class="col-xs">
+      <br>
+      <span>
+        Para descargar la {{data.sType}} previamente cargada <a (click)="downLoadResponsivi()" style="cursor: pointer;"><u>dar click aquí</u></a>
+      </span>
+      <br>
+      <br>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs">
+      <label for="tracing-upload" class="custom-detail-upload">
+        Elegir {{data.sType}}
+      </label>
+      <input id="tracing-upload" (change)="upLoadFiles()" type="file" accept=".pdf" />
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs">
+      <br>
+      <mat-chip-list
+      class="example-chip">
+        <mat-chip
+        class="example-box" 
+        *ngFor="let file of namefiles; index as x">
+          {{file}}
+        </mat-chip>
+      </mat-chip-list>
+    </div>
+  </div>
+</div>
+<div mat-dialog-actions class="end-xs">
+  <button mat-raised-button (click)="onNoClick()" >Cerrar</button>
+  <button mat-raised-button color="accent" (click)="UpLoadDocument()" cdkFocusInitial>Cargar</button>
+</div>

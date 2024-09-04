@@ -1,0 +1,76 @@
+.example-container {
+    max-height: 52vh;
+  }
+
+mat-table {
+    width: 1000px;
+}
+
+.highlight {
+    background: lightblue;
+}
+
+@media(min-width: 1024px) {
+    mat-table {
+        width: 100%;
+    }
+
+    .highlight {
+        background: none;
+    }
+}
+
+mat-form-field {
+    max-width: 400px;
+    width: 100%;
+}
+
+mat-header-cell, mat-cell {
+    justify-content: center;
+    font-size: 12px;
+  }
+
+mat-cell:nth-child(1),
+mat-header-cell:nth-child(1) {
+    flex: 0 0 20%;
+}
+
+mat-cell:nth-child(2),
+mat-header-cell:nth-child(2) {
+    flex: 0 0 6%;
+}
+
+mat-cell:nth-child(4),
+mat-header-cell:nth-child(4) {
+    flex: 0 0 10%;
+}
+
+mat-cell:nth-child(5),
+mat-header-cell:nth-child(5) {
+    flex: 0 0 10%;
+}
+
+mat-cell:nth-child(6),
+mat-header-cell:nth-child(6) {
+    flex: 0 0 6%;
+}
+
+mat-cell:nth-child(8),
+mat-header-cell:nth-child(8) {
+    flex: 0 0 6%;
+}
+
+mat-cell:nth-child(9),
+mat-header-cell:nth-child(9) {
+    flex: 0 0 6%;
+}
+
+mat-cell:nth-child(10),
+mat-header-cell:nth-child(10) {
+    flex: 0 0 4%;
+}
+
+mat-cell:nth-child(11),
+mat-header-cell:nth-child(11) {
+    flex: 0 0 8%;
+}

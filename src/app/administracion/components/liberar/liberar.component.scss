@@ -1,0 +1,53 @@
+.custom-detail-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    color: white;
+    background-color: #2574bb;
+  }
+  
+  .custom-detail-upload:hover {
+    color: #55BCFF;
+    background-color: white;
+    border: 1px solid #2574bb;
+  }
+
+  .custom-detail-return {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 7px 12px;
+    cursor: pointer;
+    color: white;
+    background-color: rgb(159, 15, 15);
+  }
+  
+  .custom-detail-return:hover {
+    color: #55BCFF;
+    background-color: white;
+    border: 1px solid rgb(159, 15, 15);;
+  }
+
+  input[type="file"] {
+    display: none;
+  }
+
+.movil {
+    position: fixed;
+    right: 30px;
+    bottom: 30px;
+}
+
+.desktop {
+    display: none;
+}
+
+@media(min-width: 1024px) {
+    .movil {
+        display: none;
+    }
+
+    .desktop {
+        display: inline;
+    }
+}

@@ -1,0 +1,104 @@
+<mat-card class="example-card">
+    <mat-card-header>
+        <mat-card-title>
+            {{data[0]}}
+        </mat-card-title>
+        <mat-card-subtitle>
+            {{data[1]}}
+        </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+        <label (click)="logOut()" style="cursor: pointer; font-style: italic; text-decoration: underline;">Cerrar Sesión</label>
+    </mat-card-content>
+</mat-card>
+<mat-nav-list>
+    <mat-accordion>
+        <mat-expansion-panel *ngIf="data[3] === '1'"  hideToggle>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                Administración
+                </mat-panel-title>
+                <mat-panel-description class="end-xs">
+                <mat-icon color="accent">settings</mat-icon>
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <a mat-list-item routerLink="/administracion/empleados" (click)="clicktoclose()">Empleados</a>
+            <a mat-list-item routerLink="/administracion/movimientos" (click)="clicktoclose()">Movimientos</a>
+        </mat-expansion-panel>
+        <mat-expansion-panel *ngIf="data[3] === '1'"  hideToggle>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                Comercial
+                </mat-panel-title>
+                <mat-panel-description class="end-xs">
+                <mat-icon color="accent">folder</mat-icon>
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <a mat-list-item routerLink="/administracion/orden" (click)="clicktoclose()">Ordenes de Compra</a>
+            <a mat-list-item routerLink="/administracion/empleados" (click)="clicktoclose()">Contratos</a>
+            <a mat-list-item routerLink="/administracion/facturas" (click)="clicktoclose()">Facturas</a>
+            <a mat-list-item routerLink="/administracion/empleados" (click)="clicktoclose()">Remisiones</a>
+        </mat-expansion-panel>
+        <mat-expansion-panel *ngIf="data[3] === '1'" hideToggle>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                Asignaciones
+                </mat-panel-title>
+                <mat-panel-description class="end-xs">
+                <mat-icon color="accent">people</mat-icon>
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <a *ngIf="data[3] === '1'" mat-list-item routerLink="/asignacion/actualizar" (click)="clicktoclose()">Actualizar</a>
+            <a *ngIf="data[3] === '1'" mat-list-item routerLink="/asignacion/asignar" (click)="clicktoclose()">Asignar</a>
+            <a *ngIf="data[3] === '1'" mat-list-item routerLink="/asignacion/traspaso" (click)="clicktoclose()">Traspaso</a>
+        </mat-expansion-panel>
+        <mat-expansion-panel hideToggle>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                Consulta
+                </mat-panel-title>
+                <mat-panel-description class="end-xs">
+                <mat-icon color="accent">search</mat-icon>
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <a mat-list-item routerLink="/consulta/general" (click)="clicktoclose()">General</a>
+            <a mat-list-item routerLink="/consulta/expediente" (click)="clicktoclose()">Expediente</a>
+            <a mat-list-item routerLink="/asignacion/asignaciones" (click)="clicktoclose()">Asignaciones</a>
+            <a mat-list-item routerLink="/consulta/preliberado" (click)="clicktoclose()">Pre-Liberados</a>
+            <a mat-list-item routerLink="/consulta/reporte" (click)="clicktoclose()">Reporte</a>
+        </mat-expansion-panel>
+        <mat-expansion-panel hideToggle>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                Dispositivos
+                </mat-panel-title>
+                <mat-panel-description class="end-xs">
+                <mat-icon color="accent">devices</mat-icon>
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <a mat-list-item routerLink="/dispositivos/bodega" (click)="clicktoclose()">Bodega</a>
+            <a mat-list-item routerLink="/dispositivos/divices" (click)="clicktoclose()">Dispositivos</a>
+            <a mat-list-item routerLink="/dispositivos/obsoletos" (click)="clicktoclose()">Equipos Obsoletos</a>
+            <a mat-list-item routerLink="/dispositivos/liberacion" (click)="clicktoclose()">Liberación de Equipos</a>
+            <a mat-list-item routerLink="/dispositivos/ventaEquipo" (click)="clicktoclose()">Venta de Equipos</a>
+        </mat-expansion-panel>
+        <!--
+          -----------------------------------  Codígo de Inventario en Navegación   -------------------------------------
+        -->
+        <mat-expansion-panel hideToggle>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                Inventario
+                </mat-panel-title>
+                <mat-panel-description class="end-xs">
+                <mat-icon color="accent">dvr</mat-icon>
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <a *ngIf="data[3] === '1'" mat-list-item routerLink="/inventario/solicitudes" (click)="clicktoclose()">Solicitudes</a>
+            <a *ngIf="data[3] === '1'" mat-list-item routerLink="/inventario/reportes" (click)="clicktoclose()">Log Errores</a>
+            <a mat-list-item routerLink="/inventario/inventario" (click)="clicktoclose()">Reporte Inv</a>
+            <a *ngIf="data[3] === '1'" mat-list-item routerLink="/inventario/usuarios" (click)="clicktoclose()">Usuarios</a>
+        </mat-expansion-panel>
+          <!------------------------------------------------------------------------------------------------------------------>
+    </mat-accordion>
+</mat-nav-list>

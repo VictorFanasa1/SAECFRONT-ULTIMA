@@ -1,0 +1,95 @@
+<h1>Crear Usuario</h1>
+<form [formGroup]="user" (ngSubmit)="submit()">
+    <div class="row">
+        <div class="col-xs">
+            <mat-form-field appearance="standard">
+                <mat-label>Usuario</mat-label>
+                <input required matInput autocomplete="off" formControlName="sUser" placeholder="Usuario">
+            </mat-form-field>
+        </div>
+        <div class="col-xs">
+            <mat-form-field appearance="standard">
+                <mat-label>Contraseña</mat-label>
+                <input required matInput autocomplete="off" formControlName="sPassword" placeholder="Contraseña">
+            </mat-form-field>
+        </div>
+        <div class="col-xs">
+            <mat-form-field appearance="standard">
+                <mat-label>Ubicación</mat-label>
+                <input type="text"
+                       matInput
+                       #inputubi
+                       formControlName="uiClaveUbicacion"
+                       [matAutocomplete]="auto">
+                <mat-hint align="end">{{user.controls.uiClaveUbicacion.value.uiClaveEmpresa}}</mat-hint>
+                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayDivision">
+                    <mat-option *ngFor="let ubi of filterubicaciones | async" [value]="ubi">
+                        {{ubi.sNombre}}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs">
+            <button [disabled]="isBusy || user.invalid" color="accent" mat-raised-button>
+                <span *ngIf="!isBusy">CREAR</span>
+                <span *ngIf="isBusy">CREANDO...</span>
+            </button>
+        </div>
+    </div>
+</form>
+<br>
+<h2>Usuarios</h2>
+<br>
+<div class="row">
+  <mat-form-field>
+      <input matInput #inputProveedor  (keyup)="searchProveedor(inputProveedor.value)" placeholder="Filter">
+    </mat-form-field>
+</div>
+<br>
+<div class="mat-elevation-z8">
+    <div class="example-container">
+      <div class="loading-shade"
+           *ngIf="isLoadingResults">
+        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+      </div>
+    
+      <div class="containertable">
+        <mat-table [dataSource]="dataSource">
+  
+          <ng-container matColumnDef="Usuario">
+            <mat-header-cell *matHeaderCellDef>Usuario</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.sUser}}</mat-cell>
+          </ng-container>
+  
+          <ng-container matColumnDef="Contraseña">
+            <mat-header-cell *matHeaderCellDef>Contraseña</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.sPassword}}</mat-cell>
+          </ng-container>
+  
+          <ng-container matColumnDef="Ubicacion">
+            <mat-header-cell *matHeaderCellDef>Ubicación</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.uiClaveUbicacion}}</mat-cell>
+          </ng-container>
+  
+          <ng-container matColumnDef="Activo">
+            <mat-header-cell *matHeaderCellDef>Activo</mat-header-cell>
+            <mat-cell *matCellDef="let row"><mat-slide-toggle disabled [checked]="row.bActive"></mat-slide-toggle></mat-cell>
+        </ng-container>
+  
+          <ng-container matColumnDef="Creado">
+            <mat-header-cell *matHeaderCellDef>Creado</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.dtCreated  | date: 'dd/MM/yy'}}</mat-cell>
+          </ng-container>
+    
+          <mat-header-row *matHeaderRowDef="displayedColumns; sticky: !isLoadingResults;"></mat-header-row>
+          <mat-row *matRowDef="let row; index as x; columns: displayedColumns;">
+          </mat-row>
+        </mat-table>
+    </div>
+    
+    </div>
+    <mat-paginator [length]="dataSource.data.length" [pageSizeOptions]="[5, 10, 20, 40]" showFirstLastButtons></mat-paginator>
+</div>
+<br>

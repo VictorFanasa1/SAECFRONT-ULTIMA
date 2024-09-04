@@ -1,0 +1,54 @@
+<h1 mat-dialog-title>Liberando  serie: {{data.serie}}</h1>
+<form [formGroup]="frmLiberacion" (ngSubmit)="SendLiberacion()" mat-dialog-content>
+    <div class="row">
+        <div class="col-xs">
+            <mat-form-field appearance="outline">
+                <mat-label>Motivo</mat-label>
+                <mat-select formControlName="uiMotivo">
+                    <mat-option *ngFor="let t of types" [value]="t.uiRegistro">
+                        {{t.sDescripcion}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="col-xs">
+            <mat-form-field appearance="outline">
+                <mat-label>Entrega</mat-label>
+                <mat-select formControlName="uiEntrega">
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="col-xs">
+            <mat-form-field appearance="outline">
+                <mat-label>Estatus</mat-label>
+                <mat-select formControlName="uiStatus">
+                    <mat-option *ngFor="let s of status" [value]="s.uiStatus">
+                        {{s.sDescripcion}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="col-xs">
+            <mat-form-field appearance="outline">
+                <mat-label>Sub Estatus</mat-label>
+                <mat-select formControlName="uiSubStatus">
+                    <mat-option *ngFor="let s of substatus" [value]="s.uiSubStatus">
+                        {{s.sDescripcion}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs">
+            <mat-form-field appearance="outline">
+                <mat-label>Comentarios</mat-label>
+                <textarea formControlName="sComentario" matInput></textarea>
+            </mat-form-field>
+        </div>
+    </div>
+</form>
+<mat-dialog-actions class="end-xs">
+  <button mat-button (click)="close()">Cerrar</button>
+  <button mat-raised-button (click)="SendLiberacion()" color="accent" cdkFocusInitial>Ok</button>
+</mat-dialog-actions>

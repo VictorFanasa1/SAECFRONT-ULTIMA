@@ -1,0 +1,100 @@
+<h1 style="margin-top: 10px;"><b><i>Dispositivos obsoletos</i></b></h1>
+
+<div class="row">
+        <div class="loading-shade" *ngIf="isLoadingResults">
+                <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+        </div>
+        <div class="col-md-4">
+                <!--<input class="form-control" type="file" (change)="guardarArchivo($event)">-->
+                <input id="fileDocs" type="file"  (change)="upLoadFile('fileDocs')" 
+                accept=".csv" required>
+        </div>
+        <div class="col-md-2 d-flex justify-content-right">
+                <button type="button" (click)="subiArchivo()" mat-raised-button color="accent" style="margin-left: 10px;">
+                        <span>SUBIR ARCHIVO</span>
+                </button>
+        </div>
+        <div class="col-md-3"></div>
+        <div class="col-md-3 d-flex justify-content-center">
+                <button type="button" (click)="descargaExcelPrueba()" mat-raised-button color="success">
+                    <span>¿CÓMO SUBIR SU ARCHIVO? MUESTRA</span>
+                </button>
+            </div>
+        <div *ngIf="validaTabla === true" style="margin-top: 30px">
+                <span class="sEncontradas">NO. SE SERIE ENCONTRADOS</span>
+        </div>
+        <div class="example-container" *ngIf="validaTabla === true">
+                <div class="loading-shade" *ngIf="isLoadingResults">
+                        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+                </div>
+                <div class="containertable">
+                        <mat-table [dataSource]="listaSeriesSi">
+                                <ng-container matColumnDef="serie">
+                                        <mat-header-cell *matHeaderCellDef>No. de Serie</mat-header-cell>
+                                        <mat-cell *matCellDef="let row">{{row.serie}}</mat-cell>
+                                </ng-container>
+            
+                                <ng-container matColumnDef="accion">
+                                        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                                        <mat-cell *matCellDef="let row">
+                                                <!--<button color="accent" aria-label="Eliminr registro" title="Eliminar" (click)="DeleteDocRequisitos(row.contador)">
+                                                        <mat-icon>Eliminar registro</mat-icon>
+                                                </button>-->
+                                                <button mat-mini-fab color="warn" aria-label="Eliminar registro"  title="Eliminar" (click)="DeleteDocRequisitosSi(row.contador)">
+                                                        <mat-icon>close_small</mat-icon>
+                                                </button>
+                                        </mat-cell>
+                                </ng-container>
+                        <!-- <mat-header-row *matHeaderRowDef="displayedColumns; sticky: !isLoadingResults;"></mat-header-row>
+                        <mat-row *matRowDef="let row; index as x; columns: displayedColumns;"> -->
+                                <mat-header-row *matHeaderRowDef="displayedColumns;"></mat-header-row>
+                                <mat-row *matRowDef="let row; columns: displayedColumns;">
+                                </mat-row>
+                        </mat-table>
+                </div>
+              
+        </div>
+        <div *ngIf="validaTabla === true" style="margin-top: 30px;">
+            <span class="sNoEncontradas">NO. SE SERIE NO ENCONTRADOS</span>
+        </div>
+        <div class="example-container" *ngIf="validaTabla === true">
+                <div class="loading-shade" *ngIf="isLoadingResults">
+                        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+                </div>
+                <div class="containertable">
+                        <mat-table [dataSource]="listaSeriesNo">
+                                <ng-container matColumnDef="serie">
+                                        <mat-header-cell *matHeaderCellDef>No. de Serie</mat-header-cell>
+                                        <mat-cell *matCellDef="let row">{{row.serie}}</mat-cell>
+                                </ng-container>
+            
+                                <ng-container matColumnDef="accion">
+                                        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                                        <mat-cell *matCellDef="let row">
+                                                <!--<button color="accent" aria-label="Eliminr registro" title="Eliminar" (click)="DeleteDocRequisitos(row.contador)">
+                                                        <mat-icon>Eliminar registro</mat-icon>
+                                                </button>-->
+                                                
+                                        </mat-cell>
+                                </ng-container>
+                        <!-- <mat-header-row *matHeaderRowDef="displayedColumns; sticky: !isLoadingResults;"></mat-header-row>
+                        <mat-row *matRowDef="let row; index as x; columns: displayedColumns;"> -->
+                                <mat-header-row *matHeaderRowDef="displayedColumns;"></mat-header-row>
+                                <mat-row *matRowDef="let row; columns: displayedColumns;">
+                                </mat-row>
+                        </mat-table>
+                </div>
+              
+        </div>
+        <div class="col-md-4 d-flex justify-content-right" style="margin-top: 10px" *ngIf="validaTabla === true" >
+                <span style="font-size: 15  px;"><b>Subir PDF</b></span>
+                <input style="margin-left: 10px;" id="fileDocsPDF" type="file"  (change)="uploadPDF('fileDocsPDF')" 
+                accept="application/pdf" required>
+            </div>
+        <div class="col-md-8" *ngIf="validaTabla === true">
+              <mat-paginator [length]="listaSeries.length" [pageSizeOptions]="[5, 10, 20, 40]" showFirstLastButtons></mat-paginator>
+              <button type="button" class="movil" (click)="enviarObsoletos()" mat-raised-button color="accent" style="position: absolute; margin-top: -50px;">
+                GUARDAR
+              </button>
+        </div>
+</div>

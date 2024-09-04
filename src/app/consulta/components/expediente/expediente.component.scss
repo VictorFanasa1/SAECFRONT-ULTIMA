@@ -1,0 +1,15 @@
+.oculto {
+    display: none;
+}
+
+.visible {
+    display: auto;
+}
+
+.borderaddi {
+    border-left: solid 7px #1a9ad6;
+}
+
+input::-webkit-calendar-picker-indicator {
+    display:none !important;
+  }

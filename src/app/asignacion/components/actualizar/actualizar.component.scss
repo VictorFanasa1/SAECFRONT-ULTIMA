@@ -1,0 +1,74 @@
+.marco {
+    padding: 20px;
+}
+
+.mat-fab {
+  font-size: 22px !important;
+}
+
+input::-webkit-calendar-picker-indicator {
+  display:none !important;
+}
+
+.mat-card{
+    display:flex;
+    flex-direction: column;
+  }
+  
+  .mat-card-header {
+    flex-shrink: 0;
+  }
+  
+  .mat-card-content{
+    flex-grow: 1;
+  }
+
+  .btnaddi {
+    margin-right: 20px;
+  }
+
+  .btnaddi {
+    z-index: 20;
+    position: fixed;
+    right: 10px;
+    bottom: 100px;
+}
+
+.btnsend {
+  z-index: 21;
+  position: fixed;
+  right: 30px;
+  bottom: 30px;
+}
+
+.btnexternal {
+  z-index: 22;
+  position: fixed;
+  right: 30px;
+  bottom: 170px;
+}
+
+.btnsendcomple {
+  display: none;
+}
+
+  @media(min-width: 1024px) {
+
+    .btnaddi {
+        position: relative;
+        right: unset;
+        bottom: unset;
+    }
+
+    .btnsend {
+      display: none;
+    }
+
+    .btnexternal {
+      display: none;
+    }
+
+    .btnsendcomple {
+      display: inline;
+    }
+}

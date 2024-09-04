@@ -1,0 +1,191 @@
+<h1>Consulta General</h1>
+<div class="row">
+    <div class="col-xs">
+        <form [formGroup]="frmSearch" (submit)="SearchEmployed()">
+            <mat-form-field style="max-width: 400px;" appearance="outline">
+                <mat-label>Empleado</mat-label>
+                <input autocomplete="off" list="empleados" formControlName="sData" matInput placeholder="Empleado/Serie">
+                <datalist id="empleados">
+                    <option *ngFor="let employed of employeds" [value]="employed.sNombreUsuario">{{employed.uiNumeroEmpleado}}</option>
+                </datalist>
+                <button type="submit" matSuffix [disabled]="frmSearch.invalid || inProccess" mat-icon-button color="accent" style="font-size: 22px;">
+                  <i *ngIf="!inProccess" class="fa-solid fa-check"></i>
+                  <i *ngIf="inProccess" class="fa-solid fa-rotate fa-spin"></i>
+              </button>
+            </mat-form-field>
+        </form>
+    </div>
+</div>
+
+<div class="mat-elevation-z8" *ngIf="employed.uiNumeroEmpleado !== undefined">
+    <div class="row">
+        <div class="col-xs">
+          <h2>
+            Datos del Usuario
+          </h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs">
+          <mat-form-field appearance="standard">
+            <mat-label>Número</mat-label>
+            <input matInput [value]="employed.uiNumeroEmpleado" readonly placeholder="Placeholder">
+          </mat-form-field>
+        </div>
+        <div class="col-xs">
+          <mat-form-field appearance="standard">
+            <mat-label>Nombre</mat-label>
+            <input matInput [value]="employed.sNombreUsuario" readonly placeholder="Placeholder">
+          </mat-form-field>
+        </div>
+        <div class="col-xs">
+          <mat-form-field appearance="standard">
+            <mat-label>Correo</mat-label>
+            <input matInput [value]="employed.sCorreoUsuario" readonly placeholder="Placeholder">
+          </mat-form-field>
+        </div>
+    </div>
+        <div class="row">
+            <div class="col-xs">
+            <mat-form-field appearance="standard">
+                <mat-label>Puesto</mat-label>
+                <input matInput [value]="employed.sPuesto" readonly placeholder="Placeholder">
+            </mat-form-field>
+            </div>
+            <div class="col-xs">
+            <mat-form-field appearance="standard">
+                <mat-label>Ubicación</mat-label>
+                <input matInput [value]="employed.uiUbicacion" readonly placeholder="Placeholder">
+            </mat-form-field>
+            </div>
+            <div class="col-xs">
+            <mat-form-field appearance="standard">
+                <mat-label>UEN</mat-label>
+                <input matInput [value]="employed.sUEN" readonly placeholder="Placeholder">
+            </mat-form-field>
+        </div>
+    </div>
+</div>
+
+<div class="mat-elevation-z8" *ngIf="assiggments.length > 0">
+  <h2>Asignaciones: {{series.length}}</h2>
+  <form [formGroup]="frmSerie">
+    <mat-form-field style="max-width: 400px;" appearance="outline">
+      <mat-label>Series</mat-label>
+      <mat-select formControlName="sSerie">
+        <mat-option *ngFor="let s of series" [value]="s">{{s}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+
+  <div class="row">
+    <div class="col-xs">
+      <mat-form-field appearance="standard">
+        <mat-label>Serie</mat-label>
+        <input readonly [value]="assiggment.sSerie" matInput>
+      </mat-form-field>
+    </div>
+    <div class="col-xs">
+      <mat-form-field appearance="standard">
+        <mat-label>Placa</mat-label>
+        <input readonly [value]="assiggment.sPlaca" matInput>
+      </mat-form-field>
+    </div>
+    <div class="col-xs">
+      <mat-form-field appearance="standard">
+        <mat-label>Tipo</mat-label>
+        <input readonly [value]="assiggment.sType" matInput>
+      </mat-form-field>
+    </div>
+    <div class="col-xs">
+      <mat-form-field appearance="standard">
+        <mat-label>Marca</mat-label>
+        <input readonly [value]="assiggment.sBranch" matInput>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs">
+      <mat-form-field appearance="standard">
+        <mat-label>Modelo</mat-label>
+        <input readonly [value]="assiggment.sModel" matInput>
+      </mat-form-field>
+    </div>
+    <div class="col-xs">
+      <mat-form-field appearance="standard">
+        <mat-label>Estatus</mat-label>
+        <input readonly [value]="assiggment.sStatus" matInput>
+      </mat-form-field>
+    </div>
+    <div class="col-xs">
+      <mat-form-field appearance="standard">
+        <mat-label>UEN</mat-label>
+        <input readonly [value]="assiggment.sUEN" matInput>
+      </mat-form-field>
+    </div>
+    <div class="col-xs">
+      <mat-form-field appearance="standard">
+        <mat-label>Responsable</mat-label>
+        <input readonly [value]="assiggment.sUser" matInput>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs">
+      <mat-form-field appearance="standard">
+        <mat-label>Ubicación</mat-label>
+        <input readonly [value]="assiggment.sPlace" matInput>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs botton-xs">
+      <button mat-mini-fab color="accent" matTooltip="Responsiva" (click)="CargarResponsiva()" aria-label="Example icon button with a plus one icon">
+        <i class="fa-solid fa-file-arrow-down"></i>
+      </button>
+      <button mat-mini-fab color="accent" matTooltip="Accesorios" (click)="OpenAccesories()" aria-label="Example icon button with a plus one icon">
+        <i class="fa-solid fa-computer-mouse"></i>
+      </button>
+      <button mat-mini-fab color="accent" matTooltip="Adicionales" (click)="OpenAddicionals()" aria-label="Example icon button with a plus one icon">
+        <i class="fa-solid fa-desktop"></i>
+      </button>
+      <button mat-mini-fab color="accent" matTooltip="Actualizar" aria-label="Example icon button with a plus one icon">
+        <i class="fa-solid fa-pencil"></i>
+      </button>
+      <button mat-mini-fab color="accent" matTooltip="Liberar" [routerLink]="['/administracion','liberacion']" [queryParams]="{ uiAsiggment: assiggment.uiAsiggment }">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <button mat-mini-fab color="accent" matTooltip="Expediente"
+      [routerLink]="['/consulta', 'expediente']" [queryParams]="{ sSerie: assiggment.sSerie }">
+        <i class="fa-solid fa-book"></i>
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="assiggment.objExternal.sName !== null">
+    <h3>Externo</h3>
+    <div class="row">
+      <div class="col-xs">
+        <mat-form-field appearance="standard">
+          <mat-label>Nombre</mat-label>
+          <input readonly [value]="assiggment.objExternal.sName" matInput>
+        </mat-form-field>
+      </div>
+      <div class="col-xs">
+        <mat-form-field appearance="standard">
+          <mat-label>Correo</mat-label>
+          <input readonly [value]="assiggment.objExternal.sEmail" matInput>
+        </mat-form-field>
+      </div>
+      <div class="col-xs">
+        <mat-form-field appearance="standard">
+          <mat-label>Nombre</mat-label>
+          <input readonly [value]="assiggment.objExternal.sCompany" matInput>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-documents [ngClass]="{ 'oculto': employed.uiNumeroEmpleado === undefined, 'visible': employed.uiNumeroEmpleado !== undefined }"></app-documents>

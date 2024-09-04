@@ -1,0 +1,68 @@
+<h1><b><i>Asignaciones Activas</i></b></h1>
+
+<div class="row">
+    <mat-form-field>
+        <input matInput #inputProveedor  (keyup)="searchProveedor(inputProveedor.value)" placeholder="Filter">
+      </mat-form-field>
+  </div>
+  <br>
+  <div class="mat-elevation-z8">
+    <div class="example-container">
+      <div class="loading-shade"
+           *ngIf="isLoadingResults">
+        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+      </div>
+    
+      <div class="containertable">
+        <mat-table style="white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;" [dataSource]="dataSource">
+  
+          <ng-container matColumnDef="Serie" sticky>
+            <mat-header-cell  *matHeaderCellDef>Serie</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.sSerie}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="Tipo">
+            <mat-header-cell *matHeaderCellDef>Tipo</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.sType}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="Marca">
+            <mat-header-cell *matHeaderCellDef>Marca</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.sBranch}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="Modelo">
+            <mat-header-cell *matHeaderCellDef>Modelo</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.sModel}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-cell *matCellDef="let row">
+                <button mat-mini-fab color="accent" (click)="selectSerie(row.sSerie)" aria-label="Example icon button with a plus one icon">
+                    <mat-icon>check</mat-icon>
+                </button>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="footer">
+            <mat-footer-cell *matFooterCellDef colspan="2">
+              <button [cdkCopyToClipboard]="copytable()" matTooltip="Copiar tabla" mat-mini-fab color="primary" aria-label="Example icon button with a menu icon">
+                <mat-icon>file_copy</mat-icon>
+              </button>
+            </mat-footer-cell>
+          </ng-container>
+    
+          <mat-header-row *matHeaderRowDef="displayedColumns; sticky: !isLoadingResults;"></mat-header-row>
+          <mat-footer-row *matFooterRowDef="['footer']; sticky: !isLoadingResults;"></mat-footer-row>
+          <mat-row *matRowDef="let row; index as x; columns: displayedColumns;"></mat-row>
+        </mat-table>
+      </div>
+    
+    </div>
+    <mat-paginator [length]="dataSource.data.length" [pageSizeOptions]="[5]" showFirstLastButtons></mat-paginator>
+  </div>
+  
+  <br>

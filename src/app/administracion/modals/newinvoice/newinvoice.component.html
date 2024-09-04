@@ -1,0 +1,171 @@
+<h1 mat-dialog-title>Agregar Factura</h1>
+<form mat-dialog-content [formGroup]="frmInvoice">
+    <div class="row">
+        <div class="col-xs">
+            <mat-form-field appearance="outline">
+                <mat-label>Orden de Compra</mat-label>
+                <input (change)="SearchData()" formControlName="sComercial" autocomplete="off" list="ocs" matInput>
+            </mat-form-field>
+        </div>
+        <div class="col-xs">
+            <mat-form-field *ngIf="datacomercial.dtUpload !== undefined" appearance="standard">
+                <mat-label>Fecha Alta</mat-label>
+                <input style="text-align: end;" readonly [value]="datacomercial.dtUpload | date: 'dd/MM/yyyy'" matInput>
+            </mat-form-field>
+        </div>
+        <div class="col-xs">
+            <mat-form-field *ngIf="datacomercial.dtUpload !== undefined" appearance="standard">
+                <mat-label>Fecha Orden</mat-label>
+                <input style="text-align: end;" readonly [value]="datacomercial.dtOC | date: 'dd/MM/yyyy'" matInput>
+            </mat-form-field>
+        </div>
+        <div class="col-xs">
+            <mat-form-field *ngIf="datacomercial.dtUpload !== undefined" appearance="standard">
+                <mat-label>Tipo</mat-label>
+                <input readonly [value]="datacomercial.sType" matInput>
+            </mat-form-field>
+        </div>
+        <div class="col-xs">
+            <mat-form-field *ngIf="datacomercial.dtUpload !== undefined" appearance="standard">
+                <mat-label>UEN</mat-label>
+                <input readonly [value]="datacomercial.sUEN" matInput>
+            </mat-form-field>
+        </div>
+    </div>
+    <section *ngIf="datacomercial.sProveedor !== undefined">
+        <div class="row">
+            <div class="col-xs">
+                <mat-form-field appearance="standard">
+                    <mat-label>Proveedor</mat-label>
+                    <input readonly [value]="datacomercial.sProveedor" matInput>
+                </mat-form-field>
+            </div>
+            <div class="col-xs">
+                <mat-form-field appearance="standard">
+                    <mat-label>Contrato</mat-label>
+                    <input readonly [value]="datacomercial.sContrato" matInput>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row" *ngIf="datacomercial.sContratoA !== null">
+            <div class="col-xs">
+                <mat-form-field appearance="standard">
+                    <mat-label>Arrendador</mat-label>
+                    <input readonly [value]="datacomercial.sArrendador" matInput>
+                </mat-form-field>
+            </div>
+            <div class="col-xs">
+                <mat-form-field appearance="standard">
+                    <mat-label>Contrato</mat-label>
+                    <input readonly [value]="datacomercial.sContratoA" matInput>
+                </mat-form-field>
+            </div>
+            <div class="col-xs">
+                <mat-form-field appearance="standard">
+                    <mat-label>Tipo</mat-label>
+                    <input readonly [value]="datacomercial.sTypeA" matInput>
+                </mat-form-field>
+            </div>
+            <div class="col-xs">
+                <mat-form-field appearance="standard">
+                    <mat-label>Inicio</mat-label>
+                    <input readonly style="text-align: end;" [value]="datacomercial.dtStart | date: 'dd/MM/yyyy'" matInput>
+                </mat-form-field>
+            </div>
+            <div class="col-xs">
+                <mat-form-field appearance="standard">
+                    <mat-label>Fin</mat-label>
+                    <input readonly style="text-align: end;" [value]="datacomercial.dtEnd | date: 'dd/MM/yyyy'" matInput>
+                </mat-form-field>
+            </div>
+        </div>
+    </section>
+    <div class="row">
+        <div class="col-xs">
+            <mat-form-field appearance="outline">
+                <mat-label>Factura</mat-label>
+                <input matInput formControlName="sFactura" autocomplete="off" placeholder="Factura">
+            </mat-form-field>
+        </div>
+        <div class="col-xs">
+            <mat-form-field appearance="outline">
+                <mat-label>Fecha</mat-label>
+                <input formControlName="dtFecha" style="text-align: end;" matInput readonly [matDatepicker]="picker">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker startView="year"></mat-datepicker>
+            </mat-form-field>
+        </div>
+        <div class="col-xs">
+            <label for="tracing-upload" class="custom-detail-upload">
+                FACTURA
+            </label>
+            <input id="tracing-upload" (change)="upLoadFiles()" type="file" accept=".pdf" />
+            <br>
+            <mat-chip-list
+            class="example-chip">
+                <mat-chip
+                class="example-box" 
+                *ngFor="let file of namefiles; index as x">
+                    {{file}}
+                </mat-chip>
+            </mat-chip-list>
+        </div>
+    </div>
+    <h2>Detalle</h2>
+    <div formArrayName="details" style="height: 22vh; overflow-y:auto; overflow-x:hidden">
+        <ng-container *ngFor="let phoneform of details.controls; let i = index">
+            <div class="row" [formGroupName]="i">
+                <div class="col-xs">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Tipo</mat-label>
+                        <input matInput formControlName="uiRegistro" autocomplete="off" placeholder="Factura">
+                    </mat-form-field>
+                </div>
+                <div class="col-xs">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Modelo</mat-label>
+                        <input matInput formControlName="uiModelo" autocomplete="off" placeholder="Factura">
+                    </mat-form-field>
+                </div>
+                <div class="col-xs">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Importe</mat-label>
+                        <input matInput style="text-align: end;" onfocus="this.select()" (change)="Calculate(i)" formControlName="mCostoUnitario" autocomplete="off" placeholder="Factura">
+                    </mat-form-field>
+                </div>
+                <div class="col-xs-1">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Piezas</mat-label>
+                        <input matInput style="text-align: end;" onfocus="this.select()" (change)="Calculate(i)" formControlName="iCantidad" autocomplete="off" placeholder="Factura">
+                    </mat-form-field>
+                </div>
+                <div class="col-xs">
+                    <mat-form-field appearance="standard">
+                        <mat-label>Total</mat-label>
+                        <input matInput style="text-align: end;" [value]="phoneform.value.mCostoTotal | currency" readonly autocomplete="off" placeholder="Total">
+                    </mat-form-field>
+                </div>
+                <div class="col-xs-1">
+                    <button matTooltip="Eliminar" type="button" (click)="details.controls.splice(i,1)" mat-mini-fab color="accent">
+                        <i class="fa-solid fa-trash-can fa-1x"></i>
+                    </button>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+    <div class="row">
+        <div class="col-xs"></div>
+        <div class="col-xs center-xs">
+            <button matTooltip="Agregar detalle" type="button" (click)="AddDetail()" mat-mini-fab color="accent">
+                <i class="fa-solid fa-plus fa-1x"></i>
+            </button>
+        </div>
+        <div style="font-weight: bold;" class="col-xs center-xs">
+            Piezas: {{ttlPz}} Total: {{ttlPrice | currency}}
+        </div>
+    </div>
+    <br>
+</form>
+<div mat-dialog-actions class="end-xs sticky">
+    <button mat-raised-button (click)="dialogref.close()" color="accent">Cerrar</button>
+</div>

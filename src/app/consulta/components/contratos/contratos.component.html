@@ -1,0 +1,61 @@
+<h3>Contratos</h3>
+<div class="row">
+    <mat-form-field>
+        <input matInput #inputProveedor  (keyup)="searchProveedor(inputProveedor.value)" placeholder="Filter">
+    </mat-form-field>
+  </div>
+    <br>
+    <div class="mat-elevation-z8">
+      <div class="example-container">
+      <div class="loading-shade"
+             *ngIf="isLoadingResults">
+          <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+      </div>
+  
+      <div class="containertable">
+        <mat-table [dataSource]="dataSource">
+          <ng-container matColumnDef="Empleado">
+            <mat-header-cell *matHeaderCellDef>$ Empleado</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.uiEmployed}}</mat-cell>
+          </ng-container>
+  
+          <ng-container matColumnDef="Nombre">
+            <mat-header-cell *matHeaderCellDef>Nombre</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.sEmployed}}</mat-cell>
+          </ng-container>
+  
+          <ng-container matColumnDef="Serie">
+            <mat-header-cell *matHeaderCellDef>Serie</mat-header-cell>
+            <mat-cell style="cursor: pointer;" *matCellDef="let row">{{row.sSerie}}</mat-cell>
+          </ng-container>
+  
+          <ng-container matColumnDef="Asignado">
+            <mat-header-cell *matHeaderCellDef>Asignado</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.dtAssigment | date: 'dd/MM/yy'}}</mat-cell>
+          </ng-container>
+  
+          <ng-container matColumnDef="Inventariado">
+            <mat-header-cell *matHeaderCellDef>Inventariado</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.dtInventory | date: 'dd/MM/yy'}}</mat-cell>
+          </ng-container>
+  
+          <ng-container matColumnDef="Ubicación">
+            <mat-header-cell *matHeaderCellDef>Ubicación</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.sPlace}}</mat-cell>
+          </ng-container>
+  
+          <ng-container matColumnDef="footer">
+            <mat-footer-cell *matFooterCellDef colspan="2">
+              <button mat-raised-button (click)="downLoadAssigments()" color="primary">Descargar</button>
+            </mat-footer-cell>
+          </ng-container>
+    
+          <mat-header-row *matHeaderRowDef="displayedColumns; sticky: !isLoadingResults;"></mat-header-row>
+          <mat-row *matRowDef="let row; index as x; columns: displayedColumns;"></mat-row>
+          <mat-footer-row *matFooterRowDef="['footer']; sticky: !isLoadingResults;"></mat-footer-row>
+        </mat-table>
+      </div>
+    </div>
+    <mat-paginator [length]="dataSource.data.length" [pageSizeOptions]="[5, 10, 20, 40]" showFirstLastButtons></mat-paginator>
+  </div>
+  <br>

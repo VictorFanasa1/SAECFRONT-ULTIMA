@@ -1,0 +1,79 @@
+<h1 style="margin-top: 10px;"><b><i>Movimientos</i></b></h1>
+<form [formGroup]="frmSearch" (ngSubmit)="SearchAsiggments()">
+    <div class="row">
+        <div class="col-xs">
+            <mat-form-field style="max-width: 400px;" appearance="outline">
+                <mat-label>Empleado</mat-label>
+                <input formControlName="data" list="empleados" matInput>
+                <datalist id="empleados">
+                    <option *ngFor="let employed of employeds" [value]="employed.sNombreUsuario">{{employed.uiNumeroEmpleado}}</option>
+                </datalist>
+            </mat-form-field>&nbsp;&nbsp;
+            <button mat-raised-button color="primary">Ver</button>
+        </div>
+    </div>
+</form>
+<br>
+<div class="row">
+    <mat-form-field style="max-width: 400px;">
+        <input matInput #inputProveedor  (keyup)="searchProveedor(inputProveedor.value)" placeholder="Filter">
+    </mat-form-field>
+</div>
+<div *ngIf="dataSource.data.length > 0" class="mat-elevation-z8">
+    <div class="example-container">
+        <div class="loading-shade"
+            *ngIf="isLoadingResults">
+            <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+        </div>
+        
+        <div class="containertable">
+            <mat-table [dataSource]="dataSource">
+
+                <ng-container matColumnDef="Serie">
+                    <mat-header-cell *matHeaderCellDef>Serie</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.sSerie}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Tipo">
+                    <mat-header-cell *matHeaderCellDef>Tipo</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.sType}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Marca">
+                    <mat-header-cell *matHeaderCellDef>Marca</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.sBranch}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Modelo">
+                    <mat-header-cell *matHeaderCellDef>Modelo</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.sModel}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Estatus">
+                    <mat-header-cell *matHeaderCellDef>Estatus</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.uiStatus}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                        <button mat-mini-fab color="accent" aria-label="Ir a pagina de liberacion" title="Liberar equipo">
+                            <a [routerLink]="'/administracion/liberacion'" [queryParams]="{ uiAsiggment: row.uiAsiggment }"><mat-icon>eject
+                            </mat-icon></a>
+                        </button>
+                        <button mat-mini-fab color="accent" aria-label="Ver los documentos" style="margin-left: 10px;" title="Descargar Responsiva"
+                        (click)="descargarResponsiva(row.uiAsiggment)">
+                            <mat-icon>cloud_download</mat-icon>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+            
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky: !isLoadingResults;"></mat-header-row>
+                <mat-row *matRowDef="let row; index as x; columns: displayedColumns;">
+                </mat-row>
+            </mat-table>
+        </div>
+    </div>
+    <mat-paginator [length]="dataSource.data.length" [pageSizeOptions]="[5, 10, 20, 40]" showFirstLastButtons></mat-paginator>
+</div>
+  

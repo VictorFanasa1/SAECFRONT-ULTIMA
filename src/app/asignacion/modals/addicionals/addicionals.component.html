@@ -1,0 +1,29 @@
+<h1 mat-dialog-title>Agregar Adicional</h1>
+<mat-dialog-content>
+    <form [formGroup]="frmAdicional">
+        <div class="row">
+            <div class="col-xs">
+              <mat-form-field style="max-width: 400px;" appearance="outline">
+                <mat-label>Serie</mat-label>
+                <input formControlName="divice" matInput placeholder="Serie" [matAutocomplete]="autoadi">
+                <mat-autocomplete #autoadi="matAutocomplete" [displayWith]="displayActivo">
+                    <mat-option *ngFor="let activo of filteradicionals | async" [value]="activo">
+                      {{activo.sSerie}}
+                    </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <dl>
+                <dt><b>Equipo:</b> {{frmAdicional.controls.divice.value.sType}}</dt>
+                <dt><b>Marca:</b> {{frmAdicional.controls.divice.value.sBrand}}</dt>
+                <dt><b>Modelo:</b> {{frmAdicional.controls.divice.value.sModel}}</dt>
+            </dl>
+        </div>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cerrar</button>
+  <button mat-raised-button color="accent" (click)="PostAdicional()"  cdkFocusInitial>Asignar</button>
+</mat-dialog-actions>

@@ -1,0 +1,403 @@
+<h1>Asignación</h1>
+<div>
+<mat-vertical-stepper [linear]="true" #stepper>
+  <mat-step [stepControl]="frmAsigment">
+    <ng-template matStepLabel>Datos de Asignación</ng-template>
+    <div class="example-container-employed">
+      <div class="loading-shade"
+           *ngIf="isLoadEmployed">
+        <mat-spinner *ngIf="isLoadEmployed"></mat-spinner>
+      </div>
+      <form [formGroup]="frmAsigment">
+        <div class="row">
+          <div class="col-xs">
+              <mat-form-field appearance="outline">
+                  <mat-label>Buscar Empleado</mat-label>
+                  <input required autocomplete="off" formControlName="employed" type="number" #uiemployed matInput placeholder="Número de Empleado">
+                  <mat-icon style="cursor: pointer;" (click)="searchEmployed(uiemployed.value)" matSuffix>check</mat-icon>
+              </mat-form-field>
+          </div>
+          <div class="col-xs">
+            <mat-form-field appearance="outline">
+              <mat-label>Ubicación</mat-label>
+              <input required formControlName="place" matInput placeholder="Ubicación" [matAutocomplete]="autoubi">
+              <mat-autocomplete #autoubi="matAutocomplete" [displayWith]="displayUbi">
+                <mat-option *ngFor="let ubi of filterubicaciones | async" [value]="ubi">
+                  {{ubi.sNombre}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </div>
+        </div>
+        <mat-slide-toggle formControlName="external">Externo</mat-slide-toggle>
+      </form>
+      <div class="row">
+          <div class="col-xs">
+              <mat-form-field appearance="standard">
+                  <mat-label>Número</mat-label>
+                  <input matInput readonly [value]="employed.uiNumeroEmpleado === undefined ? '' : employed.uiNumeroEmpleado" placeholder="Número de Empleado">
+              </mat-form-field>
+          </div>
+          <div class="col-xs">
+              <mat-form-field appearance="standard">
+                  <mat-label>Nombre</mat-label>
+                  <input matInput readonly [value]="employed.sNombreUsuario === undefined ? '' : employed.sNombreUsuario" placeholder="Nombre">
+              </mat-form-field>
+          </div>
+          <div class="col-xs">
+              <mat-form-field appearance="standard">
+                  <mat-label>Correo</mat-label>
+                  <!-- <input matInput readonly [value]="employed.sCorreoUsuario === undefined ? '' : employed.sCorreoUsuario" placeholder="Correo"> -->
+                  <input matInput *ngIf="employed.sCorreoUsuario==''"  
+                  (change)="agregarCorreoDeCampoVacio()" placeholder="Correo" [(ngModel)]="campoCorreoVacio">
+                  <input matInput *ngIf="employed.sCorreoUsuario!=''" readonly [value]="employed.sCorreoUsuario" placeholder="Correo">
+              </mat-form-field>
+          </div>
+      </div>
+      <div class="row">
+        <div class="col-xs">
+            <mat-form-field appearance="standard">
+                <mat-label>Puesto</mat-label>
+                <input matInput readonly [value]="employed.sPuesto === undefined ? '' : employed.sPuesto" placeholder="Puesto">
+            </mat-form-field>
+        </div>
+        <div class="col-xs">
+            <mat-form-field appearance="standard">
+                <mat-label>UEN</mat-label>
+                <input matInput readonly [value]="employed.sUEN === undefined ? '' : employed.sUEN" placeholder="UEN">
+            </mat-form-field>
+        </div>
+        <div class="col-xs">
+            <!-- <mat-form-field appearance="standard">
+                <mat-label>Ubicación</mat-label>
+                <input matInput readonly [value]="employed.uiUbicacion === undefined ? '' : employed.uiUbicacion" placeholder="Ubicación">
+            </mat-form-field> -->
+
+            <!-- <mat-form-field appearance="standard">
+              <mat-label>Ubicación</mat-label>
+               <input [formControl]="myControlUbicaciones" matInput placeholder="Ubicación" [matAutocomplete]="autoubi">
+               <mat-autocomplete #autoubi="matAutocomplete">
+                 <mat-option *ngFor="let ubi of filterubicacionesEmp | async" [value]="ubi">
+                   {{ubi.sNombreUbicacion}}
+                 </mat-option>
+               </mat-autocomplete>
+             </mat-form-field> -->
+
+             <mat-form-field appearance="standard">
+              <mat-label>Ubicación</mat-label>
+                  <input type="text"
+                  matInput              
+                  [formControl]="myControlUbicaciones"
+                  [matAutocomplete]="auto2"
+                  [(ngModel)]="admUbicEmp">                  
+                  <mat-autocomplete #auto2="matAutocomplete" [displayWith]="displayUbiEmp">
+                      <mat-option *ngFor="let cat of filterubicacionesEmp | async" [value]="cat">
+                          {{cat.sNombreUbicacion}}
+                      </mat-option>
+                    </mat-autocomplete>
+          </mat-form-field>
+
+        </div>
+      </div>
+    </div>
+    <div [style.display]="frmAsigment.controls.external.value ? 'block' : 'none'">
+      <mat-divider></mat-divider>
+      <h4>Datos del Externo</h4>
+      <form [formGroup]="frmExternal" class="row">
+        <div class="col-xs">
+          <mat-form-field appearance="outline">
+            <mat-label>Nombre</mat-label>
+            <input formControlName="nombre" matInput placeholder="Nombre">
+          </mat-form-field>
+        </div>
+        <div class="col-xs">
+          <mat-form-field appearance="outline">
+            <mat-label>Correo</mat-label>
+            <input formControlName="correo" matInput placeholder="Nombre">
+          </mat-form-field>
+        </div>
+        <div class="col-xs">
+          <mat-form-field appearance="outline">
+            <mat-label>Compañia</mat-label>
+            <input formControlName="compania" matInput placeholder="Nombre">
+          </mat-form-field>
+        </div>
+      </form>
+    </div>
+    <button mat-raised-button [disabled]="frmAsigment.invalid" color="primary" matStepperNext>Aceptar</button>
+  </mat-step>
+  <mat-step [stepControl]="frmActivo">
+    <form [formGroup]="frmActivo">
+      <ng-template matStepLabel>Activo Fijo</ng-template>
+      <div class="row">
+        <div class="col-xs">
+          <mat-form-field appearance="outline">
+            <mat-label>Tipo de Asignación</mat-label>
+            <mat-select required formControlName="type">
+              <mat-option *ngFor="let type of typesAsiggment" [value]="type.uiRegistro">
+                {{type.sDescripcion}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-xs">
+          <mat-form-field appearance="outline">
+            <mat-label>Serie</mat-label>
+            <mat-spinner *ngIf="spinnerActivoFijo==true" style="position: absolute;"></mat-spinner>
+            <!-- <input required formControlName="divice" matInput placeholder="Serie" [matAutocomplete]="auto"> -->
+            <input required formControlName="divice" [disabled]="deshabilitarActivoFijo==true" 
+            (change)="validandoSerieEnLista()" matInput placeholder="Serie" [matAutocomplete]="auto">
+
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayActivo">
+                <mat-option *ngFor="let activo of filteractivos | async" [value]="activo">
+                  {{activo.sSerie}}
+                </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+        <div class="col-xs">
+          <mat-form-field appearance="standard">
+            <mat-label>Placa</mat-label>
+            <input autocomplete="off" readonly matInput placeholder="Placa" [value]="frmActivo.controls.divice.value.sPlaca">
+          </mat-form-field>
+        </div>
+        <div class="col-xs">
+          <mat-form-field appearance="standard">
+            <mat-label>Tipo</mat-label>
+            <input autocomplete="off" readonly matInput placeholder="Placa" [value]="frmActivo.controls.divice.value.sType">
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs">
+          <mat-form-field appearance="standard">
+            <mat-label>Marca</mat-label>
+            <input autocomplete="off" readonly matInput placeholder="Placa" [value]="frmActivo.controls.divice.value.sBrand">
+          </mat-form-field>
+        </div>
+        <div class="col-xs">
+          <mat-form-field appearance="standard">
+            <mat-label>Modelo</mat-label>
+            <input autocomplete="off" readonly matInput placeholder="Placa" [value]="frmActivo.controls.divice.value.sModel">
+          </mat-form-field>
+        </div>
+        <div class="col-xs">
+          <mat-form-field appearance="standard">
+            <mat-label>Ubicación</mat-label>
+            <input autocomplete="off" readonly matInput placeholder="Placa" [value]="frmActivo.controls.divice.value.sPlace">
+          </mat-form-field>
+        </div>
+        <div class="col-xs">
+          
+        </div>
+      </div>
+      <div>
+        <button mat-raised-button matStepperPrevious>Volver</button>
+        <button mat-raised-button color="primary" [disabled]="frmActivo.invalid" matStepperNext>Siguiente</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step>
+    <form [formGroup]="frmAdicional">
+      <ng-template matStepLabel>Adicionales</ng-template>
+      <div class="row">
+        <div class="col-xs">
+          <mat-form-field style="max-width: 400px;" appearance="outline">
+            <mat-label>Serie</mat-label>
+            <input formControlName="divice" matInput placeholder="Serie" [matAutocomplete]="autoadi">
+            <mat-autocomplete #autoadi="matAutocomplete" [displayWith]="displayActivo">
+                <mat-option *ngFor="let activo of filteradicionals | async" [value]="activo">
+                  {{activo.sSerie}}
+                </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs">
+          <mat-form-field appearance="standard">
+            <mat-label>Placa</mat-label>
+            <input autocomplete="off" readonly matInput placeholder="Placa" [value]="frmAdicional.controls.divice.value === null ? '' : frmAdicional.controls.divice.value.sPlaca">
+          </mat-form-field>
+        </div>
+        <div class="col-xs">
+          <mat-form-field appearance="standard">
+            <mat-label>Tipo</mat-label>
+            <input autocomplete="off" readonly matInput placeholder="Placa" [value]="frmAdicional.controls.divice.value === null ? '' : frmAdicional.controls.divice.value.sType">
+          </mat-form-field>
+        </div>
+        <div class="col-xs">
+          <mat-form-field appearance="standard">
+            <mat-label>Marca</mat-label>
+            <input autocomplete="off" readonly matInput placeholder="Placa" [value]="frmAdicional.controls.divice.value === null ? '' : frmAdicional.controls.divice.value.sBrand">
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs">
+          <mat-form-field appearance="standard">
+            <mat-label>Modelo</mat-label>
+            <input autocomplete="off" readonly matInput placeholder="Placa" [value]="frmAdicional.controls.divice.value === null ? '' : frmAdicional.controls.divice.value.sModel">
+          </mat-form-field>
+        </div>
+        <div class="col-xs">
+          <mat-form-field appearance="standard">
+            <mat-label>Ubicación</mat-label>
+            <input autocomplete="off" readonly matInput placeholder="Placa" [value]="frmAdicional.controls.divice.value === null ? '' : frmAdicional.controls.divice.value.sPlace">
+          </mat-form-field>
+        </div>
+        <div class="col-xs">
+          <button mat-raised-button (click)="addAdicional()" color="accent">Agregar</button>
+        </div>
+      </div>
+      <div class="example-container mat-elevation-z8">
+        <div class="example-table-container">
+          <mat-table [dataSource]="dataSource">
+    
+            <ng-container matColumnDef="Serie">
+              <mat-header-cell *matHeaderCellDef>Serie</mat-header-cell>
+              <mat-cell *matCellDef="let row">{{row.sSerie}}</mat-cell>
+            </ng-container>
+    
+            <ng-container matColumnDef="Placa">
+              <mat-header-cell *matHeaderCellDef>Placa</mat-header-cell>
+              <mat-cell *matCellDef="let row">{{row.sPlaca}}</mat-cell>
+            </ng-container>
+    
+            <ng-container matColumnDef="Tipo">
+              <mat-header-cell *matHeaderCellDef>Tipo</mat-header-cell>
+              <mat-cell *matCellDef="let row">{{row.sType}}</mat-cell>
+            </ng-container>
+    
+            <ng-container matColumnDef="Marca">
+              <mat-header-cell *matHeaderCellDef>Marca</mat-header-cell>
+              <mat-cell *matCellDef="let row">{{row.sBrand}}</mat-cell>
+            </ng-container>
+    
+            <ng-container matColumnDef="Modelo">
+              <mat-header-cell *matHeaderCellDef>Modelo</mat-header-cell>
+              <mat-cell *matCellDef="let row">{{row.sModel}}</mat-cell>
+            </ng-container>
+    
+            <ng-container matColumnDef="Ubicacion">
+              <mat-header-cell *matHeaderCellDef>Ubicacion</mat-header-cell>
+              <mat-cell *matCellDef="let row">{{row.sPlace}}</mat-cell>
+            </ng-container>
+    
+            <ng-container matColumnDef="actions">
+              <mat-header-cell *matHeaderCellDef>Borrar</mat-header-cell>
+              <mat-cell *matCellDef="let row; index as i">
+                <button mat-mini-fab color="warn" (click)="removeAdicional(i)" aria-label="Example icon button with a filter list icon">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </mat-cell>
+            </ng-container>
+      
+            <mat-header-row *matHeaderRowDef="displayedColumns; sticky: !isLoadingResults;"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          </mat-table>
+        </div>
+      </div>
+      <br>
+      <div>
+        <button mat-raised-button matStepperPrevious>Volver</button>
+        <button mat-raised-button color="primary" matStepperNext>Siguiente</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step>
+      <ng-template matStepLabel>Accesorios</ng-template>
+      <form [formGroup]="frmAccesories">
+        <mat-form-field appearance="fill">
+          <mat-label>Accesorios</mat-label>
+          <mat-select formControlName="accesories" multiple>
+            <mat-option *ngFor="let acc of accesories" [disabled]="!acc.bActivo" [value]="acc.uiRegistro">{{acc.sNombre}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </form>
+      <button mat-raised-button matStepperPrevious>Volver</button>
+      <button mat-raised-button color="primary" matStepperNext>Siguiente</button>
+  </mat-step>
+  <mat-step>
+      <form [formGroup]="frmSoporte">
+        <div class="row">
+          <div class="col-xs">
+            <mat-form-field appearance="outline">
+              <mat-label>Ticket</mat-label>
+              <input formControlName="ticket" matInput>
+            </mat-form-field>
+          </div>
+          <div class="col-xs center-xs middle-xs">
+            <label for="tracing-upload" class="custom-detail-upload">
+              Soporte
+          </label>
+          <input id="tracing-upload" (change)="upLoadFiles()" type="file" accept="image/*,.pdf,.xlsx,.csv,.docx" />
+          </div>
+          <div class="col-xs">
+            <mat-chip-list
+            class="example-chip">
+                <mat-chip
+                    class="example-box" 
+                    *ngFor="let file of namefiles; index as x">
+                    {{file}}
+                </mat-chip>
+            </mat-chip-list>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs">
+            <mat-form-field appearance="outline">
+              <mat-label>Observaciones</mat-label>
+              <textarea formControlName="observaciones" matInput></textarea>
+            </mat-form-field>
+          </div>
+        </div>
+      </form>
+      <ng-template matStepLabel>Soporte</ng-template>
+      <button mat-raised-button matStepperPrevious>Volver</button>
+      <button mat-raised-button color="primary" matStepperNext>Siguiente</button>
+  </mat-step>
+  <mat-step [stepControl]="frmSoporte">
+    <ng-template matStepLabel>Revisión</ng-template>
+    <form [formGroup]="frmSoporte">
+      <p>Se va a asignar el Equipo: <mat-chip>{{frmActivo.controls.divice.value.sType + ': ' + frmActivo.controls.divice.value.sSerie}}</mat-chip> a <mat-chip>{{employed.sNombreUsuario}}</mat-chip> con el número de Empleado: <mat-chip>{{employed.uiNumeroEmpleado}}</mat-chip></p>
+      <p *ngIf="frmAsigment.controls.external.value">El externo responsable será: <mat-chip>{{frmExternal.controls.nombre.value}}</mat-chip></p>
+      <div *ngIf="dataSource.data.length !== 0">
+        <p>Con los adicionales: </p>
+        <mat-chip-list
+        class="example-chip"
+        cdkDropList 
+        cdkDropListOrientation="horizontal">
+          <mat-chip
+            class="example-box"
+            cdkDrag
+            *ngFor="let adi of dataSource.data">
+            {{adi.sType + ': ' + adi.sSerie}}
+          </mat-chip>
+        </mat-chip-list>
+      </div>
+      <p>Ésta asignación corresponde al Ticket: <mat-chip>{{frmSoporte.controls.ticket.value}}</mat-chip> con el soporte:
+        <mat-chip-list
+        class="example-chip">
+            <mat-chip
+                class="example-box" 
+                *ngFor="let file of namefiles; index as x">
+                {{file}}
+            </mat-chip>
+        </mat-chip-list>
+        <br>
+        Por último las observaciones para ésta asignación son:
+      </p>
+      <p><b>{{frmSoporte.controls.observaciones.value}}</b></p>
+      <br>
+    </form>
+    <div *ngIf="isAssigning">
+      <mat-progress-bar mode="query" value="40"></mat-progress-bar>
+    </div>
+    <div *ngIf="!isAssigning">
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-raised-button (click)="sendAssigment($event)" color="primary">Asignar</button>
+    </div>
+  </mat-step>
+</mat-vertical-stepper>
+</div>

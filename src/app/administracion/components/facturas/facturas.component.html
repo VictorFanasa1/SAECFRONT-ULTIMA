@@ -1,0 +1,130 @@
+<h1>Facturas</h1>
+<form class="row" [formGroup]="frmFilter">
+    <div class="col-xs">
+        <mat-form-field appearance="outline">
+            <mat-label>Factura</mat-label>
+            <input matInput formControlName="sFactura" autocomplete="off" placeholder="Factura">
+        </mat-form-field>
+    </div>
+    <div class="col-xs">
+        <mat-form-field style="max-width: 400px;" appearance="outline">
+            <mat-label>Contrato</mat-label>
+            <input formControlName="sContrato" autocomplete="off" list="contratos" matInput>
+            <datalist id="contratos">
+                <option *ngFor="let contrato of contratos" [value]="contrato">{{contrato}}</option>
+            </datalist>
+        </mat-form-field>
+    </div>
+    <div class="col-xs">
+        <mat-form-field style="max-width: 400px;" appearance="outline">
+            <mat-label>Orden de Compra</mat-label>
+            <input formControlName="sOC" autocomplete="off" list="ocs" matInput>
+            <datalist id="ocs">
+                <option *ngFor="let oc of ocs" [value]="oc.sComercial">{{oc.sComercial}}</option>
+            </datalist>
+        </mat-form-field>
+    </div>
+    <div class="col-xs">
+        <mat-form-field appearance="outline">
+            <mat-label>Documento</mat-label>
+            <mat-select formControlName="bDocumento">
+              <mat-option value="">
+                Todas
+              </mat-option>
+              <mat-option value="SI">
+                Cargada
+              </mat-option>
+              <mat-option value="NO">
+                Sin cargada
+              </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+</form>
+<div class="row">
+    <div class="col-xs">
+        <button matTooltip="Agregar" (click)="AddInvoice()" mat-mini-fab color="accent">
+            <i class="fa-solid fa-plus fa-1x"></i>
+        </button>
+    </div>
+</div>
+<div class="mat-elevation-z8">
+    <div class="example-container">
+        <div class="loading-shade"
+        *ngIf="isLoadingResults">
+        <div class="flipping">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+
+        <div class="containertable">
+            <mat-table [dataSource]="dataSource" matSort #empTbSort="matSort" matSortDisableClear>
+                <ng-container matColumnDef="Factura">
+                    <mat-header-cell *matHeaderCellDef>Factura</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.sFactura}}</mat-cell>
+                    <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Contrato">
+                    <mat-header-cell *matHeaderCellDef>Contrato</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.sContrato}}</mat-cell>
+                    <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="OC">
+                    <mat-header-cell *matHeaderCellDef>OC</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.sOC}}</mat-cell>
+                    <mat-footer-cell *matFooterCellDef>Total</mat-footer-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="iPiezas">
+                    <mat-header-cell mat-sort-header *matHeaderCellDef>Piezas</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.iPiezas | number:''}}</mat-cell>
+                    <mat-footer-cell *matFooterCellDef>{{ttlpz | number:''}} pz</mat-footer-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="mTotal">
+                    <mat-header-cell mat-sort-header *matHeaderCellDef>Total</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.mTotal | currency}}</mat-cell>
+                    <mat-footer-cell *matFooterCellDef>{{ttlprice | currency}}</mat-footer-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="dtFactura">
+                    <mat-header-cell mat-sort-header *matHeaderCellDef>Fecha</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.dtFactura | date: 'dd/MM/yyyy'}}</mat-cell>
+                    <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                    <mat-cell *matCellDef="let row; let i = index">
+                        <button matTooltip="Sustituir PDF" *ngIf="row.bDocument === 'SI'" (click)="OpenDialog(row, i)" mat-icon-button color="accent">
+                            <i class="fa-solid fa-file-arrow-up fa-2x"></i>
+                        </button>
+                        <button matTooltip="Cargar PDF" *ngIf="row.bDocument === 'NO'" (click)="OpenDialog(row, i)" mat-icon-button color="warn">
+                            <i class="fa-solid fa-file-arrow-up fa-2x"></i>
+                        </button>
+                        <button matTooltip="Editar" mat-icon-button color="accent">
+                            <i class="fa-solid fa-file-pen fa-2x"></i>
+                        </button>
+                    </mat-cell>
+                    <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displays; sticky: !isLoadingResults;"></mat-header-row>
+                <mat-row *matRowDef="let row; index as x; columns: displays;">
+                </mat-row>
+                <mat-footer-row *matFooterRowDef="displays; sticky: !isLoadingResults" class="footer-row"></mat-footer-row>
+            </mat-table>
+        </div>
+    </div>
+    <mat-paginator [length]="dataSource.data.length" [pageSizeOptions]="[5, 10, 20, 40]" showFirstLastButtons></mat-paginator>
+</div>

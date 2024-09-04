@@ -1,0 +1,18 @@
+.custom-detail-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    color: white;
+    background-color: #2574bb;
+  }
+  
+  .custom-detail-upload:hover {
+    color: #55BCFF;
+    background-color: white;
+    border: 1px solid #2574bb;
+  }
+
+input[type="file"] {
+  display: none;
+}

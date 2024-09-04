@@ -1,0 +1,75 @@
+<h1>
+    Reporte Inventario
+</h1>
+<div class="row">
+  <mat-form-field>
+      <input matInput #inputProveedor  (keyup)="searchProveedor(inputProveedor.value)" placeholder="Filter">
+    </mat-form-field>
+</div>
+<div class="example-container mat-elevation-z8">
+    <div class="loading-shade"
+         *ngIf="isLoadingResults">
+      <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    </div>
+  
+    <div class="example-table-container">
+      <mat-table [dataSource]="dataSource">
+
+        <ng-container matColumnDef="NoEmpleado">
+          <mat-header-cell *matHeaderCellDef>No. Empleado</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.uiNumeroEmpleado}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Empleado">
+          <mat-header-cell *matHeaderCellDef>Empleado</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.sNombreUsuario}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Ubicacion">
+          <mat-header-cell *matHeaderCellDef>Ubicación</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.sNombreUbicacion}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Equipo">
+          <mat-header-cell *matHeaderCellDef>Equipo</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.sTipoEquipo}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Serie">
+          <mat-header-cell *matHeaderCellDef>Serie</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.sSerie}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Inventariado">
+          <mat-header-cell *matHeaderCellDef>Inventariado</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.dtInventario  | date: 'dd/MM/yy'}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Responsable">
+          <mat-header-cell *matHeaderCellDef>Responsable</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.usuarioInven}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="footer">
+          <mat-footer-cell *matFooterCellDef colspan="2">
+            <div class="row">
+              <div class="col-xs">
+                <button mat-raised-button (click)="DownLoad()" color="primary">Descargar Activos</button>
+              </div>
+              <div class="col-xs">
+                <button mat-raised-button (click)="DownLoadAdicionales()" color="primary">Descargar Adicionales</button>
+              </div>
+            </div>
+            
+          </mat-footer-cell>
+        </ng-container>
+  
+        <mat-header-row *matHeaderRowDef="displayedColumns; sticky: !isLoadingResults;"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        <mat-footer-row *matFooterRowDef="['footer']; sticky: !isLoadingResults;"></mat-footer-row>
+      </mat-table>
+    </div>
+  
+    <mat-paginator [length]="dataSource.data.length" [pageSizeOptions]="[5, 10, 20, 40]" showFirstLastButtons></mat-paginator>
+  </div>
+<br>

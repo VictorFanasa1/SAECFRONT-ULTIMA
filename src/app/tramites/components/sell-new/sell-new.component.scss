@@ -1,0 +1,44 @@
+.tabcontainer {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+mat-table {
+    width: 1400px;
+}
+
+@media(min-width: 1400px) {
+    mat-table {
+        width: 100%;
+    }
+}
+
+.example-container {
+    max-height: 62vh;
+}
+
+mat-cell:nth-child(1),
+mat-header-cell:nth-child(1) {
+    flex: 0 0 10%;
+}
+
+mat-cell:nth-child(4),
+mat-header-cell:nth-child(4) {
+    flex: 0 0 8%;
+}
+
+mat-cell:nth-child(6),
+mat-header-cell:nth-child(6) {
+    flex: 0 0 5%;
+}
+
+
+mat-cell:nth-child(9),
+mat-header-cell:nth-child(9) {
+    flex: 0 0 6%;
+}
+
+mat-cell:nth-child(10),
+mat-header-cell:nth-child(10) {
+    flex: 0 0 4%;
+}

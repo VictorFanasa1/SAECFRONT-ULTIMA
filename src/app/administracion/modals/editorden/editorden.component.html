@@ -1,0 +1,68 @@
+<h1 mat-dialog-title>Editando Orden: {{data.sFolio}}</h1>
+  <form [formGroup]="frmOrden" (ngSubmit)="PutComerccial()">
+    <mat-dialog-content>
+    <div class="row">
+        <div class="col-xs">
+            <mat-form-field appearance="outline">
+                <mat-label>Folio</mat-label>
+                <input formControlName="sFolioOrdenCompra" autocomplete="off" matInput>
+            </mat-form-field>
+        </div>
+        <div class="col-xs">
+            <mat-form-field appearance="outline">
+                <mat-label>Fecha de Alta</mat-label>
+                <input formControlName="dtFechaAlta" readonly matInput [matDatepicker]="picker">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker disabled="disabled" #picker></mat-datepicker>
+            </mat-form-field>
+        </div>
+        <div class="col-xs">
+            <mat-form-field appearance="outline">
+                <mat-label>Fecha de Orden</mat-label>
+                <input formControlName="dtFechaOrden" readonly matInput [matDatepicker]="pickerOrden">
+                <mat-datepicker-toggle matSuffix [for]="pickerOrden"></mat-datepicker-toggle>
+                <mat-datepicker #pickerOrden></mat-datepicker>
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs">
+            <mat-form-field appearance="outline">
+                <mat-label>Tipo de Adquisición</mat-label>
+                <mat-select formControlName="uiTipoAdquisicion">
+                  <mat-option *ngFor="let type of typeslease" [value]="type.uiTipoAdquisicion">
+                    {{type.sDescripcion}}
+                  </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="col-xs">
+            <mat-form-field appearance="outline">
+                <mat-label>UEN</mat-label>
+                <input formControlName="sUEN" autocomplete="off" matInput>
+            </mat-form-field>
+        </div>
+        <div class="col-xs">
+            <label for="tracing-upload-modal" class="custom-detail-upload">
+                Soporte
+            </label>
+            <input id="tracing-upload-modal" (change)="upLoadFiles()" type="file" accept="image/*,.pdf,.xlsx,.csv,.docx" />
+            <mat-chip-list
+            class="example-chip">
+                <mat-chip
+                    class="example-box" 
+                    *ngFor="let file of namefiles; index as x">
+                    {{file}}
+                </mat-chip>
+            </mat-chip-list>
+        </div>
+    </div>
+    <br>
+  </mat-dialog-content>
+  <mat-dialog-actions class="end-xs">
+    <button mat-button (click)="Close()">Cerrar</button>
+    <button class="desktop" [disabled]="frmOrden.invalid" mat-raised-button color="primary">
+      <span>Enviar</span>
+    </button>
+  </mat-dialog-actions>
+</form>

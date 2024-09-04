@@ -1,0 +1,178 @@
+<div class="mat-elevation-z3" style="padding: 20px;">
+    <h2>Documentos</h2>
+    <mat-accordion>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            REMISION
+          </mat-panel-title>
+          <mat-panel-description class="end-xs">
+            {{Remision.sRemision}}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <div class="row botton-xs">
+          <div class="col-xs">
+            <mat-form-field appearance="standard">
+              <mat-label>Responsable</mat-label>
+              <input readonly matInput [value]="Remision.sOwner">
+            </mat-form-field>
+          </div>
+          <div class="col-xs">
+            <mat-form-field appearance="standard">
+              <mat-label>Ubicación</mat-label>
+              <input readonly matInput [value]="Remision.sPlace">
+            </mat-form-field>
+          </div>
+          <div class="col-xs">
+            <mat-form-field appearance="standard">
+              <mat-label>Fecha</mat-label>
+              <input readonly matInput [value]="Remision.dtCreated | date: 'dd/MM/yyyy'">
+            </mat-form-field>
+          </div>
+          <div class="col-xs">
+            <button *ngIf="Remision.bFile" mat-raised-button color="accent">DESCARGAR</button>
+            <mat-form-field *ngIf="!Remision.bFile" appearance="standard">
+              <input readonly matInput [value]="'No se ha cargado el archivo.'">
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-expansion-panel>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            FACTURA
+          </mat-panel-title>
+          <mat-panel-description class="end-xs">
+            {{Factura.sFactura}}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <div class="row botton-xs">
+          <div class="col-xs">
+            <mat-form-field appearance="standard">
+              <mat-label>Piezas</mat-label>
+              <input style="text-align: end;" readonly matInput [value]="Factura.iPiezas">
+            </mat-form-field>
+          </div>
+          <div class="col-xs">
+            <mat-form-field appearance="standard">
+              <mat-label>Precio</mat-label>
+              <input style="text-align: end;" readonly matInput [value]="Factura.dPrecio | currency">
+            </mat-form-field>
+          </div>
+          <div class="col-xs">
+            <mat-form-field appearance="standard">
+              <mat-label>Fecha</mat-label>
+              <input readonly matInput [value]="Factura.dtCreated | date: 'dd/MM/yyyy'">
+            </mat-form-field>
+          </div>
+          <div class="col-xs">
+            <button *ngIf="Factura.bFile" mat-raised-button color="accent">DESCARGAR</button>
+            <mat-form-field *ngIf="!Factura.bFile" appearance="standard">
+              <input readonly matInput [value]="'No se ha cargado el archivo.'">
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-expansion-panel>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            COMERCIAL
+          </mat-panel-title>
+          <mat-panel-description class="end-xs">
+            {{Comercial.sFolio}}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <div class="row">
+          <div class="col-xs">
+            <mat-form-field appearance="standard">
+              <mat-label>Tipo adquisición</mat-label>
+              <input readonly matInput [value]="Comercial.sType">
+            </mat-form-field>
+          </div>
+          <div class="col-xs">
+            <mat-form-field appearance="standard">
+              <mat-label>Fecha Alta</mat-label>
+              <input readonly matInput [value]="Comercial.dtUpload | date: 'dd/MM/yyyy'">
+            </mat-form-field>
+          </div>
+          <div class="col-xs">
+            <mat-form-field appearance="standard">
+              <mat-label>Fecha Orden</mat-label>
+              <input readonly matInput [value]="Comercial.dtOC | date: 'dd/MM/yyyy'">
+            </mat-form-field>
+          </div>
+          <div class="col-xs">
+            <mat-form-field appearance="standard">
+              <mat-label>UEN</mat-label>
+              <input readonly matInput [value]="Comercial.sUEN">
+            </mat-form-field>
+          </div>
+        </div>
+        <h3>Proveedor</h3>
+        <div class="row">
+          <div class="col-xs">
+            <mat-form-field appearance="standard">
+              <mat-label>Nombre</mat-label>
+              <input readonly matInput [value]="Comercial.sProveedor">
+            </mat-form-field>
+          </div>
+          <div class="col-xs">
+            <mat-form-field appearance="standard">
+              <mat-label>Contrato</mat-label>
+              <input readonly matInput [value]="Comercial.sContrato">
+            </mat-form-field>
+          </div>
+        </div>
+        <div *ngIf="Comercial.sArrendador !== null">
+          <h3>Arrendador</h3>
+          <div class="row">
+            <div class="col-xs">
+              <mat-form-field appearance="standard">
+                <mat-label>Arrendador</mat-label>
+                <input readonly matInput [value]="Comercial.sArrendador">
+              </mat-form-field>
+            </div>
+            <div class="col-xs">
+              <mat-form-field appearance="standard">
+                <mat-label>Contrato</mat-label>
+                <input readonly matInput [value]="Comercial.sContratoA">
+              </mat-form-field>
+            </div>
+            <div class="col-xs">
+              <mat-form-field appearance="standard">
+                <mat-label>Contrato</mat-label>
+                <input readonly matInput [value]="Comercial.dtStart | date: 'dd/MM/yyyy'">
+              </mat-form-field>
+            </div>
+            <div class="col-xs">
+              <mat-form-field appearance="standard">
+                <mat-label>Contrato</mat-label>
+                <input readonly matInput [value]="Comercial.dtEnd | date: 'dd/MM/yyyy'">
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs">
+              <mat-form-field appearance="standard">
+                <mat-label>Vencimiento (meses)</mat-label>
+                <input readonly matInput [value]="Comercial.iVencimiento">
+              </mat-form-field>
+            </div>
+            <div class="col-xs">
+              <mat-form-field appearance="standard">
+                <mat-label>Tipo</mat-label>
+                <input readonly matInput [value]="Comercial.sTypeA">
+              </mat-form-field>
+            </div>
+            <div class="col-xs">
+              <mat-form-field appearance="standard">
+                <mat-label>Cantidad</mat-label>
+                <input readonly matInput [value]="Comercial.iPz">
+              </mat-form-field>
+            </div>
+            <div class="col-xs"></div>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>

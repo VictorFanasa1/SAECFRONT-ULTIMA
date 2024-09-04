@@ -1,0 +1,87 @@
+<h1 mat-dialog-title><b>Modificar Empleado:<i style="color: green;">{{nombreEmpleadoUpdate}}</i></b></h1>
+<div class="loading-shade"
+*ngIf="isLoadingResults">
+<mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+</div>
+<div mat-dialog-content>
+    <form [formGroup]="employed">
+        <div class="row">
+            <div class="col-xs">
+                <mat-form-field appearance="standard">
+                    <mat-label>Número</mat-label>
+                    <input readonly formControlName="numero" matInput>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs">
+                <mat-form-field appearance="standard">
+                    <mat-label>Nombre</mat-label>
+                    <input readonly formControlName="nombre" matInput>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs">
+                <mat-form-field appearance="standard">
+                    <mat-label>Email</mat-label>
+                    <input formControlName="correo" matInput>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs">
+                <mat-form-field appearance="standard">
+                    <mat-label>Puesto</mat-label>
+                    <input readonly formControlName="puesto" matInput>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs">
+                <mat-form-field appearance="standard">
+                    <mat-label>UEN</mat-label>
+                    <input readonly formControlName="uen" matInput>
+                </mat-form-field>
+            </div>
+        </div>
+    </form>
+    <div class="center-xs">
+        <mat-form-field appearance="fill">
+            <mat-label>Ubicación</mat-label>
+
+                <input type="text"
+                matInput              
+                [formControl]="myControlUbicacion"
+                [(ngModel)]="opcionUbicacion"
+                [matAutocomplete]="auto"
+                (mouseup)="borrarSeleccionUbicacion()">                  
+                <mat-autocomplete #auto="matAutocomplete">
+                    <mat-option *ngFor="let ubi of filterubicaciones | async" 
+                    [value]="ubi.uiIdUicacion + '-' + ubi.sNombreUbicacion">
+                        {{ubi.sNombreUbicacion}}
+                    </mat-option>
+                  </mat-autocomplete>
+        </mat-form-field>
+    </div>
+    <form [formGroup]="internoExterno">
+        <div class="row">
+            <div class="col-md-4">
+                <mat-label>¿Es Interno?</mat-label>
+            </div>
+            <div class="col-md-2">
+                <input type="radio" [value]=true formControlName="eleccion">
+                <span>SI</span>
+            </div>
+            <div class="col-md-2">
+                <input type="radio" [value]=false formControlName="eleccion">
+                <span>NO</span>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+    </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button type="button" (click)="onNoClick()">Cerrar</button>
+  <button mat-raised-button color="primary" (click)="submit()" cdkFocusInitial>Modificar</button>
+</div>

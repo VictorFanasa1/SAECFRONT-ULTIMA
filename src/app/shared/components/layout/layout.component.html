@@ -1,0 +1,13 @@
+<mat-sidenav-container style="overflow-y: hidden; overflow-x:hidden">
+    <mat-sidenav #sidenav role="navigation">
+      <app-navigation (sidenavTooggle)="sidenav.toggle()"></app-navigation>
+    </mat-sidenav>
+  <mat-sidenav-content>
+    <app-header (sidenavTooggle)="sidenav.toggle()"></app-header>
+    <main  class="container">
+      <router-outlet>
+
+      </router-outlet>
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>

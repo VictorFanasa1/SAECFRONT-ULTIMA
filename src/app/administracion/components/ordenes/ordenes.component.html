@@ -1,0 +1,128 @@
+<h1>Orden de Compra</h1>
+<form [formGroup]="frmOrden" (ngSubmit)="PostComercial()">
+    <div class="row">
+        <div class="col-xs">
+            <mat-form-field appearance="outline">
+                <mat-label>Folio</mat-label>
+                <input formControlName="sFolioOrdenCompra" autocomplete="off" matInput>
+            </mat-form-field>
+        </div>
+        <div class="col-xs">
+            <mat-form-field appearance="outline">
+                <mat-label>Fecha de Orden</mat-label>
+                <input formControlName="dtFechaOrden" readonly matInput [matDatepicker]="pickerOrden">
+                <mat-datepicker-toggle matSuffix [for]="pickerOrden"></mat-datepicker-toggle>
+                <mat-datepicker #pickerOrden></mat-datepicker>
+            </mat-form-field>
+        </div>
+        <div class="col-xs">
+            <mat-form-field appearance="outline">
+                <mat-label>Tipo de Adquisición</mat-label>
+                <mat-select formControlName="uiTipoAdquisicion">
+                  <mat-option *ngFor="let type of typeslease" [value]="type.uiTipoAdquisicion">
+                    {{type.sDescripcion}}
+                  </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs">
+            <mat-form-field appearance="outline">
+                <mat-label>UEN</mat-label>
+                <input formControlName="sUEN" autocomplete="off" matInput>
+            </mat-form-field>
+        </div>
+        <div class="col-xs">
+            <label for="tracing-upload" class="custom-detail-upload">
+                Soporte
+            </label>
+            <input id="tracing-upload" (change)="upLoadFiles()" type="file" accept="image/*,.pdf,.xlsx,.csv,.docx" />
+            <mat-chip-list
+            class="example-chip">
+                <mat-chip
+                    class="example-box" 
+                    *ngFor="let file of namefiles; index as x">
+                    {{file}}
+                </mat-chip>
+            </mat-chip-list>
+        </div>
+        <div class="col-xs center-xs">
+            <button class="desktop" [disabled]="frmOrden.invalid" mat-icon-button color="primary">
+                <i class="fa-solid fa-circle-check fa-3x"></i>
+            </button>
+            <button class="movil" [disabled]="frmOrden.invalid" mat-fab color="primary">
+                <mat-icon>send</mat-icon>
+            </button>
+        </div>
+    </div>
+</form>
+<br>
+<div class="row">
+    <div class="col-xs">
+        <mat-form-field style="max-width: 400px;">
+            <input matInput #inputProveedor autocomplete="off" (keyup)="searchProveedor(inputProveedor.value)" placeholder="Filter">
+        </mat-form-field>
+    </div>
+</div>
+<div class="mat-elevation-z8">
+    <div class="example-container">
+      <div class="loading-shade"
+           *ngIf="isLoadingResults">
+        <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+      </div>
+    
+      <div class="containertable">
+        <mat-table [dataSource]="dataSource">
+  
+          <ng-container matColumnDef="Folio">
+            <mat-header-cell *matHeaderCellDef>Folio</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.sFolio}}</mat-cell>
+          </ng-container>
+  
+          <ng-container matColumnDef="Tipo">
+            <mat-header-cell *matHeaderCellDef>Adquisición</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.sType}}</mat-cell>
+          </ng-container>
+  
+          <ng-container matColumnDef="UEN">
+            <mat-header-cell *matHeaderCellDef>UEN</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.sUEN}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="OldUEN">
+              <mat-header-cell *matHeaderCellDef>UEN Anterior</mat-header-cell>
+              <mat-cell *matCellDef="let row">{{row.sOldUEN}}</mat-cell>
+          </ng-container>
+  
+          <ng-container matColumnDef="Alta">
+            <mat-header-cell *matHeaderCellDef>Fecha Alta</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.dtAlta | date: 'dd/MM/yyyy'}}</mat-cell>
+          </ng-container>
+  
+          <ng-container matColumnDef="Orden">
+            <mat-header-cell *matHeaderCellDef>Fecha Orden</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.dtOrden | date: 'dd/MM/yyyy'}}</mat-cell>
+          </ng-container>}
+
+          <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-cell *matCellDef="let row">
+                <button [disabled]="!row.bFile" (click)="DownLoadFile(row.uiComercial)" mat-mini-fab color="primary" aria-label="Example icon button with a menu icon">
+                    <mat-icon>cloud_download</mat-icon>
+                  </button>
+                <button (click)="EditOrden(row)" mat-mini-fab color="primary" aria-label="Example icon button with a menu icon">
+                    <mat-icon>edit</mat-icon>
+                </button>
+            </mat-cell>
+          </ng-container>}
+          
+          <mat-header-row *matHeaderRowDef="displayedColumns; sticky: !isLoadingResults;"></mat-header-row>
+          <mat-row *matRowDef="let row; index as x; columns: displayedColumns;">
+          </mat-row>
+        </mat-table>
+      </div>
+    
+    </div>
+    <mat-paginator [length]="dataSource.data.length" [pageSizeOptions]="[5, 10, 20, 40]" showFirstLastButtons></mat-paginator>
+</div>

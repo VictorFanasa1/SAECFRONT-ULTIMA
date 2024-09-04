@@ -1,0 +1,50 @@
+mat-form-field {
+  min-width: 300px;
+}
+
+.custom-detail-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    color: white;
+    background-color: #2574bb;
+  }
+  
+  .custom-detail-upload:hover {
+    color: #55BCFF;
+    background-color: white;
+    border: 1px solid #2574bb;
+  }
+
+input[type="file"] {
+  display: none;
+}
+
+mat-table {
+  width: 1000px;
+}
+
+.movil {
+    position: fixed;
+    right: 30px;
+    bottom: 30px;
+}
+
+.desktop {
+  display: none;
+}
+
+@media(min-width: 1024px) {
+    mat-table {
+        width: 100%;
+    }
+
+    .movil {
+      display: none;
+    }
+
+    .desktop {
+      display: inline;
+    }
+}

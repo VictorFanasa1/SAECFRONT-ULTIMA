@@ -1,0 +1,83 @@
+<h1 mat-dialog-title>Editando Serie {{data.sSerie}}</h1>
+<div mat-dialog-content style="overflow: hidden;">
+    <form [formGroup]="edit" style="padding-bottom: 4px; padding-top: 4px">
+        <div class="row">
+            <div class="col-xs">
+                <mat-form-field appearance="outline">
+                    <mat-label>Placa</mat-label>
+                    <input formControlName="placa" matInput>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs">
+                <mat-form-field appearance="outline">
+                    <mat-label>Favorite food</mat-label>
+                    <mat-select formControlName="estatus">
+                      <mat-option *ngFor="let statu of status" [disabled]="statu.uiStatus === 2" [value]="statu.uiStatus">
+                        {{statu.sDescripcion}}
+                      </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs">
+                <mat-form-field appearance="outline">
+                    <mat-label>SubEstatus</mat-label>
+                    <mat-select formControlName="subestatus">
+                      <mat-option *ngFor="let statu of substatus" [disabled]="statu.uiSubStatus === 2" [value]="statu.uiSubStatus">
+                        {{statu.sDescripcion}}
+                      </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs">
+                <mat-form-field appearance="outline">
+                    <mat-label>Marca</mat-label>
+                    <input required formControlName="branch" matInput placeholder="Marca" [matAutocomplete]="autobranch">
+                    <mat-autocomplete #autobranch="matAutocomplete" [displayWith]="displayBranch">
+                      <mat-option *ngFor="let branch of filterbranchs | async" [value]="branch">
+                        {{branch.sNombre}}
+                      </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs">
+                <mat-form-field appearance="outline">
+                    <mat-label>Modelo</mat-label>
+                    <input required formControlName="model" matInput placeholder="Modelo" [matAutocomplete]="automodel">
+                    <mat-autocomplete #automodel="matAutocomplete" [displayWith]="displayModel">
+                      <mat-option *ngFor="let model of filtermodels | async" [value]="model">
+                        {{model.sNombre}}
+                      </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+          <div class="col-xs">
+            <label for="tracing-upload" style="margin-bottom: 3px;" class="custom-detail-upload">
+              Soporte
+          </label>
+          <input id="tracing-upload" style="margin-bottom: 3px;" (change)="upLoadFiles()" type="file" accept="image/*,.pdf,.xlsx,.csv,.docx" />
+          <mat-chip-list
+          class="example-chip">
+              <mat-chip
+                  class="example-box" 
+                  *ngFor="let file of namefiles; index as x">
+                  {{file}}
+              </mat-chip>
+          </mat-chip-list>
+          </div>
+        </div>
+    </form>
+</div>
+<div mat-dialog-actions class="end-xs">
+  <button mat-raised-button type="button" (click)="onNoClick()" >Close</button>
+  <button mat-raised-button color="primary" [disabled]="edit.invalid" (click)="submit()" cdkFocusInitial>Aceptar</button>
+</div>

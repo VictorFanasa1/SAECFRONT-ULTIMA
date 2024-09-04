@@ -1,0 +1,105 @@
+<h1>
+  Equipos
+</h1>
+
+<div class="row">
+  <mat-form-field>
+      <input matInput #inputProveedor  (keyup)="searchProveedor(inputProveedor.value)" placeholder="Filter">
+    </mat-form-field>
+</div>
+<div class="mat-elevation-z8">
+    <div class="example-container">
+      <div class="loading-shade"
+           *ngIf="isLoadingResults">
+           <div class="flipping">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+      </div>
+    
+      <div class="containertable">
+        <mat-table [dataSource]="dataSource">
+  
+          <ng-container matColumnDef="Tipo">
+            <mat-header-cell *matHeaderCellDef>Tipo de Equipo</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.sTipo}}</mat-cell>
+          </ng-container>
+  
+          <ng-container matColumnDef="Marca">
+            <mat-header-cell *matHeaderCellDef>Marca</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.sMarca}}</mat-cell>
+          </ng-container>
+  
+          <ng-container matColumnDef="Modelo">
+            <mat-header-cell *matHeaderCellDef>Modelo</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.sModelo}}</mat-cell>
+          </ng-container>
+  
+          <ng-container matColumnDef="Serie">
+            <mat-header-cell *matHeaderCellDef>Serie</mat-header-cell>
+            <mat-cell [matMenuTriggerFor]="menu" style="cursor: pointer;" *matCellDef="let row">{{row.sSerie}}
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item *ngIf="row.sEstatus === 'Stock'" (click)="DeviceToAssigment(row.sSerie)">
+                  <mat-icon>note_add</mat-icon>
+                  <span>Asignar</span>
+                </button>
+                <button mat-menu-item (click)="editDevice(row)">
+                  <mat-icon>edit</mat-icon>
+                  <span>Editar</span>
+                </button>
+                <button (click)="GoToExpediente(row)" mat-menu-item>
+                  <mat-icon>list</mat-icon>
+                  <span>Expediente</span>
+                </button>
+              </mat-menu></mat-cell>
+          </ng-container>
+  
+          <ng-container matColumnDef="Placa">
+            <mat-header-cell *matHeaderCellDef>Placa</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.sPlaca}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="Estatus">
+            <mat-header-cell *matHeaderCellDef>Estatus</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.sEstatus}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="SubEstatus">
+            <mat-header-cell *matHeaderCellDef>SubEstatus</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.sSubEstatus}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="Remision">
+            <mat-header-cell *matHeaderCellDef>Remisión</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.sRemision}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="Ubicacion">
+            <mat-header-cell *matHeaderCellDef>Ubicación</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.uiUbicacion}}</mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="footer">
+            <mat-footer-cell *matFooterCellDef colspan="2">
+              <button mat-raised-button (click)="upLoadPlacas()" color="primary">Cargar Placas</button>
+            </mat-footer-cell>
+          </ng-container>
+          
+          <mat-header-row *matHeaderRowDef="displayedColumns; sticky: !isLoadingResults;"></mat-header-row>
+          <mat-row *matRowDef="let row; index as x; columns: displayedColumns;">
+
+          </mat-row>
+          <mat-footer-row *matFooterRowDef="['footer']; sticky: !isLoadingResults;"></mat-footer-row>
+        </mat-table>
+      </div>
+    
+    </div>
+    <mat-paginator [length]="dataSource.data.length" [pageSizeOptions]="[5, 10, 20, 40]" showFirstLastButtons></mat-paginator>
+  </div>

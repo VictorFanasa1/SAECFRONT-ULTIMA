@@ -1,0 +1,75 @@
+<h1>Traspaso</h1>
+
+<div cdkDropListGroup class="row">
+  <div class="example-container-shade col-xs center-xs">
+    <div class="loading-shade"
+         *ngIf="isLoadEmployedS">
+      <mat-spinner *ngIf="isLoadEmployedS"></mat-spinner>
+    </div>
+    <div class="example-container">
+      <h2>Empleado Inicial</h2>
+      <div class="row">
+        <div class="col-xs">
+          <mat-form-field appearance="outline">
+            <mat-label>Número Empleado</mat-label>
+            <input matInput #empS>
+          </mat-form-field>
+        </div>
+        <div class="col-xs">
+          <button mat-raised-button color="primary" (click)="SearchEmployed(empS.value, 1)">Buscar</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs">
+          {{employedS.sEmployed}}
+        </div>
+      </div>
+      <div
+        cdkDropList
+        [cdkDropListData]="employedS.assigments"
+        class="example-list"
+        cdkDropListSortingDisabled
+        (cdkDropListDropped)="drop($event)">
+        <div class="example-box" *ngFor="let assigment of employedS.assigments" cdkDrag>{{assigment.sSerie}}</div>
+      </div>
+    </div>
+  </div>
+    
+  <div class="example-container-shade col-xs center-xs">
+    <div class="loading-shade"
+          *ngIf="isLoadEmployedE">
+      <mat-spinner *ngIf="isLoadEmployedE"></mat-spinner>
+    </div>
+    <div class="example-container">
+      <h2>Empleado Final</h2>
+      <div class="row">
+        <div class="col-xs">
+          <mat-form-field appearance="outline">
+            <mat-label>Número Empleado</mat-label>
+            <input matInput #empE>
+          </mat-form-field>
+        </div>
+        <div class="col-xs">
+          <button mat-raised-button color="primary" (click)="SearchEmployed(empE.value, 2)">Buscar</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs">
+          {{employedE.sEmployed}}
+        </div>
+      </div>
+      <div
+        cdkDropList
+        [cdkDropListData]="employedE.assigments"
+        class="example-list"
+        (cdkDropListDropped)="drop($event)">
+        <div class="example-box" *ngFor="let assigment of employedE.assigments" cdkDrag>{{assigment.sSerie}}</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+    <div class="col-xs">
+        <button mat-raised-button color="primary" (click)="newTraspaso()">Traspaso</button>
+    </div>
+</div>

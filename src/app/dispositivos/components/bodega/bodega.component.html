@@ -1,0 +1,146 @@
+<h1>Bodega</h1>
+<form [formGroup]="filters">
+  <div class="row">
+    <div class="col-xs">
+      <mat-form-field appearance="outline">
+        <mat-label>Almacen</mat-label>
+        <mat-select formControlName="uiUbicacion">
+            <mat-option *ngIf="data[3] !== '2'" [value]="''">TODOS</mat-option>
+            <mat-option *ngFor="let ubicacion of ubicaciones" [value]="ubicacion.uiClaveEmpresa">{{ubicacion.sNombre}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="col-xs">
+      <p>
+      Bodega: 
+      <mat-button-toggle-group formControlName="uiStatus" aria-label="Estatus">
+        <mat-button-toggle *ngFor="let s of status" [value]="s.uiStatus">{{s.sDescripcion}}</mat-button-toggle>
+      </mat-button-toggle-group>
+      </p>
+    </div>
+    <div class="col-xs">
+
+    </div>
+  </div>
+</form>
+<div class="row">
+  <div class="col-xs">
+    <div style="padding: 20px; max-width: 500px; width: 100%;" class="mat-elevation-z8">
+      <h2>Datos del Responsable</h2>
+      <p><b>Nombre:</b> {{responsable}}</p>
+      <p><b>Equipos:</b> {{dataSource.filteredData.length}}</p>
+    </div>
+  </div>
+</div>
+<br>
+<div class="mat-elevation-z8">
+  <div class="example-container">
+    <div class="loading-shade"
+         *ngIf="isLoadingResults">
+         <div class="flipping">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+    </div>
+  
+    <div class="containertable">
+      <mat-table [dataSource]="dataSource">
+
+        <ng-container matColumnDef="Tipo">
+          <mat-header-cell *matHeaderCellDef>Tipo de Equipo</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.sTipo}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Marca">
+          <mat-header-cell *matHeaderCellDef>Marca</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.sMarca}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Modelo">
+          <mat-header-cell *matHeaderCellDef>Modelo</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.sModelo}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Serie">
+          <mat-header-cell *matHeaderCellDef>Serie</mat-header-cell>
+          <mat-cell style="cursor: pointer;" [matMenuTriggerFor]="menu" *matCellDef="let row">{{row.sSerie}}
+            <mat-menu #menu="matMenu">
+              <button *ngIf="data[3] !== '2'" mat-menu-item (click)="changePlaca('')">
+                <mat-icon>label</mat-icon>
+                <span>Placa</span>
+              </button>
+              <button *ngIf="row.sSubStatus === 'Stock'" mat-menu-item (click)="DeviceToAssigment(row.sSerie)">
+                <mat-icon>note_add</mat-icon>
+                <span>Asignar</span>
+              </button>
+              <button (click)="GoToExpediente(row)" mat-menu-item>
+                <mat-icon>list</mat-icon>
+                <span>Expediente</span>
+              </button>
+            </mat-menu></mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Placa">
+          <mat-header-cell *matHeaderCellDef>Placa</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.sPlaca}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Sub">
+          <mat-header-cell *matHeaderCellDef>SubStatus</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.sSubStatus}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Contrato">
+          <mat-header-cell *matHeaderCellDef>Contrato</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.sContrato}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="FechaI">
+          <mat-header-cell *matHeaderCellDef>
+            Fecha Inicio
+          </mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.dtInicio | date: 'dd/MM/yy'}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="FechaF">
+          <mat-header-cell *matHeaderCellDef>
+            Fecha Fin
+          </mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.dtFin | date: 'dd/MM/yy'}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Dias">
+          <mat-header-cell *matHeaderCellDef>Días</mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.iDias}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="FechaM">
+          <mat-header-cell *matHeaderCellDef>
+            Fecha Modificación
+          </mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.dtMovimiento | date: 'dd/MM/yy'}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="footer">
+          <mat-footer-cell *matFooterCellDef colspan="2">
+            <button mat-raised-button (click)="downLoadBodega()" color="primary">Descargar</button>
+          </mat-footer-cell>
+        </ng-container>
+  
+        <mat-header-row *matHeaderRowDef="displayedColumns; sticky: !isLoadingResults;"></mat-header-row>
+        <mat-row *matRowDef="let row; index as x; columns: displayedColumns;" [ngClass]="{'highlight': selectedRowIndex === x}" (click)="highlight(x)"></mat-row>
+        <mat-footer-row *matFooterRowDef="['footer']; sticky: !isLoadingResults;"></mat-footer-row>
+      </mat-table>
+    </div>
+  
+  </div>
+  <mat-paginator [length]="dataSource.data.length" [pageSizeOptions]="[5, 10, 20, 40]" showFirstLastButtons></mat-paginator>
+</div>
+<br>

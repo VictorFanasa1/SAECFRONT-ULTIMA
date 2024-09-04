@@ -1,0 +1,17 @@
+<mat-toolbar color="primary">
+    <div fxHide.gt-xs>
+        <button mat-icon-button (click)="onTooggleSideNav()">
+            <mat-icon>menu</mat-icon>
+        </button>
+    </div>
+    <div>
+        <a routerLink="/index">SAEC</a>
+    </div>
+    <span class="example-spacer"></span>
+    <label>V 1.4.0</label>
+    <!-- <label>V 1.3.0.8</label> -->
+    <button mat-icon-button class="example-icon favorite-icon" [matTooltip]="tooltip" (click)="Change()" aria-label="Example icon-button with heart icon">
+        <i *ngIf="theme === 'D'" class="fa-solid fa-sun fa-xl"></i>
+        <i *ngIf="theme === 'L'" class="fa-solid fa-moon fa-xl"></i>
+    </button>
+</mat-toolbar>

@@ -1,0 +1,127 @@
+<h1 mat-dialog-title><b><i>Crear Empleado</i></b></h1>
+<div mat-dialog-content>
+    <form [formGroup]="frmSearch" (ngSubmit)="SearchAsiggments()">
+        <div class="row">
+            <div class="col-xs -6">
+                <mat-form-field style="max-width: 400px;" appearance="outline">
+                    <mat-label>Empleado</mat-label>
+                    <input formControlName="data" list="empleados" matInput>
+                </mat-form-field>&nbsp;&nbsp;
+                <button mat-raised-button color="primary">Buscar</button>
+            </div>
+            <div  class="col-xs -6">
+                <br>
+                <div class="center-xs">
+                    <form [formGroup]="internoExterno">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <mat-label>¿Es Interno?</mat-label>
+                            </div>
+                            <div class="col-md-2">
+                                <input type="radio" [value]=true formControlName="eleccion">
+                                <span>SI</span>
+                            </div>
+                            <div class="col-md-2">
+                                <input type="radio" [value]=false formControlName="eleccion">
+                                <span>NO</span>
+                            </div>
+                            <div class="col-md-4"></div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </form>
+    <form [formGroup]="employed">
+        <div class="loading-shade"
+             *ngIf="isLoadingResults">
+          <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+        </div>
+        <div class="row">
+            <div class="col-xs">
+                <mat-form-field appearance="standard">
+                    <mat-label>Número</mat-label>
+                    <input readonly formControlName="numero" matInput>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs">
+                <mat-form-field appearance="standard">
+                    <mat-label>Nombre</mat-label>
+                    <input readonly formControlName="nombre" matInput>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs">
+                <mat-form-field appearance="standard">
+                    <mat-label>Email</mat-label>
+                    <input formControlName="correo" matInput>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs">
+                <mat-form-field appearance="standard">
+                    <mat-label>Puesto</mat-label>
+                    <input readonly formControlName="puesto" matInput>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs">
+                <mat-form-field appearance="standard">
+                    <mat-label>UEN</mat-label>
+                    <input readonly formControlName="uen" matInput>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs">
+                <!-- <mat-form-field appearance="standard">
+                    <mat-label>Ubicación</mat-label>
+                    <mat-select formControlName="ubicacion">
+                        <mat-option *ngFor="let ubicacion of ubicaciones" [disabled]="ubicacion.iStatus === 1" 
+                        [value]="ubicacion.sNombreUbicacion" [(ngModel)]="ubiTI">
+                          {{ubicacion.sNombreUbicacion}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field> -->
+            <mat-form-field appearance="standard">
+             <mat-label>Ubicación</mat-label>
+              <input formControlName="ubicacion" matInput placeholder="Ubicación" [matAutocomplete]="autoubi">
+              <mat-autocomplete #autoubi="matAutocomplete" [displayWith]="displayUbi">
+                <mat-option *ngFor="let ubi of filterubicaciones | async" [value]="ubi">
+                  {{ubi.sNombreUbicacion}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+            </div>
+        </div>
+    </form>
+    
+    <!-- <div class="center-xs">
+        <form [formGroup]="internoExterno">
+            <div class="row">
+                <div class="col-md-4">
+                    <mat-label>¿Es Interno?</mat-label>
+                </div>
+                <div class="col-md-2">
+                    <input type="radio" [value]=true formControlName="eleccion">
+                    <span>SI</span>
+                </div>
+                <div class="col-md-2">
+                    <input type="radio" [value]=false formControlName="eleccion">
+                    <span>NO</span>
+                </div>
+                <div class="col-md-4"></div>
+            </div>
+        </form>
+    </div> -->
+    
+</div>
+<div mat-dialog-actions>
+  <button mat-button type="button" (click)="onNoClick()">Cerrar</button>
+  <button mat-raised-button color="primary" (click)="submit()" cdkFocusInitial>Aceptar</button>
+</div>

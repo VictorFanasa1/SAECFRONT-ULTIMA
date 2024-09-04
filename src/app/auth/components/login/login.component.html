@@ -1,0 +1,40 @@
+<main class="themechange">
+    <div class="row center-xs">
+        <form [formGroup]="credentials" (ngSubmit)="LogIn($event)">
+            <mat-card>
+                <img alt="Logo SAEC" src="../../../../assets/gits/SAEC-Angular.gif">
+                <mat-card-header class="center-xs">
+                    <mat-card-title>
+                        Inicio Sesión
+                    </mat-card-title>
+                    <mat-card-subtitle>
+                        Log In
+                    </mat-card-subtitle>
+                </mat-card-header>
+                <div>
+                    <div class="row center-xs">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Cuenta</mat-label>
+                            <input formControlName="user" matInput placeholder="User">
+                        </mat-form-field>
+                    </div>
+                    <div class="row center-xs">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Contraseña</mat-label>
+                            <input formControlName="password" matInput [type]="hide ? 'password' : 'text'">
+                            <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                            </button>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row center-xs">
+                    <button type="submit" style="width: 100%; font-size: 16px" [disabled]="!credentials.valid || isbusy" mat-raised-button color="accent">
+                        <span *ngIf="!isbusy">Entrar</span>
+                        <span *ngIf="isbusy">Autentificando <i class="fas fa-spinner fa-spin"></i></span>
+                    </button>
+                </div>
+            </mat-card>
+        </form>
+    </div>
+</main>

@@ -1,0 +1,6 @@
+<mat-nav-list>
+    <mat-list-item *ngFor="let s of supports" (click)="Dowload($event, s.uiSupport)">
+      <span mat-line>{{s.sUser}}</span>
+      <span mat-line>{{s.sFile}} <b>|</b> {{s.dtUpload | date: 'dd/MM/yyyy HH:mm'}} <b>|</b> {{getSize(s.iLength)}}</span>
+    </mat-list-item>
+</mat-nav-list>

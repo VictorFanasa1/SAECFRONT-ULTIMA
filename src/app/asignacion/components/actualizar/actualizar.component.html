@@ -1,0 +1,347 @@
+<div class="row">
+  <div class="col-md-3">
+    <h1 style="margin-top: 10px;"><b><i>Actualizaciones</i></b></h1>
+  </div>
+  <div class="col-md-2">
+    <button *ngIf="isSelected" style="margin-top: 10px;" mat-raised-button (click)="regresaBusqueda()" color="warn">
+      REGRESAR
+    </button>
+  </div>
+  <div class="col-md-7">
+    
+  </div>
+</div>
+
+<form *ngIf="isSelected==false" [formGroup]="frmEmployed" (ngSubmit)="searchEmpoyed()"> 
+  <div class="row">
+      <div class="col-xs">
+          <mat-form-field style="max-width: 400px;" appearance="outline">
+              <mat-label>Empleado</mat-label>
+              <input formControlName="employed" list="empleados" matInput>
+              <datalist id="empleados">
+                  <option *ngFor="let employed of Employeds" [value]="employed.sNombreUsuario">{{employed.uiNumeroEmpleado}}</option>
+              </datalist>
+          </mat-form-field>&nbsp;&nbsp;
+          <button mat-raised-button color="primary">VER EQUIPOS</button>
+      </div>
+  </div>
+</form>
+<div *ngIf="isSelected">
+  <form class="mat-elevation-z8 marco" [formGroup]="frmPutEmployed" (ngSubmit)="saveEmployed()">
+    <div class="row">
+      <div class="col-xs">
+        <h2>
+          Datos del Usuario
+        </h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs">
+        <mat-form-field appearance="standard">
+          <mat-label>Número</mat-label>
+          <input matInput readonly formControlName="number" placeholder="Placeholder">
+        </mat-form-field>
+      </div>
+      <div class="col-xs">
+        <mat-form-field appearance="outline">
+          <mat-label>Nombre</mat-label>
+          <input matInput formControlName="name" placeholder="Placeholder">
+        </mat-form-field>
+      </div>
+      <div class="col-xs">
+        <mat-form-field appearance="outline">
+          <mat-label>Correo</mat-label>
+          <input matInput formControlName="email" placeholder="Placeholder">
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs">
+        <mat-form-field appearance="outline">
+          <mat-label>Puesto</mat-label>
+          <input matInput formControlName="puesto" placeholder="Placeholder">
+        </mat-form-field>
+      </div>
+      <div class="col-xs">
+        <mat-form-field appearance="outline">
+          <mat-label>Ubicación</mat-label>
+          <input matInput formControlName="place" placeholder="Placeholder">
+        </mat-form-field>
+      </div>
+      <div class="col-xs">
+        <mat-form-field appearance="outline">
+          <mat-label>UEN</mat-label>
+          <input matInput formControlName="uen" placeholder="Placeholder">
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs">
+        <!--<button color="accent" mat-fab type="submit" class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+          <i *ngIf="!isEmployed" class="fa-solid fa-floppy-disk"></i>
+          <i *ngIf="isEmployed" class="fa-solid fa-cog"></i>
+        </button>-->
+        <button type="submit" mat-raised-button color="accent">
+          GUARDAR DATOS
+        </button>
+      </div>
+      <div class="col-xs end-xs">
+        <div class="row">
+          <div class="col-md-6" style="margin-left: 10px;">
+            <mat-label><b>Es externo</b></mat-label><br> 
+          </div>
+          <div class="col-md-6">
+            <mat-checkbox class="example-margin" (change)="ShowExternal($event.checked)"></mat-checkbox>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <!--<button class="btnexternal" *ngIf="!isExternal"  (click)="ShowExternal()" mat-fab color="accent" aria-label="Add Addicional">
+    <mat-icon>person_add</mat-icon>
+  </button>-->
+  <br *ngIf="isExternal">
+  <mat-card *ngIf="isExternal" class="mat-elevation-z8">
+    <form [formGroup]="frmExternal">
+      <div class="row">
+        <div class="col-xs">
+          <h2>
+            Datos Externos
+          </h2>
+        </div>
+      </div>
+      <mat-card-content>
+        <div class="row">
+          <div class="col-xs">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Nombre</mat-label>
+              <input matInput formControlName="sNombre">
+            </mat-form-field>
+          </div>
+          <div class="col-xs">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Correo</mat-label>
+              <input matInput formControlName="sCorreo">
+            </mat-form-field>
+          </div>
+          <div class="col-xs">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Compañia</mat-label>
+              <input matInput formControlName="sCompañia">
+            </mat-form-field>
+          </div>
+          <div class="col-xs">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Ubicación</mat-label>
+              <input matInput formControlName="uiUbicacion">
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-card-content>
+      <mat-card-actions >
+        <!--<button color="accent" (click)="SaveExternal()" mat-fab>
+          <i class="fa-solid fa-floppy-disk"></i>
+        </button>-->
+        <button type="button" (click)="SaveExternal()" mat-raised-button color="accent">
+          GUARDAR EXTERNO
+        </button>
+        <!--<button color="warn" mat-fab (click)="DeleteExternal()">
+          <i class="fa-solid fa-xmark"></i>
+        </button>-->
+        <button type="button" (click)="DeleteExternal()" mat-raised-button color="warn">
+          BORRAR EXTERNO
+        </button>
+      </mat-card-actions>
+    </form>
+  </mat-card> 
+  <br>
+  <mat-card class="mat-elevation-z8">
+    <div class="row">
+      <div class="col-xs">
+        <h2>
+          Activo Fijo
+        </h2>
+      </div>
+    </div>
+    <mat-card-content>
+      <div class="row">
+        <div class="col-xs">
+          <mat-form-field class="example-full-width" appearance="standard">
+            <mat-label>Tipo de Equipo</mat-label>
+            <input matInput readonly [value]="divice.sTipo">
+          </mat-form-field>
+        </div>
+        <div class="col-xs">
+          <mat-form-field class="example-full-width" appearance="standard">
+            <mat-label>Marca</mat-label>
+            <input matInput readonly [value]="divice.sMarca">
+          </mat-form-field>
+        </div>
+        <div class="col-xs">
+          <mat-form-field class="example-full-width" appearance="standard">
+            <mat-label>Modelo</mat-label>
+            <input matInput readonly [value]="divice.sModelo">
+          </mat-form-field>
+        </div>
+        <div class="col-xs">
+          <mat-form-field class="example-full-width" appearance="standard">
+            <mat-label>Serie</mat-label>
+            <input matInput readonly [value]="divice.sSerie">
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs">
+          <mat-form-field class="example-full-width" appearance="standard">
+            <mat-label>Placa</mat-label>
+            <input matInput readonly [value]="divice.sPlaca">
+          </mat-form-field>
+        </div>
+        <div class="col-xs">
+          <mat-form-field class="example-full-width" appearance="standard">
+            <mat-label>Estatus</mat-label>
+            <input matInput readonly [value]="divice.sEstatus">
+          </mat-form-field>
+        </div>
+        <div class="col-xs">
+          <mat-form-field class="example-full-width" appearance="standard">
+            <mat-label>Sub-Estatus</mat-label>
+            <input matInput readonly [value]="divice.sSubEstatus">
+          </mat-form-field>
+        </div>
+        <div class="col-xs">
+          <mat-form-field class="example-full-width" appearance="standard">
+            <mat-label *ngIf="!divice.bTransfer">Responsabe</mat-label>
+            <mat-label *ngIf="divice.bTransfer">Responsabe de Transferencia</mat-label>
+            <input matInput readonly [value]="divice.sResponsable">
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs">
+          <mat-form-field style="min-width: 300px; width: 100%;" appearance="standard">
+            <mat-label *ngIf="!divice.bTransfer">Ubicación</mat-label>
+            <mat-label *ngIf="divice.bTransfer">Ubicación de Transferencia</mat-label>
+            <input matInput readonly [value]="divice.uiUbicacion">
+          </mat-form-field>
+        </div>
+        <div class="col-xs">
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-footer>
+      <form style="padding-left: 10px;" [formGroup]="frmAccesories" (ngSubmit)="SaveAccesories()" class="row">
+        <div class="col-xs">
+          <mat-form-field appearance="outline">
+            <mat-label>Accesorios</mat-label>
+            <mat-select [disabled]="isAccesories" formControlName="accesories" multiple>
+              <mat-option *ngFor="let accesorio of accesorios" [value]="accesorio.uiRegistro">{{accesorio.sNombre}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-xs">
+          <!--<button [disabled]="isAccesories" color="accent" type="submit" mat-fab>
+            <i  class="fa-solid fa-floppy-disk"></i>
+            <i  class="fa-solid fa-cog fa-spin"></i>
+          </button>-->
+          <div class="row">
+            <div class="col-md-6">
+              <button [disabled]="isAccesories" type="submit" mat-raised-button color="accent">
+                GUARDAR DATOS
+              </button>
+            </div>
+            <div class="col-md-6">
+              <button type="button" mat-raised-button color="accent" (click)="AssigmentAddcional()" aria-label="Add Addicional">
+                ASIGNACIÓN ADICIONAL
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </mat-card-footer>
+  </mat-card>  
+</div>
+<br>
+<div *ngIf="isSelected" class="row" style="padding-left: 10px;">
+  <!--<button class="btnaddi" color="accent" (click)="AssigmentAddcional()" aria-label="Add Addicional" mat-fab>
+    <i class="fa-solid fa-computer"></i>
+  </button>-->
+  
+  <mat-card *ngFor="let addi of addicionals; index as x" style="max-width: 370px; width: 100%; margin-right: 10px; margin-bottom: 20px;">
+    <mat-card-title>{{addi.sSerie}}</mat-card-title>
+    <mat-card-subtitle>{{addi.sPlaca}}</mat-card-subtitle>
+    <mat-card-content>
+      <div class="row">
+        <div class="col-xs">
+          <dl>
+            <dt>{{addi.sType}}</dt>
+            <dt>{{addi.sBranch}}</dt>
+            <dt>{{addi.sModel}}</dt>
+            <dt>{{addi.dtAssigment | date: 'dd/MM/yyyy HH:mm'}}</dt>
+          </dl>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-card-actions class="end-xs">
+      <!--<button color="warn" mat-fab (click)="LiberarDivice(addi.sSerie, addi.uiAddicional, x)">
+        <i class="fa-solid fa-xmark"></i>
+      </button>-->
+      <!-- <button type="button" mat-raised-button color="accent" (click)="AssigmentAddcional()" aria-label="Add Addicional">
+        ASIGNACIÓN ADICIONAL
+      </button> -->
+      <button type="button" mat-raised-button color="accent" (click)="LiberarDivice(addi.sSerie, addi.uiAddicional, x)">
+        LIBERAR
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+<br>
+<div class="row">
+
+</div>
+<br>
+<div *ngIf="isSelected" style="padding: 10px;" class="mat-elevation-z8">
+  <form [formGroup]="frmAssigment">
+    <div class="row">
+      <div class="col-xs">
+        <h2>
+          Envío de Responsiva
+        </h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs">
+        <mat-form-field style="max-width: 300px;" appearance="outline">
+          <mat-label>Ticket</mat-label>
+          <input matInput formControlName="sTicket" [value]="asiggment.sTicket">
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs">
+        <mat-form-field appearance="outline">
+          <mat-label>Observaciones</mat-label>
+          <textarea matInput maxlength="300" formControlName="sComment" [value]="asiggment.sObservaciones"></textarea>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs center-xs">
+        <button mat-raised-button class="btnsendcomple" (click)="ConfirmUpdate(asiggment.uiAsignacion, $event)" color="primary">Enviar Responsiva</button>
+      </div>
+    </div>
+  </form>
+</div>
+<button mat-raised-button class="btnsend" *ngIf="isSelected" (click)="ConfirmUpdate(asiggment.uiAsignacion, $event)" color="primary">
+  Enviar Responsiva
+</button>
+<!--<button class="btnsend" *ngIf="isSelected" mat-fab (click)="ConfirmUpdate(asiggment.uiAsignacion, $event)" color="primary" aria-label="Enviar responsiva">
+  <i class="fa-solid fa-paper-plane"></i>
+</button>-->
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>

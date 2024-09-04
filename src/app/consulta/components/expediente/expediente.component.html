@@ -1,0 +1,296 @@
+<h1>Expediente</h1>
+<form [formGroup]="frmActivo">
+  <div class="row">
+    <div class="col-xs">
+      <mat-form-field style="max-width: 400px;" appearance="outline">
+        <mat-label>Serie</mat-label>
+        <input autocomplete="off" formControlName="divice" list="series" matInput placeholder="Serie">
+        <datalist id="series">
+          <option *ngFor="let serie of divices" [value]="serie.sSerie"></option>
+        </datalist>
+        <button matSuffix [disabled]="frmActivo.invalid || inProccess" (click)="setInfoDivice()" style="font-size: 22px;" mat-icon-button color="accent">
+          <i *ngIf="!inProccess" class="fa-solid fa-check"></i>
+          <i *ngIf="inProccess" class="fa-solid fa-rotate fa-spin"></i>
+        </button>
+      </mat-form-field>
+    </div>
+  </div>
+</form>
+<br>
+<div class="mat-elevation-z3" *ngIf="isSelected" style="padding: 20px;">
+  <h2>Dispositivo</h2>
+  <div class="row">
+    <div class="col-xs">
+      <mat-form-field class="example-full-width" appearance="standard">
+        <mat-label>Tipo de Equipo</mat-label>
+        <input matInput readonly [value]="divice.sTipo">
+      </mat-form-field>
+    </div>
+    <div class="col-xs">
+      <mat-form-field class="example-full-width" appearance="standard">
+        <mat-label>Marca</mat-label>
+        <input matInput readonly [value]="divice.sMarca">
+      </mat-form-field>
+    </div>
+    <div class="col-xs">
+      <mat-form-field class="example-full-width" appearance="standard">
+        <mat-label>Modelo</mat-label>
+        <input matInput readonly [value]="divice.sModelo">
+      </mat-form-field>
+    </div>
+    <div class="col-xs">
+      <mat-form-field class="example-full-width" appearance="standard">
+        <mat-label>Serie</mat-label>
+        <input matInput readonly [value]="divice.sSerie">
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs">
+      <mat-form-field class="example-full-width" appearance="standard">
+        <mat-label>Placa</mat-label>
+        <input matInput readonly [value]="divice.sPlaca">
+      </mat-form-field>
+    </div>
+    <div class="col-xs">
+      <mat-form-field class="example-full-width" appearance="standard">
+        <mat-label>Estatus</mat-label>
+        <input matInput readonly [value]="divice.sEstatus">
+      </mat-form-field>
+    </div>
+    <div class="col-xs">
+      <mat-form-field class="example-full-width" appearance="standard">
+        <mat-label>Sub-Estatus</mat-label>
+        <input matInput readonly [value]="divice.sSubEstatus">
+      </mat-form-field>
+    </div>
+    <div class="col-xs">
+      <mat-form-field class="example-full-width" appearance="standard">
+        <mat-label *ngIf="!divice.bTransfer">Responsabe</mat-label>
+        <mat-label *ngIf="divice.bTransfer">Responsabe de Transferencia</mat-label>
+        <input matInput readonly [value]="divice.sResponsable">
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row">
+    <div style="min-width: 300px;" class="col-xs">
+      <mat-form-field style="min-width: 300px; width: 100%;" appearance="standard">
+        <mat-label *ngIf="!divice.bTransfer">Ubicación</mat-label>
+        <mat-label *ngIf="divice.bTransfer">Ubicación de Transferencia</mat-label>
+        <input matInput readonly [value]="divice.uiUbicacion">
+      </mat-form-field>
+    </div>
+  </div>
+</div>
+<br>
+<div class="mat-elevation-z3" *ngIf="divice.bTransfer" style="padding: 20px;">
+  <h2>Transferencia(s)</h2>
+  <mat-accordion>
+    <mat-expansion-panel *ngFor="let transfer of transfers">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <b *ngIf="transfer.bActive">Actual</b>
+          <b *ngIf="!transfer.bActive">{{transfer.dtFinished | date: 'dd/MM/yyyy'}}</b>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="row">
+        <div class="col-xs">
+          <mat-form-field class="example-full-width" appearance="standard">
+            <mat-label>Responsable</mat-label>
+            <input matInput readonly [value]="transfer.sResponsable">
+          </mat-form-field>
+        </div>
+        <div class="col-xs">
+          <mat-form-field class="example-full-width" appearance="standard">
+            <mat-label>Ubicación</mat-label>
+            <input matInput readonly [value]="transfer.sUbicacion">
+          </mat-form-field>
+        </div>
+        <div class="col-xs">
+          <mat-form-field class="example-full-width" appearance="standard">
+            <mat-label>Fecha de Transferencia</mat-label>
+            <input matInput readonly [value]="transfer.dtCreated | date: 'dd/MM/yyyy'">
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs">
+          <mat-form-field class="example-full-width" appearance="standard">
+            <mat-label>Comentario</mat-label>
+            <input matInput readonly [value]="transfer.sComment">
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>
+<br>
+<app-documents [ngClass]="{ 'oculto': !isSelected, 'visible': isSelected }"></app-documents>
+<br>
+<div class="mat-elevation-z3" *ngIf="isSelected" style="padding: 20px;">
+  <h2>Historial de Asignaciones</h2>
+  <mat-accordion>
+    <mat-expansion-panel *ngFor="let asg of history">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{asg.uiEmployed}} {{asg.sEmployed}}
+        </mat-panel-title>
+        <mat-panel-description class="end-xs">
+          {{asg.dtAsigment | date: 'dd/MM/yyyy'}} - {{(asg.dtReleased === null ? 'Actual' : asg.dtReleased | date: 'dd/MM/yyyy')}}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div class="row">
+        <div *ngIf="!divice.bActivoFijo" class="col-xs">
+          <mat-form-field appearance="standard">
+            <mat-label>Serie Activo Fijo</mat-label>
+            <input matInput readonly [value]="asg.sSerie">
+            <button matSuffix mat-icon-button color="accent" matTooltip="Expediente"
+            (click)="ChangeDevice(asg.sSerie)">
+              <i class="fa-solid fa-book"></i>
+            </button>
+          </mat-form-field>
+        </div>
+        <div class="col-xs">
+          <mat-form-field appearance="standard">
+            <mat-label>Tipo Asignación</mat-label>
+            <input matInput readonly [value]="asg.sType">
+          </mat-form-field>
+        </div>
+        <div class="col-xs">
+          <mat-form-field appearance="standard">
+            <mat-label>Fecha Inventario</mat-label>
+            <input matInput readonly [value]="asg.dtInventory | date: 'dd/MM/yyyy'">
+          </mat-form-field>
+        </div>
+        <div class="col-xs">
+          <mat-form-field appearance="standard">
+            <mat-label>Fecha Pre-Liberación</mat-label>
+            <input matInput readonly [value]="asg.dtPreReleased | date: 'dd/MM/yyyy'">
+          </mat-form-field>
+        </div>
+        <div class="col-xs">
+          <mat-form-field appearance="standard">
+            <mat-label>Estatus Liberación</mat-label>
+            <input matInput readonly [value]="asg.sStatus">
+          </mat-form-field>
+        </div>
+        <div class="col-xs">
+          <mat-form-field appearance="standard">
+            <mat-label>Sub Estatus Liberación</mat-label>
+            <input matInput readonly [value]="asg.sSubStatus">
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs">
+          <mat-form-field appearance="standard">
+            <mat-label>Ubicación de Asignación</mat-label>
+            <input matInput readonly [value]="asg.sPlace">
+          </mat-form-field>
+        </div>
+        <div class="col-xs">
+          <div class="row">
+            <div class="col-xs">
+              <button mat-raised-button (click)="DownLoadResponsiva(asg.uiAsiggment)" *ngIf="asg.bResponsiva" color="accent">Responsiva</button>
+            </div>
+            <div class="col-xs-center-xs">
+              <button mat-raised-button (click)="viewSupports(asg.uiReleased)" color="accent">Soportes</button>
+            </div>
+            <div class="col-xs end-xs">
+              <button mat-raised-button (click)="downLoadFile(asg.uiReleased)" *ngIf="asg.bReleased" color="accent">Liberacion</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <mat-chip-list
+        class="example-chip"
+        cdkDropList 
+        cdkDropListOrientation="horizontal">
+        <mat-chip
+          class="example-box"
+          cdkDrag
+          *ngFor="let acce of asg.lAccesories">
+          {{acce}}
+        </mat-chip>
+      </mat-chip-list>
+      <div *ngIf="asg.objExternal !== null">
+        <mat-divider></mat-divider>
+        <h3>Externo</h3>
+        <div class="row">
+          <div class="col-xs">
+            <mat-form-field appearance="standard">
+              <mat-label>Nombre</mat-label>
+              <input matInput readonly [value]="asg.objExternal.sNombre">
+            </mat-form-field>
+          </div>
+          <div class="col-xs">
+            <mat-form-field appearance="standard">
+              <mat-label>Correo</mat-label>
+              <input matInput readonly [value]="asg.objExternal.sCorreo">
+            </mat-form-field>
+          </div>
+          <div class="col-xs">
+            <mat-form-field appearance="standard">
+              <mat-label>Ubicación</mat-label>
+              <input matInput readonly [value]="asg.objExternal.uiUbicacion">
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      <br>
+      <br>
+      <h3>
+        Adicionales
+      </h3>
+        <div class="row" *ngFor="let adi of asg.lAdicionals" [ngClass]="{ 'borderaddi': divice.sSerie === adi.sSerie}">
+          <div class="col-xs">
+            <mat-form-field appearance="standard">
+              <mat-label>Tipo Equipo</mat-label>
+              <input matInput readonly [value]="adi.sType">
+            </mat-form-field>
+          </div>
+          <div class="col-xs">
+            <mat-form-field appearance="standard">
+              <mat-label>Marca</mat-label>
+              <input matInput readonly [value]="adi.sBranch">
+            </mat-form-field>
+          </div>
+          <div class="col-xs">
+            <mat-form-field appearance="standard">
+              <mat-label>Modelo</mat-label>
+              <input matInput readonly [value]="adi.sModel">
+            </mat-form-field>
+          </div>
+          <div class="col-xs">
+            <mat-form-field appearance="standard">
+              <mat-label>Serie</mat-label>
+              <input matInput readonly [value]="adi.sSerie">
+              <button matSuffix *ngIf="divice.sSerie !== adi.sSerie" mat-icon-button color="accent" matTooltip="Expediente"
+              (click)="ChangeDevice(adi.sSerie)">
+                <i class="fa-solid fa-book"></i>
+              </button>
+            </mat-form-field>
+          </div>
+          <div class="col-xs">
+            <mat-form-field appearance="standard">
+              <mat-label>Placa</mat-label>
+              <input matInput readonly [value]="adi.sPlaca">
+            </mat-form-field>
+          </div>
+          <div class="col-xs">
+            <mat-form-field appearance="standard">
+              <mat-label>Asignado</mat-label>
+              <input matInput readonly style="text-transform: uppercase" [value]="adi.dtAsiggment | date: 'EEEE dd/MM/yyyy HH:mm':'UTC-5':'es'">
+            </mat-form-field>
+          </div>
+          <div class="col-xs">
+            <mat-form-field appearance="standard">
+              <mat-label>Liberado</mat-label>
+              <input matInput readonly style="text-transform: uppercase" [value]="adi.dtReleased | date: 'EEEE dd/MM/yyyy HH:mm':'UTC-5':'es'">
+            </mat-form-field>
+          </div>
+        </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>
+<br>

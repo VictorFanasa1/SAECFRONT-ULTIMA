@@ -1,0 +1,180 @@
+<form [formGroup]="frmLiberacion" (ngSubmit)="Realese()">
+  <h1 style="margin-top: 10px; text-align: center;"><b><i>Liberando Asignación</i></b></h1>
+  <mat-card color="primary">
+    <mat-card-title>Activo Fijo: {{divice.sSerie}}</mat-card-title>
+    <mat-card-subtitle>{{divice.sPlaca}}</mat-card-subtitle>
+    <mat-card-content>
+      <div class="row">
+        <div class="col-xs">
+          <mat-form-field class="example-full-width" appearance="standard">
+            <mat-label>Tipo de Equipo</mat-label>
+            <input matInput readonly [value]="divice.sTipo">
+          </mat-form-field>
+        </div>
+        <div class="col-xs">
+          <mat-form-field class="example-full-width" appearance="standard">
+            <mat-label>Marca</mat-label>
+            <input matInput readonly [value]="divice.sMarca">
+          </mat-form-field>
+        </div>
+        <div class="col-xs">
+          <mat-form-field class="example-full-width" appearance="standard">
+            <mat-label>Modelo</mat-label>
+            <input matInput readonly [value]="divice.sModelo">
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs">
+          <mat-form-field class="example-full-width" appearance="standard">
+            <mat-label>Estatus</mat-label>
+            <input matInput readonly [value]="divice.sEstatus">
+          </mat-form-field>
+        </div>
+        <div class="col-xs">
+          <mat-form-field class="example-full-width" appearance="standard">
+            <mat-label>Sub-Estatus</mat-label>
+            <input matInput readonly [value]="divice.sSubEstatus">
+          </mat-form-field>
+        </div>
+        <div class="col-xs">
+          <mat-form-field class="example-full-width" appearance="standard">
+            <mat-label *ngIf="!divice.bTransfer">Responsabe</mat-label>
+            <mat-label *ngIf="divice.bTransfer">Responsabe de Transferencia</mat-label>
+            <input matInput readonly [value]="divice.sResponsable">
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div style="min-width: 300px;" class="col-xs">
+          <mat-form-field style="min-width: 300px; width: 100%;" appearance="standard">
+            <mat-label *ngIf="!divice.bTransfer">Ubicación</mat-label>
+            <mat-label *ngIf="divice.bTransfer">Ubicación de Transferencia</mat-label>
+            <input matInput readonly [value]="divice.uiUbicacion">
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs">
+          <mat-form-field appearance="outline">
+            <mat-label>Motivo</mat-label>
+            <mat-select placeholder="Seleccione un SubStatus" formControlName="uiMotivo">
+              <mat-option *ngFor="let m of motivos" [value]="m.uiMotivo">{{m.sDescripcion}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-xs">
+          <mat-form-field appearance="outline">
+              <mat-label>Entrega</mat-label>
+              <mat-select placeholder="Seleccione un SubStatus" required formControlName="uiEntrega">
+                  <mat-option *ngFor="let e of entregas" [value]="e.uiEntrega">{{e.sDescripcion}}</mat-option>
+              </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-xs">
+          <mat-form-field appearance="outline">
+            <mat-label>Estatus</mat-label>
+            <mat-select formControlName="uiStatus">
+                <mat-option *ngFor="let s of status" [value]="s.uiStatus">{{s.sDescripcion}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-xs">
+          <mat-form-field appearance="outline">
+            <mat-label>Sub Estatus</mat-label>
+            <mat-select placeholder="Seleccione un SubStatus" formControlName="uiSubStatus">
+                <mat-option *ngFor="let s of filterSubStatus" [value]="s.uiSubStatus">{{s.sDescripcion}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  <br>
+  <ng-container formArrayName="addicionals">
+    <ng-container *ngFor="let addi of addicionals.controls; let i = index">
+      <mat-card [formGroupName]="i">
+        <mat-card-title>Adicional: {{addicionals.controls[i].value.sSerie}}</mat-card-title>
+        <mat-card-subtitle>{{addicionals.controls[i].value.sPlaca}}</mat-card-subtitle>
+        <mat-card-content>
+          <div class="row">
+            <div class="col-xs">
+              <mat-form-field class="example-full-width" appearance="standard">
+                <mat-label>Tipo de Equipo</mat-label>
+                <input matInput readonly formControlName="sType">
+              </mat-form-field>
+            </div>
+            <div class="col-xs">
+              <mat-form-field class="example-full-width" appearance="standard">
+                <mat-label>Marca</mat-label>
+                <input matInput readonly formControlName="sBranch">
+              </mat-form-field>
+            </div>
+            <div class="col-xs">
+              <mat-form-field class="example-full-width" appearance="standard">
+                <mat-label>Modelo</mat-label>
+                <input matInput readonly formControlName="sModel">
+              </mat-form-field>
+            </div>
+            <div class="col-xs">
+              <mat-form-field class="example-full-width" appearance="standard">
+                <mat-label>Asignado</mat-label>
+                <input matInput readonly [value]="addicionals.controls[i].value.dtAssigment | date: 'dd/MM/yyy HH:mm'">
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs">
+              <mat-form-field appearance="outline">
+                <mat-label>Estatus</mat-label>
+                <mat-select formControlName="uiStatus">
+                    <mat-option *ngFor="let s of status" [value]="s.uiStatus">{{s.sDescripcion}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-xs">
+              <mat-form-field appearance="outline">
+                <mat-label>Sub Estatus</mat-label>
+                <mat-select placeholder="Seleccione un SubStatus" formControlName="uiSubStatus">
+                    <mat-option *ngFor="let s of substatus" [value]="s.uiSubStatus">{{s.sDescripcion}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+      <br>
+    </ng-container>
+  </ng-container>
+  <label for="tracing-upload" class="custom-detail-upload">
+      CARGAR EVIDENCIA
+      <svg xmlns="http://www.w3.org/2000/svg" style="width: 22px; height: 17px; margin-left: 5px" viewBox="0 0 384 512"><!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M224 136V0H24C10.7 0 0 10.7 0 24v464c0 13.3 10.7 24 24 24h336c13.3 0 24-10.7 24-24V160H248c-13.2 0-24-10.8-24-24zm65.2 216H224v80c0 8.8-7.2 16-16 16h-32c-8.8 0-16-7.2-16-16v-80H94.8c-14.3 0-21.4-17.3-11.3-27.4l96.4-95.7c6.7-6.6 17.4-6.6 24 0l96.4 95.7c10.2 10.1 3 27.4-11.3 27.4zM377 105L279.1 7c-4.5-4.5-10.6-7-17-7H256v128h128v-6.1c0-6.3-2.5-12.4-7-16.9z"/></svg>
+  </label>
+  <input id="tracing-upload" (change)="upLoadFiles()" type="file" accept="image/*,.pdf,.xlsx,.csv,.docx" />
+  <label class="custom-detail-return" routerLink="/administracion/movimientos">REGRESAR</label>
+  <!--<label  class="custom-detail-return" style="margin-left: 200px;">
+    REGRESAR
+  </label>
+  <input (click)="returnMoves()" />-->
+  <mat-chip-list
+  class="example-chip">
+      <mat-chip
+          class="example-box" 
+          *ngFor="let file of namefiles; index as x">
+          {{file}}
+      </mat-chip>
+  </mat-chip-list>
+  <div class="row">
+    <div class="col-xs center-xs">
+      <button class="desktop" [disabled]="inProcess" type="submit" mat-raised-button color="warn">
+        LIBERAR
+      </button>
+      <button mat-fab type="submit" [disabled]="inProcess" class="movil" color="accent" >
+        <mat-icon>clear</mat-icon>
+    </button>
+    </div>
+  </div>
+</form>
+<br>
+<br>
+<br>

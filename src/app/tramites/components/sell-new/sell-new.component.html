@@ -1,0 +1,185 @@
+<div class="tabcontainer">
+    <form [formGroup]="frmEquipo" (submit)="AgregarEquipo($event)">
+        <div class="row">
+            <div class="col-xs">
+                <mat-form-field appearance="outline">
+                    <mat-label>Serie</mat-label>
+                    <input autocomplete="off" formControlName="sSerie" matInput type="text">
+                    <button (click)="SearchDevice()" [disabled]="isDevice" type="button" mat-icon-button matSuffix>
+                        <i *ngIf="!isDevice" style="margin-top: -15px !important;" class="fa-solid fa-magnifying-glass"></i>
+                        <i *ngIf="isDevice" style="margin-top: -15px !important;" class="fa-solid fa-arrows-rotate fa-spin"></i>
+                    </button>
+                </mat-form-field>
+            </div>
+            <div class="col-xs">
+                <mat-form-field appearance="standard">
+                    <mat-label>Placa</mat-label>
+                    <input formControlName="sPlaca" readonly matInput type="text">
+                </mat-form-field>
+            </div>
+            <div class="col-xs">
+                <mat-form-field appearance="standard">
+                    <mat-label>Tipo</mat-label>
+                    <input formControlName="sType" readonly matInput type="text">
+                </mat-form-field>
+            </div>
+            <div class="col-xs">
+                <mat-form-field appearance="standard">
+                    <mat-label>Marca</mat-label>
+                    <input formControlName="sBranch" readonly matInput type="text">
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs">
+                <mat-form-field appearance="standard">
+                    <mat-label>Modelo</mat-label>
+                    <input formControlName="sModel" readonly matInput type="text">
+                </mat-form-field>
+            </div>
+            <div class="col-xs">
+                <mat-form-field appearance="outline">
+                    <mat-label>Número Empleado</mat-label>
+                    <input autocomplete="off" formControlName="uiEmployed" matInput type="text">
+                    <button (click)="SearchEmployed()" [disabled]="isEmployed" type="button" mat-icon-button matSuffix>
+                        <i *ngIf="!isDevice" style="margin-top: -15px !important;" class="fa-solid fa-magnifying-glass"></i>
+                        <i *ngIf="isDevice" style="margin-top: -15px !important;" class="fa-solid fa-arrows-rotate fa-spin"></i>
+                    </button>
+                </mat-form-field>
+            </div>
+            <div class="col-xs">
+                <mat-form-field appearance="standard">
+                    <mat-label>Nombre Empleado</mat-label>
+                    <input formControlName="sEmployed" readonly matInput type="text">
+                </mat-form-field>
+            </div>
+            <div class="col-xs">
+                <mat-form-field appearance="outline">
+                    <mat-label>Correo Empleado</mat-label>
+                    <input autocomplete="off" formControlName="sEmail" matInput type="text">
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-3">
+                <mat-form-field appearance="outline">
+                    <mat-label>Fecha Limite</mat-label>
+                    <input formControlName="dtFinish" readonly matInput [matDatepicker]="picker">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div class="col-xs middle-xs">
+                <button type="submit" [disabled]="frmEquipo.invalid" matTooltip="Agregar" mat-mini-fab color="accent">
+                    <i class="fa-solid fa-plus fa-1x"></i>
+                </button>
+            </div>
+        </div>
+    </form>
+    <div class="mat-elevation-z8"> <!-- Tabla asignaciones -->
+        <div class="example-container">
+          <div class="loading-shade"
+                *ngIf="isLoadingResults">
+                <div class="flipping">
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                </div>
+          </div>
+          <div class="containertable">
+            <mat-table [dataSource]="dataSource">
+      
+              <ng-container matColumnDef="sSerie">
+                <mat-header-cell *matHeaderCellDef>
+                  Serie
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.sSerie}}</mat-cell>
+              </ng-container>
+      
+              <ng-container matColumnDef="sPlaca">
+                <mat-header-cell *matHeaderCellDef>
+                  Placa
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.sPlaca}}</mat-cell>
+              </ng-container>
+      
+              <ng-container matColumnDef="sType">
+                <mat-header-cell *matHeaderCellDef>
+                  Tipo
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.sType}}</mat-cell>
+              </ng-container>
+      
+              <ng-container matColumnDef="sBranch">
+                <mat-header-cell *matHeaderCellDef>
+                  Marca
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.sBranch}}</mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="sModel">
+                <mat-header-cell *matHeaderCellDef>
+                  Modelo
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.sModel}}</mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="uiEmployed">
+                <mat-header-cell *matHeaderCellDef>
+                  Número
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.uiEmployed}}</mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="sEmployed">
+                <mat-header-cell *matHeaderCellDef>
+                  Nombre
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.sEmployed}}</mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="sEmail">
+                <mat-header-cell *matHeaderCellDef>
+                  Correo
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.sEmail}}</mat-cell>
+              </ng-container>
+      
+              <ng-container matColumnDef="dtFinish">
+                <mat-header-cell *matHeaderCellDef>
+                    Finaliza
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.dtFinish | date: 'dd/MM/yy'}}</mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="actions">
+                <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                <mat-cell *matCellDef="let row; let i as index">
+                  <button mat-mini-fab>
+                    <i class="fa-regular fa-trash-can"></i>
+                  </button>
+                </mat-cell>
+              </ng-container>
+      
+              <ng-container matColumnDef="footer">
+                <mat-footer-cell *matFooterCellDef colspan="2">
+                  <button mat-raised-button color="primary">Carga Masiva</button>
+                </mat-footer-cell>
+              </ng-container>
+        
+              <mat-header-row *matHeaderRowDef="displayedColumns; sticky: !isLoadingResults;"></mat-header-row>
+              <mat-row *matRowDef="let row; index as x; columns: displayedColumns;"></mat-row>
+              <mat-footer-row *matFooterRowDef="['footer']; sticky: !isLoadingResults;"></mat-footer-row>
+            </mat-table>
+          </div>
+        
+        </div>
+        <mat-paginator [length]="dataSource.data.length" [pageSizeOptions]="[5, 10, 20, 40, 80]" showFirstLastButtons></mat-paginator>
+    </div>
+</div>

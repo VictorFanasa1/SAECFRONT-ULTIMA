@@ -1,0 +1,305 @@
+<h1>Asignaciones</h1>
+<mat-accordion> <!-- Filtros -->
+  <mat-expansion-panel hideToggle>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Filtros
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <form [formGroup]="frmFilters">
+      <div class="row">
+        <div *ngIf="data[3] !== '2'" class="col-xs">
+          <mat-form-field appearance="outline">
+            <mat-label>Almacen</mat-label>
+            <mat-select formControlName="uiPlace">
+              <mat-option value="">TODOS</mat-option>
+              <mat-option *ngFor="let u of ubicaciones" [value]="u.uiClaveEmpresa">{{u.sNombre}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-xs">
+          <mat-form-field appearance="outline">
+            <mat-label>Ubicación</mat-label>
+            <input autocomplete="off" formControlName="sPlace" matInput>
+            <mat-icon *ngIf="frmFilters.controls.sPlace.value !== ''" style="cursor: pointer;" (click)="frmFilters.patchValue({ sPlace: '' })" matSuffix>clear</mat-icon>
+          </mat-form-field>
+        </div>
+        <div class="col-xs">
+          <mat-form-field appearance="outline">
+            <mat-label>Responsiva</mat-label>
+            <mat-select formControlName="bDocument">
+              <mat-option value="">TODOS</mat-option>
+              <mat-option value="SI">Cargada</mat-option>
+              <mat-option value="NO">Sin Cargar</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-xs">
+          <mat-form-field style="max-width: 400px;" appearance="outline">
+            <mat-label>Empleado</mat-label>
+            <input formControlName="sEmployed" list="empleados" matInput>
+            <datalist id="empleados">
+                <option *ngFor="let employed of employeds" [value]="employed.sNombreUsuario">{{employed.uiNumeroEmpleado}}</option>
+            </datalist>
+        </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs">
+          <mat-form-field appearance="outline">
+            <mat-label>Serie</mat-label>
+            <input autocomplete="off" formControlName="sSerie" matInput>
+            <mat-icon *ngIf="frmFilters.controls.sSerie.value !== ''" style="cursor: pointer;" (click)="frmFilters.patchValue({ sSerie: '' })" matSuffix>clear</mat-icon>
+          </mat-form-field>
+        </div>
+        <div class="col-xs">
+          <mat-form-field appearance="outline">
+            <mat-label>Placa</mat-label>
+            <input autocomplete="off" formControlName="sPlaca" matInput>
+            <mat-icon *ngIf="frmFilters.controls.sPlaca.value !== ''" style="cursor: pointer;" (click)="frmFilters.patchValue({ sPlaca: '' })" matSuffix>clear</mat-icon>
+          </mat-form-field>
+        </div>
+        <div class="col-xs">
+          <mat-form-field appearance="outline">
+            <mat-label>Tipo de Equipo</mat-label>
+            <mat-select formControlName="sType">
+              <mat-option value="">TODOS</mat-option>
+              <mat-option *ngFor="let t of types" [value]="t.sNombre">{{t.sNombre}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-xs">
+          <mat-form-field appearance="outline">
+            <mat-label>Marca</mat-label>
+            <mat-select formControlName="sBrand">
+              <mat-option value="">TODOS</mat-option>
+              <mat-option *ngFor="let b of brands" [value]="b.sNombre">{{b.sNombre}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+  </mat-expansion-panel>
+</mat-accordion>
+<div style="margin-top: 5px;" class="row"> <!-- Filtros activos -->
+  <div class="col-xs">
+    <mat-chip-list
+    cdkDropListOrientation="horizontal">
+      <mat-chip *ngIf="frmFilters.controls.uiPlace.value !== ''" (removed)="frmFilters.patchValue( { uiPlace: '' } )">
+          {{frmFilters.controls.uiPlace.value}}
+        <mat-icon matChipRemove>clear</mat-icon>
+      </mat-chip>
+      <mat-chip *ngIf="frmFilters.controls.sPlace.value !== ''" (removed)="frmFilters.patchValue( { sPlace: '' } )">
+        {{frmFilters.controls.sPlace.value}}
+        <mat-icon matChipRemove>clear</mat-icon>
+      </mat-chip>
+      <mat-chip *ngIf="frmFilters.controls.bDocument.value !== ''" (removed)="frmFilters.patchValue( { bDocument: '' } )">
+        Responsiva: {{frmFilters.controls.bDocument.value}}
+        <mat-icon matChipRemove>clear</mat-icon>
+      </mat-chip>
+      <mat-chip *ngIf="frmFilters.controls.sSerie.value !== ''" (removed)="frmFilters.patchValue( { sSerie: '' } )">
+        {{frmFilters.controls.sSerie.value}}
+        <mat-icon matChipRemove>clear</mat-icon>
+      </mat-chip>
+      <mat-chip *ngIf="frmFilters.controls.sPlaca.value !== ''" (removed)="frmFilters.patchValue( { sPlaca: '' } )">
+        {{frmFilters.controls.sPlaca.value}}
+        <mat-icon matChipRemove>clear</mat-icon>
+      </mat-chip>
+      <mat-chip *ngIf="frmFilters.controls.sType.value !== ''" (removed)="frmFilters.patchValue( { sType: '' } )">
+        {{frmFilters.controls.sType.value}}
+        <mat-icon matChipRemove>clear</mat-icon>
+      </mat-chip>
+      <mat-chip *ngIf="frmFilters.controls.sBrand.value !== ''" (removed)="frmFilters.patchValue( { sBrand: '' } )">
+        {{frmFilters.controls.sBrand.value}}
+        <mat-icon matChipRemove>clear</mat-icon>
+      </mat-chip>
+      <mat-chip *ngIf="frmFilters.controls.sEmployed.value !== ''" (removed)="frmFilters.patchValue( { sEmployed: '' } )">
+        {{frmFilters.controls.sEmployed.value}}
+        <mat-icon matChipRemove>clear</mat-icon>
+      </mat-chip>
+    </mat-chip-list>
+  </div>
+</div>
+<br>
+<div class="mat-elevation-z8"> <!-- Tabla asignaciones -->
+  <div class="row">
+    <div class="col-xs end-xs">
+      <button color="accent" mat-icon-button type="button" (click)="CargarData()" color="accent">
+        <i class="fa-solid fa-arrow-rotate-right fa-2x"></i>
+      </button>
+    </div>
+  </div>
+  <div class="example-container">
+    <div class="loading-shade"
+          *ngIf="isLoadingResults">
+          <div class="flipping">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+    </div>
+    <div class="containertable">
+      <mat-table [dataSource]="dataSource">
+
+        <ng-container matColumnDef="Empleado">
+          <mat-header-cell *matHeaderCellDef># Empleado</mat-header-cell>
+          <mat-cell style="cursor: pointer;" [matMenuTriggerFor]="menunumber" *matCellDef="let row">{{row.uiEmployed}}
+            <mat-menu #menunumber="matMenu">
+              <button mat-menu-item [cdkCopyToClipboard]="row.uiEmployed">
+                <mat-icon>file_copy</mat-icon>
+                <span>Copiar Número</span>
+              </button>
+              <button mat-menu-item (click)="frmFilters.patchValue({ sEmployed: row.sEmployed })">
+                <mat-icon>filter_list</mat-icon>
+                <span>Filtrar</span>
+              </button>
+              <button [routerLink]="'/consulta/general'" [queryParams]="{ uiEmployed: row.uiEmployed }" mat-menu-item>
+                <mat-icon>list</mat-icon>
+                <span>Consultar</span>
+              </button>
+            </mat-menu>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Nombre">
+          <mat-header-cell *matHeaderCellDef>Nombre</mat-header-cell>
+          <mat-cell style="cursor: pointer;" [matMenuTriggerFor]="menuemployed" *matCellDef="let row">{{row.sEmployed}}
+            <mat-menu #menuemployed="matMenu">
+              <button mat-menu-item [cdkCopyToClipboard]="row.sEmployed">
+                <mat-icon>file_copy</mat-icon>
+                <span>Copiar Nombre</span>
+              </button>
+              <button mat-menu-item (click)="frmFilters.patchValue({ sEmployed: row.sEmployed })">
+                <mat-icon>filter_list</mat-icon>
+                <span>Filtrar</span>
+              </button>
+              <button [routerLink]="'/consulta/general'" [queryParams]="{ sData: row.uiEmployed }" mat-menu-item>
+                <mat-icon>list</mat-icon>
+                <span>Consultar</span>
+              </button>
+            </mat-menu>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Serie">
+          <mat-header-cell *matHeaderCellDef>Serie</mat-header-cell>
+          <mat-cell style="cursor: pointer;" [matMenuTriggerFor]="menu" *matCellDef="let row">{{row.sSerie}}
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item [cdkCopyToClipboard]="row.sSerie">
+                  <mat-icon>file_copy</mat-icon>
+                  <span>Copiar Serie</span>
+                </button>
+                <button *ngIf="data[3] === '1'" mat-menu-item (click)="ReSendEmail(row.uiAssigment)">
+                  <mat-icon>email</mat-icon>
+                  <span>Reenviar</span>
+                </button>
+                  <button *ngIf="data[3] === '1'" mat-menu-item [routerLink]="['/asignacion', 'actualizar', row.uiAssigment]">
+                    <mat-icon>update</mat-icon>
+                    <span>Actualizar</span>
+                  </button>
+                  <button *ngIf="data[3] === '1'" [routerLink]="['/administracion','liberacion']" [queryParams]="{ uiAsiggment: row.uiAssigment }" mat-menu-item>
+                    <mat-icon>clear</mat-icon>
+                    <span>Liberar</span>
+                  </button>
+                  <button [routerLink]="'/consulta/general'" [queryParams]="{ sData: row.uiEmployed }" mat-menu-item>
+                    <mat-icon>list</mat-icon>
+                    <span>Consultar</span>
+                  </button>
+                  <button (click)="GoToExpediente(row)" mat-menu-item>
+                    <mat-icon>list</mat-icon>
+                    <span>Expediente</span>
+                  </button>
+                </mat-menu></mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Placa">
+          <mat-header-cell *matHeaderCellDef>
+            Placa
+          </mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.sPlaca}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Tipo">
+          <mat-header-cell *matHeaderCellDef>
+            Tipo
+          </mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.sType}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Marca">
+          <mat-header-cell *matHeaderCellDef>
+            Marca
+          </mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.sBrand}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Modelo">
+          <mat-header-cell *matHeaderCellDef>
+            Modelo
+          </mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.sModel}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Asignado">
+          <mat-header-cell *matHeaderCellDef>
+              Asignado
+          </mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.dtAssigment | date: 'dd/MM/yy'}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Inventariado">
+          <mat-header-cell *matHeaderCellDef>
+              Inventariado
+          </mat-header-cell>
+          <mat-cell *matCellDef="let row">{{row.dtInventory | date: 'dd/MM/yy'}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Ubicación">
+          <mat-header-cell *matHeaderCellDef>Ubicación</mat-header-cell>
+          <mat-cell style="cursor: pointer;" [matMenuTriggerFor]="menuubi" *matCellDef="let row">{{row.sPlace}}
+            <mat-menu #menuubi="matMenu">
+              <button mat-menu-item [cdkCopyToClipboard]="row.sPlace">
+                <mat-icon>file_copy</mat-icon>
+                <span>Copiar Ubicación</span>
+              </button>
+              <button mat-menu-item (click)="frmFilters.patchValue({ sPlace: row.sPlace })">
+                <mat-icon>filter_list</mat-icon>
+                <span>Filtrar</span>
+              </button>
+            </mat-menu>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Responsiva">
+          <mat-header-cell *matHeaderCellDef>Responsiva</mat-header-cell>
+          <mat-cell *matCellDef="let row; let i as index">
+            <button (click)="CargarResponsiva(row, i)" mat-mini-fab color="accent" *ngIf="row.bDocument === 'SI'">
+              <mat-icon>cloud_done</mat-icon>
+            </button>
+            <button mat-mini-fab color="warn" (click)="CargarResponsiva(row, i)" *ngIf="row.bDocument === 'NO'">
+              <mat-icon>cloud_upload</mat-icon>
+            </button>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="footer">
+          <mat-footer-cell *matFooterCellDef colspan="2">
+            <button mat-raised-button (click)="downLoadAssigments()" color="primary">Descargar</button>
+          </mat-footer-cell>
+        </ng-container>
+  
+        <mat-header-row *matHeaderRowDef="displayedColumns; sticky: !isLoadingResults;"></mat-header-row>
+        <mat-row *matRowDef="let row; index as x; columns: displayedColumns;"></mat-row>
+        <mat-footer-row *matFooterRowDef="['footer']; sticky: !isLoadingResults;"></mat-footer-row>
+      </mat-table>
+    </div>
+  
+  </div>
+  <mat-paginator [length]="dataSource.data.length" [pageSizeOptions]="[5, 10, 20, 40, 80]" showFirstLastButtons></mat-paginator>
+</div>
