@@ -9,9 +9,18 @@ export interface remision {
     sOwner: string;
     sPlace: string;
     bFile: boolean;
+    uiRemision: Guid;
+    uiComercial: Guid;
+    sFactura: string;
+    sContratoProv: string;
+    sContratoArr: string;
+    dtFechaRemision: Date;
+    iCantidad: number | undefined;
+  sOC: any;
 }
 
 export class remision {
+  
 
 }
 

@@ -24,6 +24,12 @@
             </mat-expansion-panel-header>
             <a mat-list-item routerLink="/administracion/empleados" (click)="clicktoclose()">Empleados</a>
             <a mat-list-item routerLink="/administracion/movimientos" (click)="clicktoclose()">Movimientos</a>
+            <!-- New routes -->
+            <a mat-list-item routerLink="/administracion/accesorios" (click)="clicktoclose()">Accesorios</a>
+            <a mat-list-item routerLink="/administracion/marcas" (click)="clicktoclose()">Marcas</a>
+            <a mat-list-item routerLink="/administracion/modelos" (click)="clicktoclose()">Modelos</a>
+            <a mat-list-item routerLink="/administracion/proveedores" (click)="clicktoclose()">Proveedores</a>
+            <a mat-list-item routerLink="/administracion/tipoequipo" (click)="clicktoclose()">Tipo de Equipo</a>
         </mat-expansion-panel>
         <mat-expansion-panel *ngIf="data[3] === '1'"  hideToggle>
             <mat-expansion-panel-header>
@@ -76,6 +82,7 @@
                 <mat-icon color="accent">devices</mat-icon>
                 </mat-panel-description>
             </mat-expansion-panel-header>
+            <a mat-list-item routerLink="/dispositivos/alta" (click)="clicktoclose()">Alta</a>
             <a mat-list-item routerLink="/dispositivos/bodega" (click)="clicktoclose()">Bodega</a>
             <a mat-list-item routerLink="/dispositivos/divices" (click)="clicktoclose()">Dispositivos</a>
             <a mat-list-item routerLink="/dispositivos/obsoletos" (click)="clicktoclose()">Equipos Obsoletos</a>

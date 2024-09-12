@@ -1,0 +1,91 @@
+<br>
+<h1>Alta de Dispositivos</h1>
+  <div class="row">
+        <div class="col-xs-4">
+            <mat-form-field style="max-width: 400px;" appearance="outline">
+                <mat-label>Factura</mat-label>
+                <input type="text" matInput [matAutocomplete]="auto1" [formControl]="controlInvoice" [(ngModel)]="opcionInvoice">
+                <mat-autocomplete #auto1="matAutocomplete">
+                    <mat-option *ngFor="let orden of filteredOpInvoice | async" [value]="orden.sFactura">
+                        {{orden.sFactura}}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>&nbsp;&nbsp;
+            <button type="button" (click)="SearchData()" mat-raised-button color="primary">Buscar</button>
+        </div>
+    </div>
+    <br>
+    
+  
+    <div *ngIf="mostrarComercial == true">
+      <div class="mat-elevation-z8">
+          <div class="example-container">
+            <div class="loading-shade"
+                  *ngIf="isLoadingResults">
+                  <div class="flipping">
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                </div>
+            </div>
+            <div class="containertable">
+              <mat-table [dataSource]="dataSource">
+                <ng-container matColumnDef="Folio">
+                  <mat-header-cell *matHeaderCellDef>Folio</mat-header-cell>
+                  <mat-cell *matCellDef="let row">{{row.sFolio}}</mat-cell>
+                  <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                </ng-container>
+                <ng-container matColumnDef="Equipo">
+                  <mat-header-cell *matHeaderCellDef>Equipo</mat-header-cell>
+                  <mat-cell *matCellDef="let row">{{row.sDispositivo}}</mat-cell>
+                  <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                </ng-container>
+                <ng-container matColumnDef="Modelo">
+                  <mat-header-cell *matHeaderCellDef>Modelo</mat-header-cell>
+                  <mat-cell *matCellDef="let row">{{row.sModelo}}</mat-cell>
+                  <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                </ng-container>
+                <ng-container matColumnDef="Cantidad">
+                  <mat-header-cell *matHeaderCellDef>Cantidad</mat-header-cell>
+                  <mat-cell *matCellDef="let row">{{row.sCantidad}}</mat-cell>
+                  <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                </ng-container>
+                <ng-container matColumnDef="Empleado">
+                  <mat-header-cell *matHeaderCellDef>Empleado</mat-header-cell>
+                  <mat-cell *matCellDef="let row">{{row.sEmpleado}}</mat-cell>
+                  <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                </ng-container>
+                <ng-container matColumnDef="Ubicacion">
+                  <mat-header-cell *matHeaderCellDef>Ubicacion</mat-header-cell>
+                  <mat-cell *matCellDef="let row">{{row.sUbicacion}}</mat-cell>
+                  <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                </ng-container>
+                <ng-container matColumnDef="actions">
+                  <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                  <mat-cell *matCellDef="let row; let i = index">
+                      <button matTooltip="Alta" (click)="Divices(row.uiEmpleado,row.uiRemision,1)" mat-mini-fab color="accent">
+                          <mat-icon>create</mat-icon>
+                      </button>&nbsp;&nbsp;
+                      <button matTooltip="Mostrar" (click)="Divices(row.uiEmpleado,row.uiRemision,2)" mat-mini-fab color="accent">
+                          <mat-icon>visibility</mat-icon>
+                      </button>&nbsp;&nbsp;
+                  </mat-cell>
+                  <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="displays; sticky: !isLoadingResults;"></mat-header-row>
+                <mat-row *matRowDef="let row; index as x; columns: displays;">
+                </mat-row>
+                <mat-footer-row *matFooterRowDef="displays; sticky: !isLoadingResults" class="footer-row"></mat-footer-row>
+              </mat-table>
+            </div>
+          </div>
+          <mat-paginator [length]="dataSource.data.length" [pageSizeOptions]="[5, 10, 20, 40]" showFirstLastButtons></mat-paginator>
+        </div>
+    </div>
+    <br>

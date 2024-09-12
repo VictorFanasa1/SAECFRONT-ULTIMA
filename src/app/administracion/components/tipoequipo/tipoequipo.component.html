@@ -1,0 +1,93 @@
+<p>tipoequipo works!</p>
+<br>
+<h1>Tipo de Equipo</h1>
+<form [formGroup]="frmTipoEquipos" (ngSubmit)="register()">
+    <div class="row">
+        <div class="col-xs">
+            <mat-form-field style="max-width: 400px;" appearance="outline">
+                <mat-label>Nombre</mat-label>
+                <input matInput formControlName="sNombre" autocomplete="off" onkeyup="javascript:this.value=this.value.toUpperCase();">
+            </mat-form-field>
+            <br>
+            <div style="display: flex; justify-content: flex-start;">
+                Activo&nbsp;<mat-checkbox class="example-margin" formControlName="bActivo"></mat-checkbox>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
+            <br>
+            <div style="display: flex; justify-content: flex-start;">
+                Activo Fijo&nbsp;<mat-checkbox class="example-margin" formControlName="bActivoFijo"></mat-checkbox>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
+        </div>
+    </div>
+    <br>
+    <button mat-raised-button color="secondary" type="submit" [disabled]="frmTipoEquipos.invalid">Enviar</button>&nbsp;&nbsp;<button mat-raised-button color="primary" type="button" (click)="show()">Ver Catálogo</button>
+</form>
+<br><br>
+<div *ngIf="dataSource.data.length > 0">
+    <h3>Buscar: </h3>
+    <div class="row">
+        <mat-form-field style="max-width: 400px;" appearance="outline">
+            <input matInput #inputTipoEquipo  (keyup)="searchTipoEquipo(inputTipoEquipo.value)" placeholder="Nombre Equipo">
+        </mat-form-field>
+    </div>
+    <div class="mat-elevation-z8">
+        <div class="example-container">
+            <div class="loading-shade"
+                *ngIf="isLoadingResults">
+                <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+            </div>
+
+            <div class="containertable">
+                <mat-table [dataSource]="dataSource">
+
+                    <ng-container matColumnDef="Id">
+                        <mat-header-cell *matHeaderCellDef>Id</mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{row.uiRegistro}}</mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Nombre">
+                        <mat-header-cell *matHeaderCellDef>Nombre</mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{row.sNombre}}</mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Activo">
+                        <mat-header-cell *matHeaderCellDef>Activo</mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <mat-checkbox class="example-margin" [checked]="row.bActivo" disabled></mat-checkbox>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Fijo">
+                        <mat-header-cell *matHeaderCellDef>Activo Fijo</mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <mat-checkbox class="example-margin" [checked]="row.bActivoFijo" disabled></mat-checkbox>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="delete">
+                        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <button mat-mini-fab color="accent" aria-label="Eliminar" (click)="delete(row.uiRegistro)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="edit">
+                        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <button mat-mini-fab color="accent" aria-label="Editar" (click)="edit(row)">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                        </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns; sticky: !isLoadingResults;"></mat-header-row>
+                    <mat-row *matRowDef="let row; index as x; columns: displayedColumns;">
+                    </mat-row>
+                </mat-table>
+            </div>
+        </div>
+        <mat-paginator [length]="dataSource.data.length" [pageSizeOptions]="[5, 10, 20, 40]" showFirstLastButtons></mat-paginator>
+    </div>
+</div>
+<br>

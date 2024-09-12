@@ -53,6 +53,13 @@ import {MLogin} from './../models/MLogin'
 import {asgLiberaciones} from './../models/asgLiberaciones'
 import { ListaSeries } from '../modelviews/ListaSeries';
 import { InventoryAsgEmployedFinally} from '../modelviews/InventoryAsgEmployedFinally';
+import { catProveedoresAux } from '../models/catProveedoresAux.model';
+import { catProveedores } from '../models/catProveedores.model';
+import { altadispositivos } from '../modelviews/altadispositivos.model';
+import { invoiceRem } from '../modelviews/invoiceRem.model';
+import { catComercialProveedores } from '../models/catComercialProveedores.model';
+import { facturas } from '../modelviews/facturas.model';
+import { catComercialArrendadores } from '../models/catComercialArrendadores.model';
 //#endregion
 
 @Injectable({
@@ -88,6 +95,115 @@ export class SaecService {
 
   //#region Administration
 
+
+   // NUEVO ACCESORIOS
+
+   GetAllAccesories() {
+    return this.http.get<catAccesorios[]>(`${environment.apiURL}Administracion/GetAllAccesories`, this.GenerateOptions());
+  }
+
+  PostAccesorios(accesories: catAccesorios){
+    return this.http.post<any>(`${environment.apiURL}Administracion/PostAccesorios`, accesories, this.GenerateOptions());
+  }
+
+  PutAccesorios(uiRegistro: number, upaccesories: catAccesorios) {
+    return this.http.put<any>(`${environment.apiURL}Administracion/PutAccesorios/${uiRegistro}`,upaccesories, this.GenerateOptions());
+  }
+
+  DeleteAccesorios(uiRegistro: number) {
+    return this.http.delete<any>(`${environment.apiURL}Administracion/DeleteAccesorios/${uiRegistro}`, this.GenerateOptions());
+  }
+
+  // FIN NUEVO ACCESORIOS
+
+  // NUEVO MARCAS
+
+  GetAllMarcas() {
+    return this.http.get<catGeneral[]>(`${environment.apiURL}Administracion/GetAllMarcas`, this.GenerateOptions());
+  }
+
+  PostMarcas(marcas: catGeneral){
+    return this.http.post<any>(`${environment.apiURL}Administracion/PostMarcas`, marcas, this.GenerateOptions());
+  }
+
+  PutMarcas(uiRegistro: number, upmarcas: catGeneral) {
+    return this.http.put<any>(`${environment.apiURL}Administracion/PutMarcas/${uiRegistro}`,upmarcas, this.GenerateOptions());
+  }
+
+  DeleteMarcas(uiRegistro: number) {
+    return this.http.delete<any>(`${environment.apiURL}Administracion/DeleteMarcas/${uiRegistro}`, this.GenerateOptions());
+  }
+
+  // FIN NUEVO MARCAS
+
+   // NUEVO MODELOS
+
+   GetAllModelos() {
+    return this.http.get<catGeneral[]>(`${environment.apiURL}Administracion/GetAllModelos`, this.GenerateOptions());
+  }
+
+  PostModelos(modelos: catGeneral){
+    return this.http.post<any>(`${environment.apiURL}Administracion/PostModelos`, modelos, this.GenerateOptions());
+  }
+
+  PutModelos(uiRegistro: number, upmodelos: catGeneral) {
+    return this.http.put<any>(`${environment.apiURL}Administracion/PutModelos/${uiRegistro}`,upmodelos, this.GenerateOptions());
+  }
+
+  DeleteModelos(uiRegistro: number) {
+    return this.http.delete<any>(`${environment.apiURL}Administracion/DeleteModelos/${uiRegistro}`, this.GenerateOptions());
+  }
+
+  // FIN NUEVO MODELOS
+
+  // NUEVO PROVEEDORES
+
+  GetTypeProveedores() {
+    return this.http.get<catProveedoresAux[]>(`${environment.apiURL}Administracion/GetTypeProveedores`, this.GenerateOptions());
+  }
+
+  GetAllProveedores() {
+    return this.http.get<catProveedores[]>(`${environment.apiURL}Administracion/GetAllProveedores`, this.GenerateOptions());
+  }
+
+  PostProveedores(proveedores: catProveedores){
+    return this.http.post<any>(`${environment.apiURL}Administracion/PostProveedores`, proveedores, this.GenerateOptions());
+  }
+
+  PutProveedores(uiProveedores: number, uproveedores: catProveedores) {
+    return this.http.put<any>(`${environment.apiURL}Administracion/PutProveedores/${uiProveedores}`,uproveedores, this.GenerateOptions());
+  }
+
+  DeleteProveedores(uiProveedores: number) {
+    return this.http.delete<any>(`${environment.apiURL}Administracion/DeleteProveedores/${uiProveedores}`, this.GenerateOptions());
+  }
+
+  // FIN NUEVO PROVEEDORES
+
+  // NUEVO TIPO DE EQUIPO
+
+  GetAllTipoEquipo() {
+    return this.http.get<catGeneral[]>(`${environment.apiURL}Administracion/GetAllTypeEquipment`, this.GenerateOptions());
+  }
+
+  PostTipoEquipo(tipoequipo: catGeneral){
+    return this.http.post<any>(`${environment.apiURL}Administracion/PostTypeEquipment`, tipoequipo, this.GenerateOptions());
+  }
+
+  PutTipoEquipo(uiRegistro: number, uptipoequipo: catGeneral) {
+    return this.http.put<any>(`${environment.apiURL}Administracion/PutTypeEquipment/${uiRegistro}`,uptipoequipo, this.GenerateOptions());
+  }
+
+  DeleteTipoEquipo(uiRegistro: number) {
+    return this.http.delete<any>(`${environment.apiURL}Administracion/DeleteTypeEquipment/${uiRegistro}`, this.GenerateOptions());
+  }
+
+  // FIN NUEVO TIPO DE EQUIPO
+
+  PostDevice(dispositivos: altadispositivos) {
+    return this.http.post<altadispositivos>(`${environment.apiURL}Dispositivos/PostDevices`, dispositivos, this.GenerateOptions());
+  }
+
   GetAllStatus() {
     return this.http.get<catStatus[]>(`${environment.apiURL}Administracion/GetAllStatus`, this.GenerateOptions());
   }
@@ -100,6 +216,17 @@ export class SaecService {
     return this.http.get<asgAsignaciones>(`${environment.apiURL}Asignacion/GetAsiggmentByUI/${uiAsiggment}`, this.GenerateOptions());
   }
 
+  GetAllDivicesSearch(uiremision:Guid){
+    return this.http.get<altadispositivos[]>(`${environment.apiURL}Dispositivos/GetAllDivicesSearch/${uiremision}`, this.GenerateOptions());
+  }
+
+  GetTypeArr() {
+    return this.http.get<any>(`${environment.apiURL}Comercial/GetTypeArr`, this.GenerateOptions());
+  }
+
+  GetInvoices() {
+    return this.http.get<any[]>(`${environment.apiURL}Comercial/GetInvoices`, this.GenerateOptions());
+  }
   //#region Employed
   GetAllEmployeds() {
     return this.http.get<admEmpleados[]>(`${environment.apiURL}Administracion/GetAllEmployeds`, this.GenerateOptions());
@@ -189,10 +316,106 @@ export class SaecService {
     return this.http.get<comercial>(`${environment.apiURL}Comercial/GetComercialByUI/${uiComercial}`, this.GenerateOptions());
   }
 
-  GetAllInvoices() {
-    return this.http.get<invoiceHeader[]>(`${environment.apiURL}Comercial/GetAllInvoices/`, this.GenerateOptions());
+  GetAllInvoices(uiTipo:number) {
+    return this.http.get<invoiceHeader[]>(`${environment.apiURL}Comercial/GetAllInvoices/${uiTipo}`, this.GenerateOptions());
   }
 
+  PostComercialOrden(comercial: catComercial) {
+    return this.http.post<catComercial>(`${environment.apiURL}Comercial/PostComercialOrden/`, comercial, this.GenerateOptions());
+  }
+
+  PostDocumentOrden(repos: File, uiComercial: Guid) {
+    const fd = new FormData();
+    fd.append('File', repos);
+    return this.http.post<any>(`${environment.apiURL}Comercial/PostDocumentOrden/${uiComercial}`, fd, this.GenerateOptions());
+}
+DownLoadFileComercial(uiComercial: Guid) {
+  return this.http.get<any>(`${environment.apiURL}Comercial/DownLoadFileComercial/${uiComercial}`, this.GenerateOptions());
+}
+
+GetComercialAllContratoProv(){
+  return this.http.get<any>(`${environment.apiURL}Comercial/GetProvContrato`, this.GenerateOptions());
+}
+GetComercialAllContratoArr(){
+  return this.http.get<any>(`${environment.apiURL}Comercial/GetArrContrato`, this.GenerateOptions());
+}
+
+GetAllTypeProv() {
+  return this.http.get<any>(`${environment.apiURL}Comercial/GetAllProveedores`, this.GenerateOptions());
+}
+
+GetAllTypeArr() {
+  return this.http.get<any>(`${environment.apiURL}Comercial/GetAllArrendadores`, this.GenerateOptions());
+}
+GetComercialContractByUI(uiComercial: Guid){
+  return this.http.get<comercial>(`${environment.apiURL}Comercial/GetComercialContractByUI/${uiComercial}`, this.GenerateOptions());
+}
+GetComercialAllContractByUIProv(uiRegistro: number){
+  return this.http.get<any>(`${environment.apiURL}Comercial/GetComercialAllContractByUIProv/${uiRegistro}`, this.GenerateOptions());
+}
+
+GetComercialAllContractByUIArr(uiRegistro: number){
+  return this.http.get<any>(`${environment.apiURL}Comercial/GetComercialAllContractByUIArr/${uiRegistro}`, this.GenerateOptions());
+}
+
+
+
+GetAllRemisiones() {
+  return this.http.get<remision[]>(`${environment.apiURL}Comercial/GetAllRemisiones/`, this.GenerateOptions());
+}
+
+PostComercialContratoProv(comercial: catComercialProveedores) {
+  return this.http.post<catComercialProveedores>(`${environment.apiURL}Comercial/PostComercialContratoProv/`, comercial, this.GenerateOptions());
+}
+
+PostComercialInvoice(comercial: facturas) {
+  return this.http.post<facturas>(`${environment.apiURL}Comercial/PostComercialInvoice/`, comercial, this.GenerateOptions());
+}
+
+PostComercialRemision(comercial: remision) {
+  return this.http.post<remision>(`${environment.apiURL}Comercial/PostComercialRemision/`, comercial, this.GenerateOptions());
+}
+
+PutComercialContratoProv(comercial: catComercialProveedores) {
+  return this.http.put<catComercialProveedores>(`${environment.apiURL}Comercial/PutComercialContratoProv/`, comercial, this.GenerateOptions());
+}
+
+PostComercialContratoArr(comercial: catComercialArrendadores) {
+  return this.http.post<catComercialArrendadores>(`${environment.apiURL}Comercial/PostComercialContratoArr/`, comercial, this.GenerateOptions());
+}
+
+PutComercialContratoArr(comercial: catComercialArrendadores) {
+  return this.http.put<catComercialArrendadores>(`${environment.apiURL}Comercial/PutComercialContratoArr/`, comercial, this.GenerateOptions());
+}
+
+PutComercialInvoice(comercial: facturas) {
+  return this.http.put<facturas>(`${environment.apiURL}Comercial/PutComercialInvoice/`, comercial, this.GenerateOptions());
+}
+
+PostDocumentContracts(repos: File, uiComercial: Guid, uiTipo: number) {
+  const fd = new FormData();
+  fd.append('File', repos);
+  return this.http.post<any>(`${environment.apiURL}Comercial/PostDocumentContracts/${uiComercial}/${uiTipo}`, fd, this.GenerateOptions());
+}
+PutDocumentContracts(repos: File, uiComercial: Guid, uiTipo: number) {
+  const fd = new FormData();
+  fd.append('File', repos);
+  return this.http.put<any>(`${environment.apiURL}Comercial/PutDocumentContracts/${uiComercial}/${uiTipo}`, fd, this.GenerateOptions());
+}
+
+DownLoadFileComercialContract(uiRegistro: number, uiTipo: number) {
+  return this.http.get<any>(`${environment.apiURL}Comercial/DownLoadFileComercialContract/${uiRegistro}/${uiTipo}`, this.GenerateOptions());
+}
+GetRemisionByUIDoc(uiRemision: Guid) {
+  return this.http.get<remision[]>(`${environment.apiURL}Comercial/GetRemisionByIU/${uiRemision}`, this.GenerateOptions());
+}
+
+GetRemisionByIU(uiRemision: Guid) {
+  return this.http.get<any[]>(`${environment.apiURL}Comercial/GetRemisionByIU/${uiRemision}`, this.GenerateOptions());
+}
+DownLoadFileComercialFactura(uiComercial: Guid, uiTipo: number) {
+  return this.http.get<any>(`${environment.apiURL}Comercial/DownLoadFileComercialFactura/${uiComercial}/${uiTipo}`, this.GenerateOptions());
+}
   //#endregion
 
   //#region Catalogo
@@ -331,6 +554,11 @@ export class SaecService {
   DownLoadBodega(almacen: string, status: string, bodega: bodega[]) {
     return this.http.post<bodegafile>(`${environment.apiURL}Dispositivos/DownLoadBodega?almacen=${almacen}&status=${status}`, bodega, this.GenerateOptions());
   }
+
+  GetInvoiceRemision(sFactura: string){
+    return this.http.get<invoiceRem[]>(`${environment.apiURL}Dispositivos/GetInvoiceRemision/${sFactura}`, this.GenerateOptions());
+  }
+
   //#endregion
 
   //#region Asiggments

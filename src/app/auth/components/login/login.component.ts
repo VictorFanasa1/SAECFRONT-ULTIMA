@@ -34,6 +34,7 @@ export class LoginComponent implements OnInit {
   }
 
   LogIn(event: Event) {
+    console.log("SI ES AQUI")
     this.isbusy = true;
     event.preventDefault();
     const user: string = this.credentials.controls.user.value;

@@ -16,10 +16,21 @@ import { MovimientoComponent } from '../shared/modals/movimiento/movimiento.comp
 import { MatFooterCell, MatFooterRowDef } from '@angular/material/table';
 import { EditinvoiceComponent } from './modals/editinvoice/editinvoice.component';
 import { NewinvoiceComponent } from './modals/newinvoice/newinvoice.component';
+import { MarcasComponent } from './components/marcas/marcas.component';
+import { EditmarcasComponent } from './modals/editmarcas/editmarcas.component';
+import { AccesoriosComponent } from './components/accesorios/accesorios.component';
+import { ModelosComponent } from './components/modelos/modelos.component';
+import { ProveedoresComponent } from './components/proveedores/proveedores.component';
+import { TipoequipoComponent } from './components/tipoequipo/tipoequipo.component';
+import { EditaccesoriosComponent } from './modals/editaccesorios/editaccesorios.component';
+import { EditmodelosComponent } from './modals/editmodelos/editmodelos.component';
+import { EditproveedoresComponent } from './modals/editproveedores/editproveedores.component';
+import { EditequipoComponent } from './modals/editequipo/editequipo.component';
+import { NewremisionComponent } from './modals/newremision/newremision/newremision.component';
 
 
 @NgModule({
-  declarations: [EmpleadosComponent, RemisionComponent, OrdenesComponent, ContratosComponent, FacturasComponent, EditordenComponent, MovimientosComponent, MovimientoComponent, EditinvoiceComponent, NewinvoiceComponent],
+  declarations: [EmpleadosComponent, RemisionComponent, OrdenesComponent, ContratosComponent, FacturasComponent, EditordenComponent, MovimientosComponent, MovimientoComponent, EditinvoiceComponent, NewinvoiceComponent, MarcasComponent, EditmarcasComponent, AccesoriosComponent, ModelosComponent, ProveedoresComponent, TipoequipoComponent, EditaccesoriosComponent, EditmodelosComponent, EditproveedoresComponent, EditequipoComponent, NewremisionComponent],
   imports: [
     CommonModule,
     AdministracionRoutingModule,

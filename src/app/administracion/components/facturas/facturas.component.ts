@@ -54,7 +54,7 @@ export class FacturasComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.isLoadingResults = true;
-    this.service.GetAllInvoices()
+    this.service.GetAllInvoices(1)
     .subscribe((result: invoiceHeader[]) => {
       this.dataSource.data = result;
       this.ttlpz = this.dataSource.data.reduce((acc, fact) => acc + fact.iPiezas, 0)

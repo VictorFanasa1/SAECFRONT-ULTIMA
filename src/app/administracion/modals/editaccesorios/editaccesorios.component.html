@@ -1,0 +1,23 @@
+<div mat-dialog-content>
+    <form [formGroup]="frmAccesorioUpdate">
+        <div class="row">
+          <div class="col-xs">
+              <mat-form-field style="max-width: 400px;" appearance="outline">
+                  <mat-label>Accesorio</mat-label>
+                  <input matInput formControlName="sNombre" autocomplete="off" onkeyup="javascript:this.value=this.value.toUpperCase();">
+              </mat-form-field>
+              <br>
+              <div style="display: flex; justify-content: flex-start;">
+                  Activo&nbsp;<mat-checkbox class="example-margin" formControlName="bActivo"></mat-checkbox>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              </div>
+          </div>
+      </div>
+    </form>
+    </div>
+    <div mat-dialog-actions class="end-xs">
+        <button mat-button (click)="Close()">Cerrar</button>
+        <button mat-button color="accent" [disabled]="frmAccesorioUpdate.invalid" (click)="updateAccesorio()" cdkFocusInitial>Enviar</button>
+    </div>
+    
+    
+    

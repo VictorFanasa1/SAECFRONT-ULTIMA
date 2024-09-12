@@ -1,5 +1,5 @@
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -11,6 +11,7 @@ import { checkError } from 'src/app/core/functions/checkError';
 import { catTiposComercial } from 'src/app/core/models/catTiposComercial.model';
 import { SaecService } from 'src/app/core/services/saec.service';
 import { EditordenComponent } from '../../modals/editorden/editorden.component';
+import { MatChipList } from '@angular/material/chips';
 
 @Component({
   selector: 'app-ordenes',
@@ -20,8 +21,9 @@ import { EditordenComponent } from '../../modals/editorden/editorden.component';
 export class OrdenesComponent implements OnInit {
 
   frmOrden: FormGroup;
+  ejecutando = false;
   typeslease: catTiposComercial[] = [];
-  displayedColumns: string[] = ['Folio', 'Tipo', 'UEN', 'OldUEN', 'Alta', 'Orden', 'actions'];
+  displayedColumns: string[] = ['Folio', 'Tipo', 'UEN', 'Alta', 'Orden', 'actions'];
   isLoadingResults = false;
   dataSource: MatTableDataSource<any> = new MatTableDataSource<any>();
   @ViewChild(MatPaginator)
@@ -46,13 +48,16 @@ export class OrdenesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.show();
     this.service.GetAllTypesComercial()
     .subscribe(result => {
       this.typeslease = result;
     }, error => {
       checkError(error, this.router, this.snackBar);
     });
+  }
 
+  show(){
     this.service.GetAllOrdenes()
     .subscribe(result => {
       this.dataSource.data = result;
@@ -77,20 +82,52 @@ export class OrdenesComponent implements OnInit {
   }
 
   PostComercial() {
-    this.service.PostComercial(this.frmOrden.value)
-    .subscribe(result => {
-      this.frmOrden.reset();
-      this.frmOrden.patchValue({
-        dtFechaAlta: new Date(),
-        uiComercial: '00000000-0000-0000-0000-000000000000'
-      });
-    }, error => {
-      checkError(error, this.router, this.snackBar);
-    })
+    this.ejecutando = true;
+      const layoutclaim = document.getElementById('tracing-upload') as HTMLInputElement;
+      const listlayout = layoutclaim.files;
+      if (listlayout !== null) {
+        if(listlayout.length !== 0){
+          this.service.PostComercialOrden(this.frmOrden.value)
+          .subscribe(result => {
+            //console.log(result);
+            if(result != null){
+              this.frmOrden.reset();
+              this.frmOrden.patchValue({
+                dtFechaAlta: new Date(),
+                uiComercial: '00000000-0000-0000-0000-000000000000'
+              });
+              this.snackBar.open('Se creo la orden de compra con el folio: ' + result.sFolioOrdenCompra, 'Aceptar');
+              for (let index = 0; index < listlayout.length; index++) {
+                this.service.PostDocumentOrden(listlayout[index], result.uiComercial)
+                .subscribe(result =>{
+                  this.show();
+                  console.log('Se cargo la orden de compra');
+                }, error => {
+                  console.log(error);
+                });
+              }
+            }else{
+              this.ejecutando = false;
+              this.snackBar.open('El folio de orden de compra ya existe.', 'Aceptar');
+            }
+          }, error => {
+            checkError(error, this.router, this.snackBar);
+          })
+      }
+      else{
+        this.ejecutando = false;
+        this.snackBar.open('Favor de cargar el archivo de la orden de compra.', 'Aceptar');
+      }
+    }
+    else {
+      this.ejecutando = false;
+      this.snackBar.open('Favor de cargar el archivo de la orden de compra.', 'Aceptar');
+    }
   }
 
-  DownLoadFile(uiOrigen: Guid) {
-    this.service.DownLoadFile(uiOrigen)
+  DownLoadFile(uiComercial: Guid) {
+    console.log(uiComercial)
+    this.service.DownLoadFileComercial(uiComercial)
     .subscribe(async result => {
       const base64Response = await fetch(`data:${result.sType};base64,${result.btmFile}`);
       const blob = await base64Response.blob();
@@ -110,6 +147,7 @@ export class OrdenesComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      this.show();
     });
   }
 

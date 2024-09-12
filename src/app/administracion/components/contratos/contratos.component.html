@@ -1,1 +1,211 @@
-<p>contratos works!</p>
+<br>
+<h1>Contratos</h1>
+<form [formGroup]="frmContractProv" (ngSubmit)="PostContratosProv()">
+        <div class="row">
+            <div class="col-xs-4">
+                <mat-form-field style="max-width: 400px;" appearance="outline">
+                    <mat-label>Orden de Compra</mat-label>
+                    <input type="text" matInput [matAutocomplete]="auto1" [formControl]="controlOrden"  [(ngModel)]="opcionOrden">
+                    <mat-autocomplete #auto1="matAutocomplete">
+                        <mat-option *ngFor="let orden of filteredOpOrden | async" [value]="orden.sFolioOrdenCompra">
+                            {{orden.sFolioOrdenCompra}}
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>&nbsp;&nbsp;
+                <button type="button" (click)="SearchData()" mat-raised-button color="primary">Crear</button>
+            </div>
+            <div class="col-xs-4">
+                <mat-form-field style="max-width: 400px;" appearance="outline">
+                    <mat-label>Contratos Proveedores</mat-label>
+                    <input type="text" matInput [matAutocomplete]="auto2" [formControl]="controlCprov"  [(ngModel)]="opcionCProv">
+                    <mat-autocomplete #auto2="matAutocomplete">
+                        <mat-option *ngFor="let cprov of filteredOpCprov | async" [value]="cprov.uiRegistro + '-' + cprov.sContrato">
+                            {{cprov.sContrato}}
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>&nbsp;&nbsp;
+                <button type="button" (click)="SearchContract(1)" mat-raised-button color="primary">Buscar</button>
+            </div>
+            <div class="col-xs-4">
+                <mat-form-field style="max-width: 400px;" appearance="outline">
+                    <mat-label>Contratos Arrendadores</mat-label>
+                    <input type="text" matInput [matAutocomplete]="auto3" [formControl]="controlCarr"  [(ngModel)]="opcionCarr">
+                    <mat-autocomplete #auto3="matAutocomplete">
+                        <mat-option *ngFor="let carr of filteredOpCarr | async" [value]="carr.uiRegistro + '-' + carr.sContrato">
+                            {{carr.sContrato}}
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>&nbsp;&nbsp;
+                <button type="button" (click)="SearchContract(2)" mat-raised-button color="primary">Buscar</button>
+            </div>
+        </div>
+        <br>
+        <section *ngIf="mostrarComercial == true">
+        <h1>Orden de Compra</h1>
+        <div class="row">
+            <div class="col-xs">
+                <mat-form-field *ngIf="datacomercial.sFolio !== undefined" appearance="standard">
+                    <mat-label>Folio</mat-label>
+                    <input readonly [value]="datacomercial.sFolio" matInput>
+                </mat-form-field>
+            </div>
+            <div class="col-xs">
+                <mat-form-field *ngIf="datacomercial.dtUpload !== undefined" appearance="standard">
+                    <mat-label>Fecha Alta</mat-label>
+                    <input readonly [value]="datacomercial.dtUpload | date: 'dd/MM/yyyy'" matInput>
+                </mat-form-field>
+            </div>
+            <div class="col-xs">
+                <mat-form-field *ngIf="datacomercial.dtOC !== undefined" appearance="standard">
+                    <mat-label>Fecha Orden</mat-label>
+                    <input readonly [value]="datacomercial.dtOC | date: 'dd/MM/yyyy'" matInput>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs">
+                <mat-form-field *ngIf="datacomercial.sType !== undefined" appearance="standard">
+                    <mat-label>Tipo de Adquisición</mat-label>
+                    <input readonly [value]="datacomercial.sType" matInput>
+                </mat-form-field>
+            </div>
+            <div class="col-xs">
+                <mat-form-field *ngIf="datacomercial.sUEN !== undefined" appearance="standard">
+                    <mat-label>UEN</mat-label>
+                    <input readonly [value]="datacomercial.sUEN" matInput>
+                </mat-form-field>
+            </div>
+        </div>
+    </section>
+    <br>
+    <section *ngIf="mostrarComercial == true || mostrarProv == true">
+        <h1>Proveedor</h1>
+        <div class="row">
+            <div class="col-xs">
+                <mat-form-field appearance="outline">
+                    <mat-label>Nombre del Proveedor</mat-label>
+                    <input type="text" matInput [matAutocomplete]="auto4" [formControl]="controlProv" [(ngModel)]="opcionProv" autocomplete="off">
+                    <mat-autocomplete #auto4="matAutocomplete">
+                        <mat-option *ngFor="let p of filteredOprov | async" [value]="p.uiProveedor + '-' + p.sNombre">
+                            {{p.sNombre}}
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+            </div>
+            <div class="col-xs">
+                <mat-form-field appearance="outline">
+                    <mat-label>Contrato</mat-label>
+                    <input matInput formControlName="sContrato" autocomplete="off" placeholder="Contrato" onkeyup="javascript:this.value=this.value.toUpperCase();">
+                </mat-form-field>
+            </div>&nbsp;&nbsp;
+            <button type="button" (click)="DownLoadFile(1)"  *ngIf="mostrarComercial === false" mat-mini-fab color="primary">
+              <mat-icon>cloud_download</mat-icon>
+            </button>&nbsp;&nbsp;
+            <div class="col-xs">
+                    <label for="tracing-upload-1" class="custom-detail-upload">
+                        Adjuntar
+                    </label>
+                    <input id="tracing-upload-1" formControlName="iFileProv" (change)="upLoadFilesProv()" type="file" accept=".pdf"/>
+                    <br>
+                    <mat-chip-list
+                    class="example-chip">
+                        <mat-chip
+                        class="example-box"
+                        *ngFor="let file of namefiles1; index as x">
+                            {{file}}
+                        </mat-chip>
+                    </mat-chip-list>
+            </div>
+        </div>
+        <div mat-dialog-actions class="center-xs sticky">
+            <button *ngIf="mostrarComercial === true" mat-raised-button type="submit" [disabled]="frmContractProv.invalid" color="accent">Guardar</button>
+            <button *ngIf="mostrarComercial === false" mat-raised-button type="submit" [disabled]="frmContractProv.invalid" color="accent">Modificar</button>
+        </div>
+    </section>
+</form>
+<form [formGroup]="frmContractArr" (ngSubmit)="PostContratosArr()">
+    <br>
+    <section *ngIf="mostrarComercial == true || mostrarArr == true">
+        <h1>Arrendador</h1>
+        <div class="row">
+            <div class="col-xs">
+                <mat-form-field appearance="outline">
+                    <mat-label>Nombre del Arrendador</mat-label>
+                    <input type="text" matInput [matAutocomplete]="auto5" [formControl]="controlArr" [(ngModel)]="opcionArr"  autocomplete="off">
+                    <mat-autocomplete #auto5="matAutocomplete">
+                        <mat-option *ngFor="let a of filteredOparr | async" [value]="a.uiProveedor+ '-' + a.sNombre">
+                            {{a.sNombre}}
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+            </div>
+            <div class="col-xs">
+                <mat-form-field appearance="outline">
+                    <mat-label>Tipo de Arrendamiento</mat-label>
+                    <mat-select formControlName="uiTipoArrendamiento">
+                        <mat-option *ngFor="let type of typearr" [value]="type.uiTipoArrendamiento">{{type.sDescripcion}}</mat-option>
+                    </mat-select>
+                </mat-form-field>&nbsp;&nbsp;
+            </div>
+            <div class="col-xs">
+                <mat-form-field appearance="outline">
+                    <mat-label>Contrato</mat-label>
+                    <input matInput formControlName="sContrato" autocomplete="off" placeholder="Contrato" onkeyup="javascript:this.value=this.value.toUpperCase();">
+                </mat-form-field>
+            </div>
+            </div>
+            <div class="row">
+            <div class="col-xs">
+                <mat-form-field appearance="outline">
+                    <mat-label>Vencimiento (MESES)</mat-label>
+                    <input matInput formControlName="iVencimiento" autocomplete="off" placeholder="Vencimiento">
+                </mat-form-field>
+            </div>
+            <div class="col-xs">
+                <mat-form-field appearance="outline">
+                    <mat-label>Inicio</mat-label>
+                    <input formControlName="dtInicio" readonly matInput [matDatepicker]="ipicker">
+                    <mat-datepicker-toggle matSuffix [for]="ipicker"></mat-datepicker-toggle>
+                    <mat-datepicker #ipicker></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div class="col-xs">
+                <mat-form-field appearance="outline">
+                    <mat-label>Fin</mat-label>
+                    <input formControlName="dtFin" readonly matInput [matDatepicker]="fpicker">
+                    <mat-datepicker-toggle matSuffix [for]="fpicker"></mat-datepicker-toggle>
+                    <mat-datepicker #fpicker></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div class="col-xs">
+                <mat-form-field appearance="outline">
+                    <mat-label>Cantidad</mat-label>
+                    <input matInput formControlName="sArrendamiento" autocomplete="off" placeholder="Cantidad">
+                </mat-form-field>
+            </div>&nbsp;&nbsp;
+            <button type="button" (click)="DownLoadFile(2)" *ngIf="mostrarComercial === false" mat-mini-fab color="primary">
+              <mat-icon>cloud_download</mat-icon>
+            </button>&nbsp;&nbsp;
+            <div class="col-xs">
+                <label for="tracing-upload-2" class="custom-detail-upload">
+                    Adjuntar
+                </label>
+                <input id="tracing-upload-2" formControlName="iFileArr" (change)="upLoadFilesArr()" type="file" accept=".pdf" />
+                <br>
+                <mat-chip-list
+                class="example-chip">
+                    <mat-chip
+                    class="example-box"
+                    *ngFor="let file of namefiles2; index as x">
+                        {{file}}
+                    </mat-chip>
+                </mat-chip-list>
+             </div>
+        </div>
+        <div mat-dialog-actions class="center-xs sticky">
+          <button *ngIf="mostrarComercial === true" mat-raised-button type="submit" [disabled]="frmContractArr.invalid" color="accent">Guardar</button>
+          <button *ngIf="mostrarComercial === false" mat-raised-button type="submit" [disabled]="frmContractArr.invalid" color="accent">Modificar</button>
+        </div>
+    </section>
+</form>
+<br>

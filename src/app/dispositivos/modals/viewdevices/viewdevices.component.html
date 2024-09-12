@@ -1,0 +1,38 @@
+<h1 mat-dialog-title>{{data.title}}</h1>
+    <div class="row" *ngFor="let divices of catalogoDevices; let i = index">
+        <div class="col-xs">
+            <mat-form-field appearance="standard">
+                <mat-label>Tipo Equipo</mat-label>
+                <input matInput readonly [value]="divices.sTipoEquipo">
+            </mat-form-field>
+        </div>
+        <div class="col-xs">
+            <mat-form-field appearance="standard">
+                <mat-label>Marca</mat-label>
+                <input matInput readonly [value]="divices.sMarca">
+            </mat-form-field>
+        </div>
+        <div class="col-xs">
+            <mat-form-field appearance="standard">
+                <mat-label>Modelo</mat-label>
+                <input matInput readonly [value]="divices.sModelo">
+            </mat-form-field>
+        </div>
+        <div class="col-xs">
+            <mat-form-field appearance="standard">
+                <mat-label>Serie</mat-label>
+                <input matInput readonly [value]="divices.sSerie">
+            </mat-form-field>
+        </div>
+        <div class="col-xs">
+            <mat-form-field appearance="standard">
+                <mat-label>Placa</mat-label>
+                <input matInput readonly [value]="divices.sPlaca">
+            </mat-form-field>
+        </div>
+    </div>
+    <br>
+    <div mat-dialog-actions class="end-xs sticky">
+        <button type="button" mat-raised-button (click)="dialogref.close()" color="accent">Cerrar</button>
+    </div>
+

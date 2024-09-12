@@ -5,6 +5,8 @@ import { EquiposComponent } from './components/equipos/equipos.component';
 import {ObsoletosComponent} from './components/obsoletos/obsoletos.component'
 import { LiberacionComponent } from './components/liberacion/liberacion.component';
 import {VentaEquiposComponent} from './components/venta-equipos/venta-equipos.component'
+import { AltaComponent } from './components/alta/alta.component';
+
 
 const routes: Routes = [
   {
@@ -26,6 +28,10 @@ const routes: Routes = [
   {
     path: 'ventaEquipo',
     component: VentaEquiposComponent
+  },
+  {
+    path: 'alta',
+    component: AltaComponent
   }
 ];
 

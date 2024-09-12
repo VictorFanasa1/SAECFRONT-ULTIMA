@@ -1,1 +1,135 @@
-<p>remision works!</p>
+<br>
+<h1>Remisiones</h1>
+<form class="row" [formGroup]="frmFilter">
+    <div class="col-xs">
+        <mat-form-field appearance="outline">
+            <mat-label>Remisión</mat-label>
+            <input matInput formControlName="sRemision" autocomplete="off" placeholder="Remision">
+        </mat-form-field>
+    </div>
+    <div class="col-xs">
+        <mat-form-field appearance="outline">
+            <mat-label>Factura</mat-label>
+            <input type="text" matInput [matAutocomplete]="auto" [formControl]="controlInvoice" formControlName="sFactura" >
+            <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngFor="let orden of filteredOpInvoice | async" [value]="orden.sFactura">
+                    {{orden.sFactura}}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+    </div>
+    <div class="col-xs">
+        <mat-form-field appearance="outline">
+            <mat-label>Orden de Compra</mat-label>
+            <input type="text" matInput [matAutocomplete]="auto2" [formControl]="controlOrden" formControlName="sOC" >
+            <mat-autocomplete #auto2="matAutocomplete">
+                <mat-option *ngFor="let orden of filteredOpOrden | async" [value]="orden.sFolioOrdenCompra">
+                    {{orden.sFolioOrdenCompra}}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+    </div>
+</form>
+<div class="row">
+    <div class="col-xs">
+        <button matTooltip="Agregar" (click)="AddRemision()" mat-mini-fab color="accent">
+            <mat-icon>add</mat-icon>
+        </button>
+    </div>
+</div>
+<br>
+<div class="mat-elevation-z8">
+    <div class="example-container">
+        <div class="loading-shade"
+        *ngIf="isLoadingResults">
+        <div class="flipping">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+        <div class="containertable">
+            <mat-table [dataSource]="dataSource" matSort #empTbSort="matSort" matSortDisableClear>
+
+                <ng-container matColumnDef="OC">
+                    <mat-header-cell *matHeaderCellDef>Orden de Compra</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.sOC}}</mat-cell>
+                    <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Factura">
+                    <mat-header-cell *matHeaderCellDef>Factura</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.sFactura}}</mat-cell>
+                    <mat-footer-cell *matFooterCellDef>Total</mat-footer-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Remision">
+                    <mat-header-cell *matHeaderCellDef>Remision</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.sRemision}}</mat-cell>
+                    <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="dtRemision">
+                    <mat-header-cell mat-sort-header *matHeaderCellDef>Fecha</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.dtFechaRemision | date: 'dd/MM/yyyy'}}</mat-cell>
+                    <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="iCantidad">
+                    <mat-header-cell mat-sort-header *matHeaderCellDef>Cantidad</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.iCantidad | number:''}}</mat-cell>
+                    <mat-footer-cell *matFooterCellDef>{{ttlpz | number:''}} pz</mat-footer-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Responsable">
+                    <mat-header-cell mat-sort-header *matHeaderCellDef>Responsable</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.sOwner}}</mat-cell>
+                    <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Ubicacion">
+                    <mat-header-cell mat-sort-header *matHeaderCellDef>Ubicacion</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.sPlace}}</mat-cell>
+                    <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                    <mat-cell *matCellDef="let row; let i = index">
+                        <!-- <button matTooltip="Sustituir PDF" *ngIf="row.bDocument === 'SI'" (click)="OpenDialog(row, i)" mat-icon-button color="accent">
+                            <i class="fa-solid fa-file-arrow-up fa-2x"></i>
+                        </button>
+                        <button matTooltip="Cargar PDF" *ngIf="row.bDocument === 'NO'" (click)="OpenDialog(row, i)" mat-icon-button color="warn">
+                            <i class="fa-solid fa-file-arrow-up fa-2x"></i>
+                        </button> -->
+                        <button matTooltip="Descargar" (click)="DownLoadFile(row.uiComercial,4)" mat-mini-fab color="accent">
+                            <mat-icon>cloud_download</mat-icon>
+                        </button>&nbsp;&nbsp;
+                        <!-- <button matTooltip="Mostrar" (click)="ShowInvoice(row.uiFactura)" mat-mini-fab color="accent">
+                            <mat-icon>visibility</mat-icon>
+                        </button>&nbsp;&nbsp; -->
+                        <button matTooltip="Editar" (click)="EditRemision(row.uiRemision)" mat-mini-fab color="accent">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                        <!-- <button matTooltip="Eliminar" mat-mini-fab color="accent">
+                          <mat-icon>delete</mat-icon>
+                      </button> -->
+                    </mat-cell>
+                    <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displays; sticky: !isLoadingResults;"></mat-header-row>
+                <mat-row *matRowDef="let row; index as x; columns: displays;">
+                </mat-row>
+                <mat-footer-row *matFooterRowDef="displays; sticky: !isLoadingResults" class="footer-row"></mat-footer-row>
+            </mat-table>
+        </div>
+    </div>
+    <mat-paginator [length]="dataSource.data.length" [pageSizeOptions]="[5, 10, 20, 40]" showFirstLastButtons></mat-paginator>
+</div>
